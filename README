@@ -1,5 +1,43 @@
-This is git repository NQR in organization NQRCore,
-established June 30, 2011.  NQR stands for 'Not Quite R'.
+=head1 NQR - Not Quite R
+
+NQR is Copyright (C) 2011 by John Emerson and Michael Kane.
+See F<LICENSE> for licensing details.
+
+This is repository NQR in github organization NQRCore,
+established June 30, 2011.  NQR stands for "Not Quite R".
+
+If you aren't familiar with R, please see http://www.r-project.org.
+It has a wonderful community and a mature, stable language for
+statistical computing.  NQR is a sandbox for exploring the Parrot
+Virtual Machine as a platform for a high-level language (HLL) using
+the core R grammar.
+
+To contribute, please drop us an email.  We particularly welcome
+feedback and hints that help us learn more about Parrot.
 
 Jay Emerson (john.emerson@yale.edu or jayemerson@gmail.com)
 Mike Kane (michael.kane@yale.edu)
+
+= head2 Building from source
+
+NQR requires Parrot (see http://www.parrot.org/).  If you can
+build Parrot, you should be fine building NQR (which currently
+uses Parrot 3.3.0 as of July 8, 2011).
+
+To obtain NQR directly from its repository:
+
+    $ git clone git://github.com/NQRCore/NQR.git
+
+Once you have a copy of NQR, build and test it as follows:
+
+    $ parrot setup.pir
+    $ parrot setup.pir test
+
+To run interactively,
+
+    $ ./installable_nqr
+
+To run in batch mode (e.g. from a script):
+
+    $ ./installable_nqr myscript.nqr
+
