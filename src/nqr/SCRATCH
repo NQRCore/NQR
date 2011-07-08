@@ -7,12 +7,7 @@
 # necessarily mean we're happy with it!  But it probably
 # works at some level (even if imperfectly).
 
-sub length($arg) {
-   if (pir::does($arg, "array") || pir::does($arg, "hash")) {
-       return pir::elements($arg);
-   }
-   return 1;
-}
+
 
 https://github.com/perl6/nqp/tree/master/t/nqp
 (specifically, https://github.com/perl6/nqp/blob/master/t/nqp/28-subclass.t )
