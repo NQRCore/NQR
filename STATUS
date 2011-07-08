@@ -1,0 +1,17 @@
+2011-7-8:
+
+Creating the github repository.  At this point, the hack of
+the squaak language still has some squaakish characteristics.
+
+- Using Parrot 3.3.0 (will upgrade I hope soon)
+
+- I haven't quite got the new 'for' action working (trying two
+approaches).
+
+- I have some basic class definitions, but haven't really done
+anything and need to figure out inheritance (maybe Parrot 3.6.0
+will help, arriving next week).
+
+- I've done some things that may "look right" but aren't done
+the "right way".  Advice is welcome, to help me learn.
+

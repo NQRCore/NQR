@@ -1,0 +1,255 @@
+# Copyright (C) 2010, Parrot Foundation.
+# Copyright (C) 2011, Michael Kane and John Emerson.
+
+# This is just a scratch file for various notes and working
+# code that we didn't place in Runtime.pm at this point.
+# However, just because something is in Runtime.pm doesn't
+# necessarily mean we're happy with it!  But it probably
+# works at some level (even if imperfectly).
+
+sub length($arg) {
+   if (pir::does($arg, "array") || pir::does($arg, "hash")) {
+       return pir::elements($arg);
+   }
+   return 1;
+}
+
+https://github.com/perl6/nqp/tree/master/t/nqp
+(specifically, https://github.com/perl6/nqp/blob/master/t/nqp/28-subclass.t )
+
+
+# Earlier... might be close, returns PMC rather than scalar.
+#sub length(*@args) {
+#    my @arg := @args[0];
+#    my @len;
+#    @len[0] := +@arg;
+#    return @len;
+#}
+
+# Consider a vector class.
+
+#######################
+# Extras, working area:
+
+# length of an array:
+    #my $len := @args;
+    #pir::say($len);
+
+#sub print(*@args) {
+#    my $arg := @args[0];
+#    pir::say(pir::join(' ', $arg));
+#    pir::return();
+#}
+
+# From Will Coleda:
+our multi sub print(ResizablePMCArray @args) {
+  say("ResizablePMCArray");
+  say(pir::join(' ', @args));
+}
+
+our multi sub print($arg) {
+  print("$arg");
+  say($arg);
+}
+
+
+######################################
+# length(): assumes only one argument:
+
+sub length(*@args) {
+    my @arg := @args[0];
+    my $len := @arg;
+    pir::say($len);
+    pir::return();
+}
+
+#################################################################
+# print()
+#
+# Working version of print, which only prints the first argument,
+# whatever that is, and ignores any other arguments.
+# Hmm... not quite, try it on the answer of a length().
+sub print(*@args) {
+    my $arg := @args[0];
+    pir::say(pir::join(' ', $arg));
+    pir::return();
+}
+
+################################################################
+# length()
+#
+# Only try to process the length of the first argument?  No,
+# if the element is a scalar, it just gets that number.  Argh...
+# And of course we really want to consider all arguments.
+sub length(*@args) {
+    my $len := Q:PIR {
+      $P0 = find_lex '@args'
+      $P1 = $P0[0]
+      $I0 = -1
+      if null $P1 goto errormessage
+        $I0 = elements $P1
+        goto nowwearedone
+      errormessage:
+        say 'Error in length'
+      nowwearedone:
+      %r = box $I0
+    };
+    pir::say($len);
+    pir::return($len);
+}
+
+
+
+################################################################
+# c()
+#
+# Oooo... simple enough, even though we aren't micro-managing
+# the data structure.  And of course it really isn't quite right
+# except for the easy cases.
+sub c(*@args) {
+  pir::return(@args);
+}
+
+# This could be our c() in a minimal version I suppose:
+#sub asvector(*@args) {
+#    my @ans := Q:PIR {
+#      .local pmc array
+#      array = new 'FixedIntegerArray'
+#      array = 5
+#      array[0] = -1
+#      array[4] = 99
+#      %r = array
+#    };
+#    #my $len := pir::elements(@ans);
+#    #print($len);
+#    pir::return(@ans);
+#}
+
+#########################################################
+# Jay playing around:
+
+sub myprint(*@args) {
+    print(@args[0]);
+    pir::return();
+}
+
+sub myprint2(*@args) {
+    for (@args[0]) {
+      print($_);
+    }
+    pir::return();
+}
+
+# This may be closest, since R only prints the first argument...
+# Then really need c() or paste() to achieve the desired testing calls...
+sub myprint3(*@args) {
+    pir::say(pir::join(' ', @args[0]));
+    pir::return();
+}
+
+# Null PMC access in get_string():
+# This only works if every cell of the array has a value?
+# Would be really nice to know what NQP really is...
+sub myprint4(*@args) {
+    my $temp;
+    for (@args[0]) {
+      $temp := $_;
+      if ($temp eq '') { $temp := 'NA'; }
+      pir::say($temp);
+    }
+    pir::return();
+}
+
+# Imbed PIR in the function; much closer to R's print.
+# Oops, maybe not.  Incomplete.
+sub myprint5(*@args) {
+    my @temp := @args[0];
+    Q:PIR {
+        .local pmc it
+        .local pmc x
+        x = find_lex '@temp'
+        it = iter x
+      iter_loop:
+        unless it goto iter_end
+        $S0 = shift it
+        $S0 = $S0 . ' '
+        print $S0
+        goto iter_loop
+      iter_end:
+        print "\n"
+    };
+    pir::return();
+}
+
+#######################################################################
+# seq()
+#
+
+# This runs into trouble, I think, because the push is pushing a
+# pointer that isn't actually evaluated until the end, so something
+# like seqPIRbad(1,10,3) would give 13, 13, 13, 13.
+sub seqPIRbad(*@args) {
+  return Q:PIR {
+      .local pmc i, to, by
+      $P0 = new "ResizablePMCArray" # Will be the answer
+      $P1 = new "ResizablePMCArray" # Will hold the arguments
+      $P1 = find_lex '@args'
+      i = $P1[0]  # the start and the index
+      to = $P1[1] # the end
+      by = $P1[2] # the by
+      iter_loop:
+        unless i<=to goto iter_end
+        push $P0, i
+        i += by
+        goto iter_loop
+      iter_end: 
+      %r = $P0
+  };
+}
+
+# Using only PIR:
+sub seqPIR(*@args) {
+  return Q:PIR {
+      .local num i, to, by
+      $P0 = new "ResizablePMCArray" # Will be the answer
+      $P1 = new "ResizablePMCArray" # Will hold the arguments
+      $P1 = find_lex '@args'
+      i = $P1[0]  # the start and the index
+      to = $P1[1] # the end
+      by = $P1[2] # the by
+      iter_loop:
+        unless i<=to goto iter_end
+        push $P0, i
+        i += by
+        goto iter_loop
+      iter_end: 
+      %r = $P0
+  };
+}
+
+
+
+
+# Not working.  Need to get around this scalar/array distinction which
+# is annoying, and find length of an array?  Really need vectors.
+sub rep(*@args) {
+  my @val := @args[0];
+  my $times := @args[1];
+  my @ans;
+  my $i;
+  my $j;
+  $i := $times - 1;
+  while ($i>0) {
+    $j := (@val) - 1;
+    while ($j>0) {
+      @ans[$i * $times + $j] := @val[$j];
+      $j := $j - 1;
+    }
+    $i := $i - 1;
+  }
+  pir::return(@ans);
+}
+
+
+
+

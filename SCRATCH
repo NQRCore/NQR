@@ -1,0 +1,224 @@
+'Not Quite R' is language nqr, created from the
+language 'Squaak' which was created with 
+tools/dev/mk_language_shell.pl, r47087.
+
+    $ parrot setup.pir
+    $ parrot setup.pir test
+
+This file contains various notes that I didn't want to lose but that
+didn't deserve to be in STATUS.
+
+
+###############################################################################
+# Changing grammar and actions:
+
+1. Changed sub to function (forcing use of { } as discussed).
+2. Re-implemented return.
+3. Discovered some interesting scoping things, created t/nqr.t and
+   testnqr.t
+4. Modified conditionals to be closer to R syntax, requiring { }
+5. Changed and, or, not to R usage &, |, !
+6. expression used to be optable or something, now EXPR has no clear grammar?
+
+###############################################################################
+# June 29, 2011
+
+1. Colon operator (backed out these changes after lunch):
+	- Two lines added to the grammar, with some re-lettering of
+	  the operator (x, v, w, u?)
+	- Added the builtins folder and ops.pir file
+	- Modified setup.pir for this builtins/ops.pir.
+
+2. Jay notes that squaak (at least) starts indexing at 0, not 1.
+
+3. Jay played around in Runtime.pm as a possibly better way of doing things
+than the old "builtins"?
+
+4. Tried src/builtins/pirprint, with no luck.
+	nqr.pir: .include 'src/builtins/pirprint.pir'
+	setup.pir: src/builtins/pirprint.pir to the SOURCES
+
+5. Oooo.... see Runtime.pm.
+
+###############################################################################
+# July 4, 2011
+
+1. Jay noticed that stuff in src/nqr.pir would need changing along with
+setup.pir and/or nqr.pir in the main directory if adding something like
+the old builtins.
+
+2. Added comments to Grammar.pm for future things to look at.
+
+3. Deleted some older stuff from Grammar.pm.
+
+4. Modified while loop syntax.
+
+###############################################################################
+# July 6, 2011
+
+1. Fixed up some things and cleaned out comments.
+
+2. Got rid of the annoying printing (3 hours of false starts)
+
+3. False start: tried making everything a vector, no scalars.  Oops.
+Might be possible, but not sure, seems to pose problems, you need to know
+what is what once you get to the PIR level.
+
+###############################################################################
+# Notes
+
+I left some interesting action code at the bottom of Actions.pm but generally
+tried to clean out junk to make things more readable.
+
+--target=post	Shows the POST results, could be past, pasm, pir?
+
+<?>		Always returns TRUE (a match) and useful for initialization actions;
+		I think this is needed to initialize the scope stack.
+
+$?BLOCK				Our current block
+@?BLOCK				The stack of blocks
+@?BLOCK.unshift($?BLOCK);	Put the current block onto the stack
+my $past := @?BLOCK.shift();	Take the current block off the stack I think.
+
+PAST::Block.new			Blocks for scoping
+PAST::Stmts.new			Statements
+PAST::Op.new			Operators (extensive)
+PAST::Var.new			Variables: see lexical, isdecl, *register*
+PAST::Val.new			Represent constant values
+
+PAST nodes:
+http://docs.parrot.org/parrot/devel/html/docs/pdds/pdd26_ast.pod.html
+
+The action for parameters is VERY interesting for the scope discussion,
+because it is here that the new block is created.
+
+
+
+# JWE:
+# Important: the usage of <block> in the do/end scope results in
+# local variables that do not persist outside of the block.  In
+# contrast, the use of <statement>* in the for loop results in
+# the creation of global variables so to speak, persisting outside
+# of the scope.  We do want this for loops.  Be careful with blocks,
+# then, we want that sort of behavior for functions.
+
+# Possibility: instead of their do/end, we might use { } with
+# <statement>* instead of <block>?   Hmm... probably not, because of
+# functions.
+
+# JWE: Theorem: <?> creates a new environment or scope and then
+# <statement>* is passed to a new parse tree?  If this is true, then
+# blocks may or may not have side effects depending on the usage
+# in the action file?
+
+# JWE: note this use of dot, might relate in some way, above?
+# See .begin_TOP and .begin_block I think.  Or maybe this is more like
+# list member usage?
+
+
+#### TODO 7/7/2011:   Remove var, etc...  consider scoping work and 'for'?
+
+Parrot irc:
+
+xchat	New Network: irc.parrot.org/6667, channel #parrot
+
+Consider my own identifier: http://trac.parrot.org/parrot/wiki/NQP-rx%20Operator%20Precedence%20Parsing
+
+
+jay: there's a lot of nqp-rx code out there. if you're looking for samples, rosella, partcl (https://github.com/partcl/partcl-nqp) both have a lot of it.
+
+# Making a list:
+http://www.parrotblog.org/2008/03/episode-5-variable-declaration-and.html
+
+# For loop in NQP for runtimes I think:
+#for @array -> $item { ... }
+
+http://trac.parrot.org/parrot/wiki/
+
+# Nice overview, some small details dated.
+http://en.wikibooks.org/wiki/Parrot_Virtual_Machine/Parrot_Compiler_Tools
+
+
+# Adding a class:
+
+github.com/Whiteknight/parrot-linear-algebra
+github.com/Whiteknight/matrixy
+
+# Probably a good PIR example.
+https://github.com/Whiteknight/matrixy/blob/master/src/classes/matrix_row.pir
+
+# Probably an important list.
+http://en.wikibooks.org/wiki/Parrot_Virtual_Machine/VTABLE_List
+
+# Eventually useful, C markup for PMCs via macros, relevant for
+# customized PMC in the HLL
+http://en.wikibooks.org/wiki/Parrot_Virtual_Machine/Built-In_PMCs
+
+# List example?
+http://en.wikibooks.org/wiki/Parrot_Virtual_Machine/Classes_and_Objects
+
+# See ManagedStruct and UnmanagedStruct.   FixedFloatArray PMC (FFA)
+
+Might be issues with float != FLOATVAL?  double?  some option to Configure.pl?
+
+jay: Rosella is to Parrot what BOOST is to C++. Adds a lot of building blocks. You probably don't need it yet, but I suspect you will want it for various purposes eventually
+
+https://github.com/perl6/nqp/blob/master/t/nqp/28-subclass.t
+
+########################################################################
+
+# Parrot memory-mapped files?
+MappedByteArray: /home/jay/parrot-3.3.0/src/pmc/mappedbytearray.pmc
+
+ We have a type for mmap
+<plobsing> the system performance should be the same at the end of the day. I'm not an expert at kernel VM systems, but mmap and swap are handled fairly similarly.
+<whiteknight> MappedByteArray
+<jay> plobsing: could be, but in our tests there was quite a difference.  We also support Mac/WIndows/Linux and some Solaris, I think, via BOOST.  Not all swap behaves equally well.
+<whiteknight> that doesn't do floats, but I'm sure it could be subclassed or tweaked
+<jay> whiteknight: will I be able to grep it easily, or is there someplace I should look to find it's definition?
+<whiteknight> jay: if you have the parrot source repo, it's src/pmc/mappedbytearray.pmc
+<whiteknight> it's a simple type. Still young and marked "experimental". A real-world use case might help us to get it matured and improved
+<jay> I'll glance at it now...
+
+
+NQP and pir opcodes::::
+
+jay: exactly. It's the new op. NQP will automatically try to coerce arguments to the correct types, so it can't intelligently pick which op to use from all the variants
+<whiteknight> there are new__PS, new__PP, new__PPP, etc
+
+
+
+
+#####################
+# Some other testing:
+
+a <- 1
+
+foo <- function(a) {
+    print("ok ", a)
+    a <- 3
+    b <- 2
+}
+
+foo(a)
+print(a, b)
+
+print("Interesting scoping decision above.")
+print("Interesting issue if foo2 is changed to foo, below.")
+
+foo <- function(a) {
+    print("Inside function: ", a)
+    #return(-1)
+}
+
+foo(5)
+
+#return(0)
+
+#b <- foo(7)
+#print(foo(8))
+
+#b <- return(3)
+#print(b)
+
+

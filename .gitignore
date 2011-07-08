@@ -1,0 +1,5 @@
+/nqr
+*.c
+*.o
+*.pbc
+src/gen*.pir
