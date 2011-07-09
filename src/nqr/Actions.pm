@@ -96,6 +96,36 @@ method statement:sym<myfor>($/) {
     our $?BLOCK;
     our @?BLOCK;
 
+    my $body := PAST::Block.new( :blocktype('immediate'),
+                                 :node($/) );
+    $?BLOCK := $body;
+    @?BLOCK.unshift($?BLOCK);
+
+    my $iter := $<identifier>.ast;
+    $iter.isdecl(1);
+    $iter.scope('parameter');
+    $body.symbol($iter.name(), :scope('lexical'));
+    $body.push($iter);
+
+    for $<statement> {
+        $body.push($_.ast);
+    }
+
+    @?BLOCK.shift();
+    $?BLOCK  := @?BLOCK[0];
+
+    my $set := $<EXPR>.ast;
+    my $loop := PAST::Op.new( $set, $body, :pasttype('for'), :node($/) );
+
+    make PAST::Stmts.new( $loop, :node($/) );
+}
+
+
+
+method statement:sym<myfor2>($/) {
+    our $?BLOCK;
+    our @?BLOCK;
+
     $?BLOCK := PAST::Block.new( :blocktype('immediate'),
                                 :node($/) );
     @?BLOCK.unshift($?BLOCK);
@@ -103,21 +133,21 @@ method statement:sym<myfor>($/) {
     my $iter := $<identifier>.ast;
     $iter.isdecl(1);
     $iter.scope('parameter');
-    $iter.viviself(0);
+    $?BLOCK.symbol($iter.name(), :scope('lexical'));
 
-    $?BLOCK.symbol($iter.name(), :scope('parameter'));
+    for $<statement> {
+        $?BLOCK.push($_.ast);
+    }
+
+    ## Trying to figure out the parameters?  This causes fatal problems:
+    #my $param := PAST::Op.new( $iter.name(),
+    #                           :pirop('get_params'), :node($/) );
+    #$?BLOCK.push($param);
 
     my $body := @?BLOCK.shift();
     $?BLOCK  := @?BLOCK[0];
-    for $<statement> {
-        $body.push($_.ast);
-    }
 
     my $set := $<EXPR>.ast;
-
-    # Trying to figure out the parameters?  This causes fatal problems:
-    #my $param := PAST::Op.new( $iter, :pirop('get_params'), :node($/) );
-    #$body.push($param);
 
     my $loop := PAST::Op.new( $set, $body, :pasttype('for'), :node($/) );
 
@@ -174,7 +204,7 @@ method statement:sym<for>($/) {
         $body.push($_.ast);
     }
 
-    my $loop := PAST::Op.new( $iter, $body, :pasttype('for'), :node($/) );
+    #my $loop := PAST::Op.new( $iter, $body, :pasttype('for'), :node($/) );
 
     #my $step;
     #if $<step> {
@@ -185,13 +215,14 @@ method statement:sym<for>($/) {
     #else { ## default is increment by 1
     #    $step := PAST::Op.new( $iter, :pirop('inc'), :node($/) );
     #}
-    #$body.push($step);
+    my $step := PAST::Op.new( $iter, :pirop('inc'), :node($/) );
+    $body.push($step);
 
-    ## while loop iterator <= end-expression
-    #my $cond := PAST::Op.new( :pirop<isle__IPP>,
-    #                          $iter,
-    #                          $<EXPR>.ast );
-    #my $loop := PAST::Op.new( $cond, $body, :pasttype('while'), :node($/) );
+    # while loop iterator <= end-expression
+    my $cond := PAST::Op.new( :pirop<isle__IPP>,
+                              $iter,
+                              $<EXPR>.ast );
+    my $loop := PAST::Op.new( $cond, $body, :pasttype('while'), :node($/) );
 
     make PAST::Stmts.new( $init, $loop, :node($/) );
 }

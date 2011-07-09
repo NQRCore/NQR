@@ -221,4 +221,40 @@ foo(5)
 #b <- return(3)
 #print(b)
 
+# M0 approach, Jay talk about with Mike.
+http://www.modernperlbooks.com/mt/2011/07/less-magic-less-c-a-faster-parrot.html
+
+--------------------------------------------------
+
+xchat
+
+github.com, http://gitref.org/
+john.emerson@yale.edu (first car)
+
+Switch Context
+
+git://github.com/NQRCore/NQR.git
+
+# Download a fresh copy
+git clone git://github.com/NQRCore/NQR.git
+
+# Add, check status, diff, and commit:
+git add
+git status -s
+git commit -a                          # more forceful
+git commit -m 'my commit message'
+
+git rm                                 # will actually delete
+git rm --cached                        # unstage but keep the file
+
+# Updating from github (once it is collaborative)... branches???
+
+git remote -v
+
+# Will pull/push with merging:
+git pull git@github.com:NQRCore/NQR.git master
+git push git@github.com:NQRCore/NQR.git master
+
+
+
 

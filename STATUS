@@ -1,5 +1,23 @@
 2011-7-8:
 
+A little "todo" list for Jay in the next week or two:
+
+- NCI example(s), at least generating random normals by using
+the R libraries, and possibly something from the Parrot world,
+like providing R-syntax regular expressions?
+
+- Look into the mmap
+
+- The possibility of a graphics kludge via d3 and javascript?
+
+- Try to fix up the 'for' loop properly.
+
+- Move up to 3.6.0 and try to get proper inheritance working.
+
+
+
+2011-7-8:
+
 Creating the github repository.  At this point, the hack of
 the squaak language still has some squaakish characteristics.
 

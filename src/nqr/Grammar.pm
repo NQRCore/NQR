@@ -70,15 +70,22 @@ rule statement:sym<myfor> {
     '}'
 }
 
+rule statement:sym<myfor2> {
+    <sym> '(' <identifier> 'in' <EXPR> ')' '{'
+        <statement>*
+    '}'
+}
+
 ###################################################################
-# JAY: again, the action isn't quite right for this attempt either:
+# JAY: minor modification of original syntax:
+
 rule statement:sym<for> {
-    <sym> <for_init>
+    <sym> <for_init> <EXPR> ')'
     '{' <statement>* '}'
 }
 
 rule for_init {
-    '(' <identifier> 'in' <EXPR> ')'
+    '(' <identifier> 'from' <EXPR> 'to'
 }
 
 ############################## end of 'for' attempts
