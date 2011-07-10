@@ -231,8 +231,6 @@ xchat
 github.com, http://gitref.org/
 john.emerson@yale.edu (first car)
 
-Switch Context
-
 git://github.com/NQRCore/NQR.git
 
 # Download a fresh copy
@@ -246,6 +244,13 @@ git commit -m 'my commit message'
 
 git rm                                 # will actually delete
 git rm --cached                        # unstage but keep the file
+
+### I set github as the "origin", so locally I now do
+
+git push
+git pull
+
+
 
 # Updating from github (once it is collaborative)... branches???
 
