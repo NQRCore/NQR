@@ -10,6 +10,21 @@
 
 
 
+sub myrexp($arg) {
+  my $ans;
+  my libRmath := pir::loadlib("libRmath");
+  my rexp := pir::dlfunc(libRmath, "rexp", "dd");
+  $ans := 0;
+  return $ans;
+}
+
+
+  #my libRmath := pir::loadlib("libRmath");
+  #my rexp := pir::dlfunc(libRmath, "rexp", "dd");
+  #my ans := 0;
+
+
+
 
 
 
