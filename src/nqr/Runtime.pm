@@ -127,3 +127,44 @@ sub test() {
     print(str($a));
 }
 
+############################################
+# NCI starting point:
+
+sub setseed(*@args) {
+    return Q:PIR {
+        $P0 = find_lex '@args'
+        .local int arg1, arg2
+        arg1 = $P0[0]
+        arg1 = $P0[1]
+
+        .local pmc libRmath, setseed
+        libRmath = loadlib "libRmath"
+        if libRmath goto HAVELIBRARY
+        die "Could not load the library"
+      HAVELIBRARY:
+        setseed = dlfunc libRmath, "set_seed", "vii"
+        setseed(arg1, arg2)
+        #print "Seeds have been set.\n"
+        #%r = box 1
+    };
+}
+
+sub rexp(*@args) {
+    return Q:PIR {
+        $P0 = find_lex '@args'
+        .local num arg1
+        arg1 = $P0[0]
+        .local pmc libRmath
+        .local pmc rexp
+        .local num ans
+        libRmath = loadlib "libRmath"
+        rexp = dlfunc libRmath, "rexp", "dd"
+        ans = rexp(arg1)
+        #print "Your exponential: "
+        #print ans
+        #print "\n"
+        %r = box ans
+    };
+} 
+
+

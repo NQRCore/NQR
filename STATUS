@@ -1,3 +1,26 @@
+---------
+2011-7-9:
+
+NCI success:
+
+In R's source tree, src/nmath/standalone,
+    make
+    make install
+This creates /usr/local/lib64/libRmath.so and we may need
+to add to LD_LIBRARY_PATH for this to work (and I did it).
+Now in C/C++, we would need (but don't need to worry in Parrot):
+     #define MATHLIB_STANDALONE
+     #include <Rmath.h>
+and the linking flag -lRmath.
+
+GOOD NEWS: It worked!  My first real independent success.
+Also, bubaflub pointed to his GSOC project that would be
+worth looking at:
+    http://www.parrot.org/content/introducing-parrot-gmp
+    http://github.com/bubaflub/parrot-gmp
+
+
+---------
 2011-7-8:
 
 A little "todo" list for Jay in the next week or two:
@@ -15,7 +38,7 @@ like providing R-syntax regular expressions?
 - Move up to 3.6.0 and try to get proper inheritance working.
 
 
-
+---------
 2011-7-8:
 
 Creating the github repository.  At this point, the hack of
