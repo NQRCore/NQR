@@ -267,3 +267,42 @@ sub rep(*@args) {
 
 
 
+Important stuff: function calls, nci
+
+$ nm libparrot.so|grep dlfunc
+0000000000140400 t _Z21Parrot_dlfunc_p_p_s_pPlP15parrot_interp_t
+000000000013f610 t _Z21Parrot_dlfunc_p_p_s_sPlP15parrot_interp_t
+000000000013fd00 t _Z22Parrot_dlfunc_p_p_s_scPlP15parrot_interp_t
+0000000000140770 t _Z22Parrot_dlfunc_p_p_sc_pPlP15parrot_interp_t
+000000000013f980 t _Z22Parrot_dlfunc_p_p_sc_sPlP15parrot_interp_t
+0000000000140080 t _Z23Parrot_dlfunc_p_p_sc_scPlP15parrot_interp_t
+
+
+
+ jay: have a look at this: https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.pir
+<dukeleto> jay: that is actually generated code, from the tools/dev/ncidef2pir.pl tool
+<soh_cah_toa> i thought the syntax in nqp was pir::foo__PPPS()?
+<soh_cah_toa> or maybe i'm thinking of something else
+<dukeleto> jay: yes, it is a double underscore
+<jay> soh_cah_toa++   !   Compiled.
+<soh_cah_toa> first one is return type, the rest are args
+<soh_cah_toa> yay me
+<dukeleto> jay: and args+function return are mostly lowercase. 
+<soh_cah_toa> actually, i don't know the difference between the uppercase/lowercase variants
+<jay> I used upper here.  Is lower preferred?
+<dukeleto> jay: they mean slightly different things
+* jsut has quit (Ping timeout: 360 seconds)
+<dukeleto> jay: which I can't remember, nor where they are documented :(
+<dukeleto> jay: parrots function signatures are documented a bit in docs/embed.pod
+* fperrad (~chatzilla@AToulon-552-1-66-107.w90-37.abo.wanadoo.fr) has joined #parrot
+* slavorg gives channel operator status to fperrad
+<soh_cah_toa> yes, that's where it is
+<soh_cah_toa> also docs/embed_new.pod
+<dukeleto> jay: this https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.nci is a file which describes external library functions arguments and return values, and then a script generates the PIR I showed you above
+<cotto> dukeleto, https://github.com/parrot/parrot/blob/master/compilers/pct/src/PAST/Compiler.pir
+<dukeleto> jay: if you have dozens or hundres of functions, it really shines
+<bubaflub> dukeleto: amen.
+
+
+
+

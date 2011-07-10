@@ -134,10 +134,15 @@ sub test() {
 #sub myrexp($arg) {
 #  my $ans;
 #  my $libRmath := pir::loadlib("libRmath");
-#  #my $rexp := pir::dlfunc(libRmath, "rexp", "dd");
+#  my $rexp := pir::dlfunc__PPSP($libRmath, "rexp", "dd");
+#  $ans := pir::rexp($arg);
 #  return $ans;
 #}
-
+# SEE notes in SCRATCH...
+#https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.nci
+#https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.pir
+# set_global ['Git'], 'git_treebuilder_get', nci
+#jay: and then it can be accessed through that key in that namespace, here, #Git::git_treebuilder_get
 
 sub setseed(*@args) {
   return Q:PIR {
