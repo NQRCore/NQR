@@ -304,5 +304,49 @@ $ nm libparrot.so|grep dlfunc
 <bubaflub> dukeleto: amen.
 
 
+# bubaflub
+ Suppose I have a lot of dlfuncs all coming from the same library... can I do a loadlib once and put the resulting library "handle" or whatever it is into a global?
+<bubaflub> jay: https://github.com/bubaflub/parrot-gmp/blob/master/src/GMP/raw.pir
+<jay> bubaflub++  Same link as last night but I was looking at something else there I think.  Thanks!
+<bubaflub> jay: ok.  this is in PIR and is generated from a script in parrot under tools/dev/ncidef2pir.pl
+<bubaflub> jay: i have a NCI definition file (https://github.com/bubaflub/parrot-gmp/blob/master/src/GMP/raw.nci) and the script outputs the PIR.  pretty simple but saves me some time
+
+jay: that's exactly what my project is doing - i've got a script that reads gmp.h and generates the NCI definition.  from there we've got a script in parrot that goes from NCI def -> PIR.
+<bubaflub> jay: each header file is slightly different and GMP had a bunch of #define's i had to work around, but you could probably take my script and modify it to work with GSL
+
+
+ what you really need is an NCI thunk to provide the Parrot/C interface for the call you are trying to make
+<plobsing> you can do that by compiling Parrot with libffi, providing a dynamic thunk library, or rebuilding parrot with additional core thunks.
+
+jay: basically, not every possible combination of signatures is currently covered.  either generate a thunk (using parrot_nci_thunk_gen) or use libffi.
+
+jay: in other news, GSL also has the same documentation format (textinfo) so there is a change that the scripts i use for GMP will work with minimal convers
+
+
+https://github.com/bubaflub/parrot-gmp/blob/master/src/GMP/raw.pir
+
+
+plobsing: while you're here - is there an example of somewhere that uses parrot_nci_thunk_gen and loads in those libraries?
+<bubaflub> s/libraries/thunks/g
+
+and see opengl bindings?
+so you'll likely want to look at runtime/parrot/library/OpenGL.pir, and sections of Parrot's makefile concerning 'glut_nci_thunks'
+
+plobsing: ok, i think i get it.  i give it a slightly different NCI definition file, use nci_thunk_gen with --loader-name and generate the C.  compile the C into a library, and then load that library and call whatever function name i specified in --loader-name.
+
+bubaflub: IIRC, there is some magic so that if you do not provide a --loader-name, it picks a special name for the loader and you don't have to call it (parrot calls it automatically as part of the library load)
+plobsing: ok.  so maybe just the --dynext param needed then?
+
+
+
+
+
+
+
+
+
+
+
+
 
 

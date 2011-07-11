@@ -161,7 +161,7 @@ sub setseed(*@args) {
   };
 }
 
-sub rexp(*@args) {
+sub rexpworks(*@args) {
   return Q:PIR {
     $P0 = find_lex '@args'
     .local num arg1
@@ -175,6 +175,20 @@ sub rexp(*@args) {
   };
 }
 
-
+sub rexp(*@args) {
+    return Q:PIR {
+        .local num arg, ans
+        $P0 = find_lex '@args'
+        arg = $P0[0]
+        .local pmc libRmath, rexp
+        libRmath = loadlib 'libRmath'
+        if libRmath goto HAVELIBRARY
+        say 'Could not load the libRmath library'
+      HAVELIBRARY:
+        rexp = dlfunc libRmath, 'rexp', 'dd'
+        ans = rexp(arg)
+        %r = box ans
+    };
+}
 
 
