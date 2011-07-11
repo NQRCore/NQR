@@ -1,0 +1,15 @@
+NQRCore is a github organization created to house two project
+for the Parrot Virtual Machine: NQR and GSL.
+
+NQR stands for 'Not Quite R': see www.r-project.org for information
+on the R Project.  The initial goals are modest: implement a basic HLL
+covering core R (S language) syntax.  Longer-term goals depend on
+the initial outcomes, time limitations, and interest from potential
+contributors.
+
+GSL refers to the GNU Scientific Library.  The goal is to provide
+low-level bindings to the GLS library.  This can then be used by
+NQR (and other HLLs interested in GSL).
+
+For more information please email Jay (john.emerson@yale.edu or
+jayemerson@gmail.com).
