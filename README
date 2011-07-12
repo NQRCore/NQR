@@ -24,6 +24,9 @@ NQR requires Parrot (see http://www.parrot.org/).  If you can
 build Parrot, you should be fine building NQR (which currently
 uses Parrot 3.3.0 as of July 8, 2011).
 
+There are additional requirements that are appearing: libRmath.so
+from the R project, at the moment.  See comment in F<STATUS>.
+
 To obtain NQR directly from its repository:
 
     $ git clone git://github.com/NQRCore/NQR.git
