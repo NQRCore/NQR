@@ -8,8 +8,6 @@
 # works at some level (even if imperfectly).
 
 
-
-
 sub myrexp($arg) {
   my $ans;
   my libRmath := pir::loadlib("libRmath");
@@ -22,9 +20,6 @@ sub myrexp($arg) {
   #my libRmath := pir::loadlib("libRmath");
   #my rexp := pir::dlfunc(libRmath, "rexp", "dd");
   #my ans := 0;
-
-
-
 
 
 
@@ -263,90 +258,6 @@ sub rep(*@args) {
   }
   pir::return(@ans);
 }
-
-
-
-
-Important stuff: function calls, nci
-
-$ nm libparrot.so|grep dlfunc
-0000000000140400 t _Z21Parrot_dlfunc_p_p_s_pPlP15parrot_interp_t
-000000000013f610 t _Z21Parrot_dlfunc_p_p_s_sPlP15parrot_interp_t
-000000000013fd00 t _Z22Parrot_dlfunc_p_p_s_scPlP15parrot_interp_t
-0000000000140770 t _Z22Parrot_dlfunc_p_p_sc_pPlP15parrot_interp_t
-000000000013f980 t _Z22Parrot_dlfunc_p_p_sc_sPlP15parrot_interp_t
-0000000000140080 t _Z23Parrot_dlfunc_p_p_sc_scPlP15parrot_interp_t
-
-
-
- jay: have a look at this: https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.pir
-<dukeleto> jay: that is actually generated code, from the tools/dev/ncidef2pir.pl tool
-<soh_cah_toa> i thought the syntax in nqp was pir::foo__PPPS()?
-<soh_cah_toa> or maybe i'm thinking of something else
-<dukeleto> jay: yes, it is a double underscore
-<jay> soh_cah_toa++   !   Compiled.
-<soh_cah_toa> first one is return type, the rest are args
-<soh_cah_toa> yay me
-<dukeleto> jay: and args+function return are mostly lowercase. 
-<soh_cah_toa> actually, i don't know the difference between the uppercase/lowercase variants
-<jay> I used upper here.  Is lower preferred?
-<dukeleto> jay: they mean slightly different things
-* jsut has quit (Ping timeout: 360 seconds)
-<dukeleto> jay: which I can't remember, nor where they are documented :(
-<dukeleto> jay: parrots function signatures are documented a bit in docs/embed.pod
-* fperrad (~chatzilla@AToulon-552-1-66-107.w90-37.abo.wanadoo.fr) has joined #parrot
-* slavorg gives channel operator status to fperrad
-<soh_cah_toa> yes, that's where it is
-<soh_cah_toa> also docs/embed_new.pod
-<dukeleto> jay: this https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.nci is a file which describes external library functions arguments and return values, and then a script generates the PIR I showed you above
-<cotto> dukeleto, https://github.com/parrot/parrot/blob/master/compilers/pct/src/PAST/Compiler.pir
-<dukeleto> jay: if you have dozens or hundres of functions, it really shines
-<bubaflub> dukeleto: amen.
-
-
-# bubaflub
- Suppose I have a lot of dlfuncs all coming from the same library... can I do a loadlib once and put the resulting library "handle" or whatever it is into a global?
-<bubaflub> jay: https://github.com/bubaflub/parrot-gmp/blob/master/src/GMP/raw.pir
-<jay> bubaflub++  Same link as last night but I was looking at something else there I think.  Thanks!
-<bubaflub> jay: ok.  this is in PIR and is generated from a script in parrot under tools/dev/ncidef2pir.pl
-<bubaflub> jay: i have a NCI definition file (https://github.com/bubaflub/parrot-gmp/blob/master/src/GMP/raw.nci) and the script outputs the PIR.  pretty simple but saves me some time
-
-jay: that's exactly what my project is doing - i've got a script that reads gmp.h and generates the NCI definition.  from there we've got a script in parrot that goes from NCI def -> PIR.
-<bubaflub> jay: each header file is slightly different and GMP had a bunch of #define's i had to work around, but you could probably take my script and modify it to work with GSL
-
-
- what you really need is an NCI thunk to provide the Parrot/C interface for the call you are trying to make
-<plobsing> you can do that by compiling Parrot with libffi, providing a dynamic thunk library, or rebuilding parrot with additional core thunks.
-
-jay: basically, not every possible combination of signatures is currently covered.  either generate a thunk (using parrot_nci_thunk_gen) or use libffi.
-
-jay: in other news, GSL also has the same documentation format (textinfo) so there is a change that the scripts i use for GMP will work with minimal convers
-
-
-https://github.com/bubaflub/parrot-gmp/blob/master/src/GMP/raw.pir
-
-
-plobsing: while you're here - is there an example of somewhere that uses parrot_nci_thunk_gen and loads in those libraries?
-<bubaflub> s/libraries/thunks/g
-
-and see opengl bindings?
-so you'll likely want to look at runtime/parrot/library/OpenGL.pir, and sections of Parrot's makefile concerning 'glut_nci_thunks'
-
-plobsing: ok, i think i get it.  i give it a slightly different NCI definition file, use nci_thunk_gen with --loader-name and generate the C.  compile the C into a library, and then load that library and call whatever function name i specified in --loader-name.
-
-bubaflub: IIRC, there is some magic so that if you do not provide a --loader-name, it picks a special name for the loader and you don't have to call it (parrot calls it automatically as part of the library load)
-plobsing: ok.  so maybe just the --dynext param needed then?
-
-
-
-
-
-
-
-
-
-
-
 
 
 
