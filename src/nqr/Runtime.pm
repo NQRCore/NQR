@@ -195,21 +195,23 @@ sub dnorm(*@args) {
     return Q:PIR {
         .local num ans
         .local pmc gsl_ran_gaussian_pdf
-        gsl_ran_gaussian_pdf = get_global 'gsl_ran_gaussian_pdf'
+        gsl_ran_gaussian_pdf = get_global ['GSL'], 'gsl_ran_gaussian_pdf'
         ans = gsl_ran_gaussian_pdf(0.5, 1.0)
         %r = box ans
     };
 }
 
-sub dnorm2(*@args) {
-  return Q:PIR {
-    .local pmc libgsl, gsl_ran_gaussian_pdf
-    .local num ans
-    libgsl = loadlib "libgsl"
-    gsl_ran_gaussian_pdf = dlfunc libgsl, "gsl_ran_gaussian_pdf", "ddd"
-    ans = gsl_ran_gaussian_pdf(0.5, 1.0)
-    %r = box ans
-  };
+sub mean(*@args) {
+    return Q:PIR {
+        .local num ans
+        .local pmc gsl_stats_mean
+        $P0 = new ["FixedFloatArray"], 2
+        $P0[0] = 2.71828
+        $P0[1] = 3.14159
+        gsl_stats_mean = get_global ['GSL'], 'gsl_stats_mean'
+        ans = gsl_stats_mean($P0, 1, 2)
+        %r = box ans
+    };
 }
 
 
