@@ -38,11 +38,11 @@ object.
     imports = split ' ', 'PAST PCT HLL Regex Hash'
     parrotns.'export_to'(hllns, imports)
 
-  # ATTEMPTED LIBRARY LOADING UP FRONT?
-  .local pmc lib, nci
-  loadlib lib, 'libgsl'
-  dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
-  set_global 'gsl_ran_gaussian_pdf', nci
+    # Load a subset of GSL functions:
+    .local pmc lib, nci
+    loadlib lib, 'libgsl'
+    dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
+    set_global 'gsl_ran_gaussian_pdf', nci
 
 .end
 
