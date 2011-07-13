@@ -90,8 +90,7 @@ method statement:sym<assignment>($/) {
 
 ############ begin working on 'for' actions...
 
-# A different attempt in one method:
-
+# A different attempt in one method, very close to matrixy:
 method statement:sym<myfor>($/) {
     our $?BLOCK;
     our @?BLOCK;
