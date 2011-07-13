@@ -1,6 +1,6 @@
 =head1 NQR - Not Quite R
 
-NQR is Copyright (C) 2011 by John Emerson and Michael Kane.
+NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
 See F<LICENSE> for licensing details.
 
 This is repository NQR in github organization NQRCore,
@@ -21,8 +21,9 @@ Mike Kane (michael.kane@yale.edu)
 = head2 Building from source
 
 NQR requires Parrot (see http://www.parrot.org/).  If you can
-build Parrot, you should be fine building NQR (which currently
-uses Parrot 3.3.0 as of July 8, 2011).
+build Parrot, you should be fine building NQR (which used
+Parrot 3.3.0 as of July 8, 2011, and apparently still passes
+tests on the almost-3.6.0 version).
 
 There are additional requirements that are appearing: libRmath.so
 from the R project, at the moment.  See comment in F<STATUS>.
