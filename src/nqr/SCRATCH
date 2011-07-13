@@ -261,3 +261,20 @@ sub rep(*@args) {
 
 
 
+# $P0(arg1, arg2) is ok.
+#
+#.local pmc the_sub
+#<bubaflub> the_sub = get_global "_sub";
+#
+#<bubaflub> the_sub(10,20)
+#<bubaflub> .end
+#see
+#
+#t/compilers/imcc/syn/pcc.t
+
+
+
+
+
+
+
