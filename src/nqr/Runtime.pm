@@ -195,7 +195,7 @@ sub dnorm(*@args) {
     return Q:PIR {
         .local num ans
         .local pmc gsl_ran_gaussian_pdf
-        gsl_ran_gaussian_pdf = get_global ["GSL"], 'gsl_ran_gaussian_pdf'
+        gsl_ran_gaussian_pdf = get_global 'gsl_ran_gaussian_pdf'
         ans = gsl_ran_gaussian_pdf(0.5, 1.0)
         %r = box ans
     };

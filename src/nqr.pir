@@ -40,9 +40,9 @@ object.
 
   # ATTEMPTED LIBRARY LOADING UP FRONT?
   .local pmc lib, nci
-  loadlib lib, 'libgsl.so'
+  loadlib lib, 'libgsl'
   dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
-  set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
+  set_global 'gsl_ran_gaussian_pdf', nci
 
 .end
 
