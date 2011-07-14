@@ -223,6 +223,11 @@ sub meanPIR(*@args) {
     };
 }
 
+# Try these:
+# my $x := 'foo'; pir::upcase($x)
+# pir::new("FixedFloatArray");  pir::set__Pi(2)
+# my $vec := pir::new__psi("FixedFloatArray", 2);
+
 # Ok, try the same thing in NQP.  Then consider Winxed.
 sub meantest(*@args) {
     # This works, but is Resizable:

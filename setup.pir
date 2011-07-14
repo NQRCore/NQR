@@ -48,6 +48,10 @@ No Configure step, no Makefile generated.
     $P4['src/gen_runtime.pir'] = 'src/nqr/Runtime.pm'
     $P0['pir_nqp-rx'] = $P4
 
+    $P8 = new 'Hash'
+    $P8['src/gen_runtimewinxed.pir'] = 'src/nqr/Runtime.winxed'
+    $P0['pir_winxed'] = $P8
+
     $P5 = new 'Hash'
     $P6 = split "\n", <<'SOURCES'
 src/nqr.pir
@@ -56,6 +60,7 @@ src/gen_compiler.pir
 src/gen_grammar.pir
 src/gen_classes.pir
 src/gen_runtime.pir
+src/gen_runtime2.pir
 SOURCES
     $S0 = pop $P6
     $P5['nqr/nqr.pbc'] = $P6

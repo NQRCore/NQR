@@ -1,0 +1,13 @@
+# This is the winxed runtime library
+
+# From NotFound:
+# winxed -c -o - -e 'some winxed code'
+
+function meanw () {
+    using GSL.gsl_stats_mean;
+    float foo[];
+    foo[0] = 1.234;
+    foo[1] = 5.678;
+    return gsl_stats_mean(foo, 1, 2);
+}
+
