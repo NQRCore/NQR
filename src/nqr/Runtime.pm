@@ -223,18 +223,23 @@ sub meanPIR(*@args) {
     };
 }
 
-# Try these:
+# Don't understand this one;
 # my $x := 'foo'; pir::upcase($x)
-# pir::new("FixedFloatArray");  pir::set__Pi(2)
-# my $vec := pir::new__psi("FixedFloatArray", 2);
 
 # Ok, try the same thing in NQP.  Then consider Winxed.
-sub meantest(*@args) {
+sub sillytest(*@args) {
     # This works, but is Resizable:
     #my $vec := pir::new("ResizableFloatArray");
 
     # This works, but... argh.
     my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
+
+    # Does not work:
+    #my $vec := pir::new__psi("FixedFloatArray", 2);
+
+    # Sees to work, but seems kind of mysterious:
+    #my $vec := pir::new("FixedFloatArray");
+    #$vec := pir::set__Pi(2);
 
     #my $vec := pir::new("FixedFloatArray", 2);
     # Using Fixed... rather than Resizable... generates:
