@@ -1,0 +1,15 @@
+I'll try to keep this file VERY up-to-date with "gotcha's"
+that I could use help on.
+
+1. https://gist.github.com/1081713
+
+  The problem: I can create FixedFloatArray in pir, but can't
+  figure out how to to it in NQP.  In contrast, I can do it
+  for ResizableFloatArray in NQP, so I can't be far off.
+
+2. In src/nqr/Actions.pm I'm having trouble with my for loop;
+  see the Grammar.pm file for obvious definitions.  The
+  attempt called 'myfor' is almost identical to what Whiteknight
+  used in his matrixy project.  I just can't figure it out; the
+  body of the loop isn't accessing the parameter.  If you are
+  interested, I can provide a simple example.

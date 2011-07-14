@@ -214,6 +214,18 @@ sub mean(*@args) {
     };
 }
 
+# Ok, try the same thing in NQP.  Then consider Winxed.
+sub mean2(*@args) {
+    my $vec := pir::new("ResizableFloatArray");
+    #my $vec := pir::new("FixedFloatArray", 2);
+    # Using Fixed... rather than Resizable... generates:
+    #   "init_pmc() not implemented in class 'FixedFloatArray'
+
+    $vec[0] := 1.234;
+    $vec[1] := 5.678;
+    return $vec[0] + $vec[1];
+}
+
 
 
 
