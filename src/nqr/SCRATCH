@@ -2,7 +2,7 @@
 # Copyright (C) 2011, Michael Kane and John Emerson.
 
 # This is just a scratch file for various notes and working
-# code that we didn't place in Runtime.pm at this point.
+# code that we didn't place in Runtime.pm or Runtime.winxed.
 # However, just because something is in Runtime.pm doesn't
 # necessarily mean we're happy with it!  But it probably
 # works at some level (even if imperfectly).

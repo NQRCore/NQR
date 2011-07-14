@@ -1,6 +1,10 @@
-# This is the winxed runtime library
+# Copyright (C) 2010, Parrot Foundation.
+# Copyright (C) 2011, Michael Kane and John Emerson.
 
-# From NotFound:
+# This is the winxed runtime library, an alternative to
+# writing in NQP as is done by squaak.
+
+# From NotFound re: seeing the PIR for some winxed code.
 # winxed -c -o - -e 'some winxed code'
 
 function meanw () {

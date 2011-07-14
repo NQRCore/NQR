@@ -226,7 +226,6 @@ sub meanPIR(*@args) {
 # Don't understand this one;
 # my $x := 'foo'; pir::upcase($x)
 
-# Ok, try the same thing in NQP.  Then consider Winxed.
 sub sillytest(*@args) {
     # This works, but is Resizable:
     #my $vec := pir::new("ResizableFloatArray");

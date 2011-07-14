@@ -1,4 +1,10 @@
 ----------
+2011-7-14:
+
+Some progress on using GSL from PIR and NQR, putting the
+GSL project on temporary hold; see that GSL STATUS file.
+
+----------
 2011-7-12:
 
 Working on the GSL material, which will pay off here fairly
