@@ -202,6 +202,15 @@ sub dnorm(*@args) {
 }
 
 sub mean(*@args) {
+    my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
+    $vec[0] := 1.234;
+    $vec[1] := 5.678;
+    my $gsl_stats_mean :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_mean' };
+    return $gsl_stats_mean($vec, 1, 2);
+}
+
+sub meanPIR(*@args) {
     return Q:PIR {
         .local num ans
         .local pmc gsl_stats_mean
@@ -215,8 +224,13 @@ sub mean(*@args) {
 }
 
 # Ok, try the same thing in NQP.  Then consider Winxed.
-sub mean2(*@args) {
-    my $vec := pir::new("ResizableFloatArray");
+sub meantest(*@args) {
+    # This works, but is Resizable:
+    #my $vec := pir::new("ResizableFloatArray");
+
+    # This works, but... argh.
+    my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
+
     #my $vec := pir::new("FixedFloatArray", 2);
     # Using Fixed... rather than Resizable... generates:
     #   "init_pmc() not implemented in class 'FixedFloatArray'
