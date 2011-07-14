@@ -6,6 +6,7 @@ that I could use help on.
   The problem: I can create FixedFloatArray in pir, but can't
   figure out how to to it in NQP.  In contrast, I can do it
   for ResizableFloatArray in NQP, so I can't be far off.
+  Seems like Q:PIR has more abilities than pir::.
 
 2. In src/nqr/Actions.pm I'm having trouble with my for loop;
   see the Grammar.pm file for obvious definitions.  The
