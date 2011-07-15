@@ -14,39 +14,46 @@
 # Attempts to get the 'is' inheritance working
 #INIT { 
 #    pir::load_bytecode('P6object.pbc');
-#    pir::get_hll_global__PS("P6metaclass").register("ResizablePMCArray");
+#    pir::get_hll_global__PS("P6metaclass").register("FixedFloatArray");
 #}
 
 # Alternative is 'delegating'
-class vector {
-    has $!array;
-    method foo() {
-        say('Hello from vector');
-    }
-    method init() is pirflags<:vtable("init")> {
-        $!array := pir::new__PS("ResizablePMCArray");
-    }
-}
+#class vector {
+#    has $!array;
+#    method foo() {
+#        say('Hello from vector');
+#    }
+#    method init() is pirflags<:vtable("init")> {
+#        $!array := pir::new__PS("ResizablePMCArray");
+#    }
+#}
+
+#class vector is FixedFloatArray;
+#INIT {
+#  class vector is Integer {
+#
+#  }
+#}
 
 #####################################################################
 # Delete once we have other stable examples up and running.
 # See also classtest() in Runtime.pm and t/nqr.t
 
-class ABC {
-    method foo() {
-        say('ok 7');
-    }
+#class ABC {
+#    method foo() {
+#        say('ok 7');
+#    }
 
-    method bar() {
-        say('ok 9');
-    }
-}
+#    method bar() {
+#        say('ok 9');
+#    }
+#}
 
-class XYZ is ABC {
-    method foo() {
-        say('ok 8');
-    }
-}
+#class XYZ is ABC {
+#    method foo() {
+#        say('ok 8');
+#    }
+#}
 
 
 

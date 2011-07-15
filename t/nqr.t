@@ -1,4 +1,4 @@
-say("1..9")
+say("1..6")
 
 a <- 1
 
@@ -29,4 +29,4 @@ print(c("ok", e[1]))
 
 # The following should vanish or go someplace else, but I leave it for now.
 
-classtest()
+#classtest()

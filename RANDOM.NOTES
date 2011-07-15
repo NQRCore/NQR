@@ -266,6 +266,57 @@ Adversing the project:
 On each github repo, go to: Admin -> Service Hooks -> Post-receive URLS : then add http://host04.appflux.net:5000/dalek?t=magnet,parrot
 
 
+jay: also, whiteknight++ has something called parrot-data-structures which implements lots more kinds of datastructures.
+
+https://github.com/whiteknight/parrot-data-structures
+
+Are the literal types (Integer, String, Float) technically classes?  I'm guessing maybe not.
+<sorear> How do you mean?
+<jay> So I could create a class 'integer' containing an Integer, and then something else could inherit from class 'integer'... just guessing.
+<sorear> We have classes named Integer, String, and Float
+<sorear> it's also possible to create native registers of those types, which are *not* classes
+<jay> Or can I do  'Boolean is Integer', where Boolean is my new type, inheriting from Integer?
+<cotto_work> You could if we didn't already have one.
+<sorear> jay: what language are you using?
+<sorear> I think it needs to be Boolean extends Integer for pmc2c
+<jay> Writing an HLL.  I see PIR docs on classes and subclasses.  Are there docs for NQP-rx or Winxed on this stuff?  Or good example code to look at?  I didn't see subclass material in bubaflub's stuff.
+<sorear> you need to know that Parrot has two largely independant class/object systems
+<jay> Uh oh
+<sorear> the primitive classes are called pmclasses, they include Integer, String, Float, etc
+<sorear> there are 2 special pmclasses, Class and Object, which implement a *second* object system
+<sorear> most HLLs work only with instances of Object
+<sorear> pmclasses can only be created using C code with the pmc2c preprocessor; PIR generates Class instances
+<sorear> there's special magic to allow Classes to inherit from pmclasses, but it's slow and semantically horrible
+* benabik 's git-fu is weak today.
+<sorear> NQP contains a third object system, based on the SixModelObject pmclass
+
+
+
+
+
+
+Resizable*Array inherits from Fixed*Array, inherits from default PMC.
+
+
+# Vectors
+vector of literals, Fixed*Array, where Boolean is FixedIntegerArray
+
+# Extended literal: will be a sub
+Boolean
+
+# Basic literals (scalars); don't really exist in R, where everything
+# is called a vector and treated as a vector.
+Integer
+Float
+String
+
+
+# Different approach: what do I fundamentally want to be using?
+
+Make almost everything a Fixed*Array, although literals will
+still exist?
+
+
 
 
 

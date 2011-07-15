@@ -1,17 +1,33 @@
 # Copyright (C) 2010, Parrot Foundation.
 # Copyright (C) 2011, Michael Kane and John Emerson.
 
+# http://whiteknight.github.com/Rosella/winxed/index.html
+
+# And the classes available are the PMC and classes that core
+# parrot and its libraries provide.
+
 # This is the winxed runtime library, an alternative to
 # writing in NQP as is done by squaak.
 
 # From NotFound re: seeing the PIR for some winxed code.
 # winxed -c -o - -e 'some winxed code'
 
+# NotFound: in winxed to inherit from a PMC you can do:
+
+class MyInteger : ['FixedFloatArray'] {  }
+#class MyInteger2 : ['Boolean'] {  }
+
 function meanw () {
     using GSL.gsl_stats_mean;
-    float foo[];
+    float foo[];               # Resizable
+                               # Fixed foo[10]
     foo[0] = 1.234;
     foo[1] = 5.678;
     return gsl_stats_mean(foo, 1, 2);
 }
+
+function rep () {
+
+}
+
 

@@ -140,6 +140,8 @@ proto rule postfix_expression { <...> }
 
 rule postfix_expression:sym<index> { '[' <EXPR> ']' }
 rule postfix_expression:sym<key> { '{' <EXPR> '}' }
+
+# JAY: probably want to get rid of this:
 rule postfix_expression:sym<member> { '.' <identifier> }
 
 token identifier {

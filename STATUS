@@ -1,8 +1,18 @@
 ----------
+2011-7-15:
+
+Cleaned up some runtime functions for the Fixed*Array
+design.  Wrote a blog showing state of progress.
+
+----------
 2011-7-14:
 
 Some progress on using GSL from PIR and NQR, putting the
 GSL project on temporary hold; see that GSL STATUS file.
+
+Started making everything a Fixed*Array.  Likely to make
+things much simpler, but of course will require some changes
+from many of the current runtime functions.
 
 ----------
 2011-7-12:

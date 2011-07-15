@@ -7,19 +7,37 @@
 {
     my sub array (*@args) { @args; }
     my sub hash (*%args) { %args; }
+    my sub intarray (*@args) {
+      my @ans := pir::new("ResizableIntegerArray");
+      for (@args) { @ans[@ans] := $_; }
+      @ans;
+    }
+    my sub floatarray (*@args) {
+      my @ans := pir::new("ResizableFloatArray");
+      for (@args) { @ans[@ans] := $_; }
+      @ans;
+    }
 
+
+    # Use of the ! in this way prevents NQR from being able
+    # to call these directly.
     Q:PIR {
         $P0 = find_lex 'array'
         set_global '!array', $P0
         $P0 = find_lex 'hash'
         set_global '!hash', $P0
+        $P0 = find_lex 'intarray'
+        set_global '!intarray', $P0
+        $P0 = find_lex 'floatarray'
+        set_global '!floatarray', $P0
     }
 }
 
 ######################################################################
 # say(): do not modify this!
 # The following was from Squaak, but I changed it to 'say' and
-# changed all the tests as a result:
+# changed all the tests as a result; should only be used internally
+# if at all.
 
 sub say(*@args) {
     pir::say(pir::join('', @args));
@@ -29,7 +47,7 @@ sub say(*@args) {
 ########################################
 # length()
 
-# A version from Andrew Whitworth:
+# Accepts an array, hash, or literal (incomplete checking)
 sub length($arg) {
    if (pir::does($arg, "array") || pir::does($arg, "hash")) {
        return pir::elements($arg);
@@ -41,13 +59,16 @@ sub length($arg) {
 # print() for the first argument only.  Maybe could also be done
 # with multiple dispatch, see SCRATCH.
 
+# Accepts an array, hash, or literal (incomplete checking)
+# Could be simplified if all my NQR objects are some *Array
+# objects, anyway?
 sub print(*@args) {
     my $len := length(@args);
     if ($len > 1) {
         say("Warning: only first argument is printed.");
     }
     my $arg := @args[0];
-    if pir::does($arg, "array") {
+    if (pir::does($arg, "array") || pir::does($arg, "hash")) {
         say(pir::join(' ', $arg));
     } else {
         say($arg);
@@ -58,37 +79,79 @@ sub print(*@args) {
 # seq(): using only NQP; there is a PIR version 
 # in SCRATCH.
 
+# Modified for Resizable(Float_or_Integer)Array
 sub seq(*@args) {
   my $from := @args[0];
   my $to := @args[1];
   my $by := @args[2];
-  my @ans;
-  while ($from<=$to) {
-    @ans[@ans] := $from;
-    $from := $from + $by;
+  my $type := pir::typeof($from[0]);
+  if ( (pir::typeof($from[0]) eq 'Integer') &&
+       (pir::typeof($by[0]) eq 'Integer') ) { 
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($from[0]<=$to[0]) {
+      @ans[@ans] := $from[0];
+      $from[0] := $from[0] + $by[0];
+    }
+    return @ans;
+  } else {
+    my @ans := pir::new("ResizableFloatArray");
+    while ($from[0]<=$to[0]) {
+      @ans[@ans] := $from[0];
+      $from[0] := $from[0] + $by[0];
+    }
+    return @ans;
   }
-  pir::return(@ans);
 }
 
 #######################################################
-# c(): should take either scalars or arrays
+# c():
 
+# Modified for Resizable(Float_or_Integer)Array
 sub c(*@args) {
-    my $len := length(args);
     my @ans;
+    my @arg;
     my @this;
+    my $type := 'Integer';
     for (@args) {
-        if pir::does($_, "array") {
+        @arg := $_;
+        if (pir::typeof(@arg[0]) eq 'Float') {
+            $type := 'Float';
+            break;
+        }
+    }
+    if ($type eq 'Integer') {
+        my @ans := pir::new("ResizableIntegerArray");
+        for (@args) {
             @this := $_;
             for (@this) {
                 @ans[@ans] := $_;
             }
-        } else {
-            @ans[@ans] := $_;
         }
+        return @ans;
+    } else {
+        my @ans := pir::new("ResizableFloatArray");
+        for (@args) {
+            @this := $_;
+            for (@this) {
+                @ans[@ans] := $_;
+            }
+        }
+        return @ans;
     }
-    return @ans;
 }
+
+
+
+sub tt(*@args) {
+  return Q:PIR {
+    $P0 = new 'Integer'
+    $P1 = new 'Boolean'
+    $P1 = 2          # If returned would print 1
+    $P0 = 2          # If returned would print 2
+    %r = $P1
+  };
+}
+
 
 ############
 # is.array()
@@ -108,13 +171,17 @@ sub str($arg) {
 # For working on the class stuff:
 
 sub classtest() {
-    my $abc := ABC.new();
-    my $xyz := XYZ.new();
+    #my $vec := vector.new();
 
-    $abc.foo();
-    $xyz.foo();
-    $xyz.bar();
+    #my $abc := ABC.new();
+    #my $xyz := XYZ.new();
 
+    #$abc.foo();
+    #$xyz.foo();
+    #$xyz.bar();
+
+    #my $vec := vector.new();
+    #print("HELLO VECTOR\n");
 }
 
 sub test() {
@@ -157,13 +224,13 @@ sub setseed(*@args) {
     HAVELIBRARY:
     setseed = dlfunc libRmath, "set_seed", "vii"
     setseed(arg1, arg2)
-    %r = box 0
+    %r = box 1
   };
 }
 
-sub rexpworks(*@args) {
+sub rexpworks($rate) {
   return Q:PIR {
-    $P0 = find_lex '@args'
+    $P0 = find_lex '$rate'
     .local num arg1
     arg1 = $P0[0]
     .local pmc libRmath, rexp
@@ -175,10 +242,12 @@ sub rexpworks(*@args) {
   };
 }
 
-sub rexp(*@args) {
+
+
+sub rexp($rate) {
     return Q:PIR {
         .local num arg, ans
-        $P0 = find_lex '@args'
+        $P0 = find_lex '$rate'
         arg = $P0[0]
         .local pmc libRmath, rexp
         libRmath = loadlib 'libRmath'
@@ -187,7 +256,9 @@ sub rexp(*@args) {
       HAVELIBRARY:
         rexp = dlfunc libRmath, 'rexp', 'dd'
         ans = rexp(arg)
-        %r = box ans
+        $P1 = new ["ResizableFloatArray"]
+        $P1[0] = ans
+        %r = $P1
     };
 }
 

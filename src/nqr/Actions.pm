@@ -359,12 +359,12 @@ method identifier($/) {
 
 # I was playing around with only using arrays, but stopped.
 method term:sym<integer_constant>($/) {
-    #my $past := PAST::Op.new( :name('!array'),
-    #                          :pasttype('call'),
-    #                          :node($/) );
-    #$past.push($<integer>.ast);
-    #make $past;
-    make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
+    my $past := PAST::Op.new( :name('!intarray'), #'!array'),
+                              :pasttype('call'),
+                              :node($/) );
+    $past.push($<integer>.ast);
+    make $past;
+    #make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
 }
 
 method term:sym<string_constant>($/) { make $<string_constant>.ast; }
@@ -376,12 +376,12 @@ method string_constant($/) {
 
 # Ditto on playing with arrays and no literals.
 method term:sym<float_constant_long>($/) { # name worksaround lack of LTM
-    #my $past := PAST::Op.new( :name('!array'),
-    #                          :pasttype('call'),
-    #                          :node($/) );
-    #$past.push(+$/);
-    #make $past;
-    make PAST::Val.new(:value(+$/), :returns<Float>);
+    my $past := PAST::Op.new( :name('!floatarray'), #'!array'),
+                              :pasttype('call'),
+                              :node($/) );
+    $past.push(+$/);
+    make $past;
+    #make PAST::Val.new(:value(+$/), :returns<Float>);
 }
 
 method term:sym<primary>($/) {
