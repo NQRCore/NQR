@@ -86,6 +86,11 @@ sub print(*@args) {
     }
 }
 
+sub warning($msg) {
+    my $m := ["Warning:", $msg];
+    print($m);
+}
+
 ######################################################
 # seq(): using only NQP; there is a PIR version 
 # in SCRATCH.

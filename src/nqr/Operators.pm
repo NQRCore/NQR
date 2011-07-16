@@ -243,13 +243,14 @@ sub &infix:</>($a, $b) {
 }
 
 sub &infix:<:>($a, $b) {
-  if ( (length($a) == 1) && (length($b) == 1) ) {
-    my $by := [1];      # This is a gotcha...
-    return seq($a, $b, $by);
-  } else {
-    print("Error in :\n");
-    return 0;
+  if (length($a) != 1) {
+    warning("(:) first numerical expression > 1 element, only the first used");
   }
+  if (length($b) != 1) {
+    warning("(:) second numerical expression > 1 element, only the first used");
+  }
+  my $by := [1];      # This is a gotcha...
+  return seq($a, $b, $by);
 }
 
 
