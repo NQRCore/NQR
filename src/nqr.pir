@@ -52,6 +52,7 @@ object.
 .include 'src/gen_actions.pir'
 .include 'src/gen_compiler.pir'
 .include 'src/gen_classes.pir'
+.include 'src/gen_operators.pir'
 .include 'src/gen_runtime.pir'
 .include 'src/gen_runtimewinxed.pir'
 

@@ -45,6 +45,7 @@ No Configure step, no Makefile generated.
     $P4['src/gen_compiler.pir'] = 'src/nqr/Compiler.pm'
     $P4['src/gen_grammar.pir'] = 'src/nqr/Grammar.pm'
     $P4['src/gen_classes.pir'] = 'src/classes/Classes.pm'
+    $P4['src/gen_operators.pir'] = 'src/nqr/Operators.pm'
     $P4['src/gen_runtime.pir'] = 'src/nqr/Runtime.pm'
     $P0['pir_nqp-rx'] = $P4
 
@@ -59,6 +60,7 @@ src/gen_actions.pir
 src/gen_compiler.pir
 src/gen_grammar.pir
 src/gen_classes.pir
+src/gen_operators.pir
 src/gen_runtime.pir
 src/gen_runtime2.pir
 SOURCES

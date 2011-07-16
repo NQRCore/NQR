@@ -274,3 +274,47 @@ sub dnorm2(*@args) {
 }
 
 
+
+################
+# Testing
+
+sub tt(*@args) {
+  return Q:PIR {
+    $P0 = new 'Integer'
+    $P1 = new 'Boolean'
+    $P1 = 2          # If returned would print 1
+    $P0 = 2          # If returned would print 2
+    %r = $P1
+  };
+}
+
+#################################
+# For working on the class stuff:
+
+sub classtest() {
+    #my $vec := vector.new();
+
+    #my $abc := ABC.new();
+    #my $xyz := XYZ.new();
+
+    #$abc.foo();
+    #$xyz.foo();
+    #$xyz.bar();
+
+    #my $vec := vector.new();
+    #print("HELLO VECTOR\n");
+}
+
+sub test() {
+    my $a := vector.new();
+    $a.foo();
+    $a[0] := 2;
+    $a[1] := 5;
+    print($a);
+    print(length($a));
+    print(str($a));
+}
+
+
+
+

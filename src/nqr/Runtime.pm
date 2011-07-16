@@ -2,6 +2,12 @@
 # Copyright (C) 2010, Parrot Foundation.
 # Copyright (C) 2011, Michael Kane and John Emerson.
 
+# Note: I'm doing essentially no friendly error-checking
+# at this point.  Bigger fish to fry...
+
+# JAY: my @ans[@ans] trick is pretty speed-inefficient,
+# so use it with care.  Can be avoided in places.
+
 # language-specific runtime functions go here
 
 {
@@ -47,7 +53,9 @@ sub say(*@args) {
 ########################################
 # length()
 
-# Accepts an array, hash, or literal (incomplete checking)
+# Accepts an array, hash, or literal (incomplete checking),
+# though checking a literal shouldn't be needed unless the
+# query is length(5), perhaps?  Not sure even then...
 sub length($arg) {
    if (pir::does($arg, "array") || pir::does($arg, "hash")) {
        return pir::elements($arg);
@@ -80,24 +88,23 @@ sub print(*@args) {
 # in SCRATCH.
 
 # Modified for Resizable(Float_or_Integer)Array
-sub seq(*@args) {
-  my $from := @args[0];
-  my $to := @args[1];
-  my $by := @args[2];
-  my $type := pir::typeof($from[0]);
-  if ( (pir::typeof($from[0]) eq 'Integer') &&
-       (pir::typeof($by[0]) eq 'Integer') ) { 
+sub seq($from, $to, $by) {
+  my $f := $from[0];
+  my $t := $to[0];
+  my $b := $by[0];
+  if ( (pir::typeof($f) eq 'Integer') &&
+       (pir::typeof($b) eq 'Integer') ) { 
     my @ans := pir::new("ResizableIntegerArray");
-    while ($from[0]<=$to[0]) {
-      @ans[@ans] := $from[0];
-      $from[0] := $from[0] + $by[0];
+    while ($f <= $t) {
+      @ans[@ans] := $f;
+      $f := $f + $b;
     }
     return @ans;
   } else {
     my @ans := pir::new("ResizableFloatArray");
-    while ($from[0]<=$to[0]) {
-      @ans[@ans] := $from[0];
-      $from[0] := $from[0] + $by[0];
+    while ($f <= $t) {
+      @ans[@ans] := $f;
+      $f := $f + $b;
     }
     return @ans;
   }
@@ -112,8 +119,7 @@ sub c(*@args) {
     my @arg;
     my @this;
     my $type := 'Integer';
-    for (@args) {
-        @arg := $_;
+    for @args -> @arg {
         if (pir::typeof(@arg[0]) eq 'Float') {
             $type := 'Float';
             break;
@@ -121,8 +127,7 @@ sub c(*@args) {
     }
     if ($type eq 'Integer') {
         my @ans := pir::new("ResizableIntegerArray");
-        for (@args) {
-            @this := $_;
+        for @args -> @this {
             for (@this) {
                 @ans[@ans] := $_;
             }
@@ -130,8 +135,7 @@ sub c(*@args) {
         return @ans;
     } else {
         my @ans := pir::new("ResizableFloatArray");
-        for (@args) {
-            @this := $_;
+        for @args -> @this {
             for (@this) {
                 @ans[@ans] := $_;
             }
@@ -140,22 +144,21 @@ sub c(*@args) {
     }
 }
 
-
-
-sub tt(*@args) {
-  return Q:PIR {
-    $P0 = new 'Integer'
-    $P1 = new 'Boolean'
-    $P1 = 2          # If returned would print 1
-    $P0 = 2          # If returned would print 2
-    %r = $P1
-  };
+# This can be coded in NQR, no runtime technically needed?
+sub rep($arg, $times) {
+    my $i := $times[0];
+    my @ans;
+    while ($i>0) {
+        @ans := c(@ans, $arg);
+        $i--;
+    }
+    return @ans;
 }
-
 
 ############
 # is.array()
 
+# Should be true for everything I might give it, currently.
 sub isarray($arg) {
     return pir::does($arg, "array");
 }
@@ -167,35 +170,10 @@ sub str($arg) {
     return pir::typeof($arg);
 }
 
-#################################
-# For working on the class stuff:
 
-sub classtest() {
-    #my $vec := vector.new();
-
-    #my $abc := ABC.new();
-    #my $xyz := XYZ.new();
-
-    #$abc.foo();
-    #$xyz.foo();
-    #$xyz.bar();
-
-    #my $vec := vector.new();
-    #print("HELLO VECTOR\n");
-}
-
-sub test() {
-    my $a := vector.new();
-    $a.foo();
-    $a[0] := 2;
-    $a[1] := 5;
-    print($a);
-    print(length($a));
-    print(str($a));
-}
 
 ############################################
-# NCI starting point:
+# NCI starting point with libRmath:
 
 
 #sub myrexp($arg) {
@@ -228,6 +206,7 @@ sub setseed(*@args) {
   };
 }
 
+
 sub rexpworks($rate) {
   return Q:PIR {
     $P0 = find_lex '$rate'
@@ -243,7 +222,9 @@ sub rexpworks($rate) {
 }
 
 
-
+# Note, see below: can't assign rexp(arg) directly to
+# P1[0] because that seems to screw up the signature for
+# the function call.
 sub rexp($rate) {
     return Q:PIR {
         .local num arg, ans
@@ -255,12 +236,15 @@ sub rexp($rate) {
         say 'Could not load the libRmath library'
       HAVELIBRARY:
         rexp = dlfunc libRmath, 'rexp', 'dd'
-        ans = rexp(arg)
+        ans = rexp(arg) # See note above
         $P1 = new ["ResizableFloatArray"]
         $P1[0] = ans
         %r = $P1
     };
 }
+
+#######################################
+# GSL... and learning about the loading
 
 sub dnorm(*@args) {
     return Q:PIR {

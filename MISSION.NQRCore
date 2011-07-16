@@ -5,7 +5,7 @@ NQR stands for 'Not Quite R': see www.r-project.org for information
 on the R Project.  The initial goals are modest: implement a basic HLL
 covering core R (S language) syntax.  Longer-term goals depend on
 the initial outcomes, time limitations, and interest from potential
-contributors.
+contributors.  Think of it like playing in a sandbox.
 
 GSL refers to the GNU Scientific Library.  The goal is to provide
 low-level bindings to the GLS library.  This can then be used by

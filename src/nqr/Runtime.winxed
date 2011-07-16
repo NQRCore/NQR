@@ -26,8 +26,5 @@ function meanw () {
     return gsl_stats_mean(foo, 1, 2);
 }
 
-function rep () {
-
-}
 
 

@@ -144,11 +144,13 @@ rule postfix_expression:sym<key> { '{' <EXPR> '}' }
 # JAY: probably want to get rid of this:
 rule postfix_expression:sym<member> { '.' <identifier> }
 
+# JAY: probably want to customize this to all '.' and perhaps '_'?
 token identifier {
     <!keyword> <ident>
 }
 
-# JAY: added function and return and removed sub, added '&' and '|' and '!'
+# JAY: added function and return and removed sub,
+# added '&' and '|' and '!'
 token keyword {
     [ '&' |'else' |'for' |'if' | 'function' | 'return'
     | '!' |  '|'  |'var' |'while']>>
@@ -213,7 +215,12 @@ token infix:sym<*>  { <sym> <O('%multiplicative, :pirop<mul>')> }
 token infix:sym<%>  { <sym> <O('%multiplicative, :pirop<mod>')> }
 token infix:sym</>  { <sym> <O('%multiplicative, :pirop<div>')> }
 
-token infix:sym<+>  { <sym> <O('%additive, :pirop<add>')> }
+# Vectorizing addition?
+#token infix:sym<+>  { <sym> <O('%additive, :pirop<add>')> }
+#https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Operators.pm#L22
+# https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Grammar.pm#L177
+token infix:sym<+>  { <sym> <O('%additive')> }
+
 token infix:sym<->  { <sym> <O('%additive, :pirop<sub>')> }
 token infix:sym<..> { <sym> <O('%additive, :pirop<concat>')> }
 

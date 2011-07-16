@@ -144,6 +144,18 @@ http://en.wikibooks.org/wiki/Parrot_Virtual_Machine/Parrot_Compiler_Tools
 github.com/Whiteknight/parrot-linear-algebra
 github.com/Whiteknight/matrixy
 
+
+# Vectorizing operators:
+
+https://github.com/Whiteknight/matrixy/blob/master/src/parser/grammar-oper.pg
+https://github.com/Whiteknight/matrixy/blob/master/src/internals/operators.pir
+# His rule term looks pretty clean actually:
+https://github.com/Whiteknight/matrixy/blob/master/src/parser/grammar.pg
+# Ask him about method 'expression' in his Actions.pm
+
+
+
+
 # Probably a good PIR example.
 https://github.com/Whiteknight/matrixy/blob/master/src/classes/matrix_row.pir
 
@@ -169,16 +181,8 @@ https://github.com/perl6/nqp/blob/master/t/nqp/28-subclass.t
 
 # Parrot memory-mapped files?
 MappedByteArray: /home/jay/parrot-3.3.0/src/pmc/mappedbytearray.pmc
-
- We have a type for mmap
-<plobsing> the system performance should be the same at the end of the day. I'm not an expert at kernel VM systems, but mmap and swap are handled fairly similarly.
+handled fairly similarly.
 <whiteknight> MappedByteArray
-<jay> plobsing: could be, but in our tests there was quite a difference.  We also support Mac/WIndows/Linux and some Solaris, I think, via BOOST.  Not all swap behaves equally well.
-<whiteknight> that doesn't do floats, but I'm sure it could be subclassed or tweaked
-<jay> whiteknight: will I be able to grep it easily, or is there someplace I should look to find it's definition?
-<whiteknight> jay: if you have the parrot source repo, it's src/pmc/mappedbytearray.pmc
-<whiteknight> it's a simple type. Still young and marked "experimental". A real-world use case might help us to get it matured and improved
-<jay> I'll glance at it now...
 
 
 NQP and pir opcodes::::
@@ -213,13 +217,7 @@ foo <- function(a) {
 
 foo(5)
 
-#return(0)
-
-#b <- foo(7)
-#print(foo(8))
-
-#b <- return(3)
-#print(b)
+#######################################################
 
 # M0 approach, Jay talk about with Mike.
 http://www.modernperlbooks.com/mt/2011/07/less-magic-less-c-a-faster-parrot.html
@@ -229,7 +227,7 @@ http://www.modernperlbooks.com/mt/2011/07/less-magic-less-c-a-faster-parrot.html
 xchat
 
 github.com, http://gitref.org/
-john.emerson@yale.edu (first car)
+john.emerson@yale.edu
 
 git://github.com/NQRCore/NQR.git
 
@@ -262,14 +260,11 @@ git push git@github.com:NQRCore/NQR.git master
 
 -------------------------------------------
 
-Adversing the project:
-On each github repo, go to: Admin -> Service Hooks -> Post-receive URLS : then add http://host04.appflux.net:5000/dalek?t=magnet,parrot
-
-
+##  Probably not going to be helpful here.
 jay: also, whiteknight++ has something called parrot-data-structures which implements lots more kinds of datastructures.
-
 https://github.com/whiteknight/parrot-data-structures
 
+## Class stuff?
 Are the literal types (Integer, String, Float) technically classes?  I'm guessing maybe not.
 <sorear> How do you mean?
 <jay> So I could create a class 'integer' containing an Integer, and then something else could inherit from class 'integer'... just guessing.
@@ -287,7 +282,6 @@ Are the literal types (Integer, String, Float) technically classes?  I'm guessin
 <sorear> most HLLs work only with instances of Object
 <sorear> pmclasses can only be created using C code with the pmc2c preprocessor; PIR generates Class instances
 <sorear> there's special magic to allow Classes to inherit from pmclasses, but it's slow and semantically horrible
-* benabik 's git-fu is weak today.
 <sorear> NQP contains a third object system, based on the SixModelObject pmclass
 
 
@@ -297,24 +291,11 @@ Are the literal types (Integer, String, Float) technically classes?  I'm guessin
 
 Resizable*Array inherits from Fixed*Array, inherits from default PMC.
 
-
-# Vectors
-vector of literals, Fixed*Array, where Boolean is FixedIntegerArray
-
-# Extended literal: will be a sub
-Boolean
-
 # Basic literals (scalars); don't really exist in R, where everything
 # is called a vector and treated as a vector.
 Integer
 Float
 String
-
-
-# Different approach: what do I fundamentally want to be using?
-
-Make almost everything a Fixed*Array, although literals will
-still exist?
 
 
 
