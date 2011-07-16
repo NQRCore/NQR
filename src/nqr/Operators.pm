@@ -15,14 +15,14 @@ sub &infix:<+>($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $b[$i] + $a[0];
+        @ans[$i] := pir::add__NNN($a[0], $b[$i]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $b[$i] + $a[0];
+        @ans[$i] := pir::add__III($a[0], $b[$i]);
         $i--;
       }
       return @ans;
@@ -34,14 +34,14 @@ sub &infix:<+>($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] + $b[0];
+        @ans[$i] := pir::add__NNN($a[$i], $b[0]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] + $b[0];
+        @ans[$i] := pir::add__III($a[$i], $b[0]);
         $i--;
       }
       return @ans;
@@ -54,14 +54,14 @@ sub &infix:<+>($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] + $b[$i];
+        @ans[$i] := pir::add__NNN($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] + $b[$i];
+        @ans[$i] := pir::add__III($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
@@ -80,14 +80,14 @@ sub &infix:<->($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[0] - $b[$i];
+        @ans[$i] := pir::sub__NNN($a[0], $b[$i]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[0] - $b[$i];
+        @ans[$i] := pir::sub__III($a[0], $b[$i]);
         $i--;
       }
       return @ans;
@@ -99,14 +99,14 @@ sub &infix:<->($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] - $b[0];
+        @ans[$i] := pir::sub__NNN($a[$i], $b[0]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] - $b[0];
+        @ans[$i] := pir::sub__III($a[$i], $b[0]);
         $i--;
       }
       return @ans;
@@ -119,14 +119,14 @@ sub &infix:<->($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] - $b[$i];
+        @ans[$i] := pir::sub__NNN($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] - $b[$i];
+        @ans[$i] := pir::sub__III($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
@@ -146,14 +146,14 @@ sub &infix:<*>($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $b[$i] * $a[0];
+        @ans[$i] := pir::mul__NNN($b[$i], $a[0]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $b[$i] * $a[0];
+        @ans[$i] := pir::mul__III($b[$i], $a[0]);
         $i--;
       }
       return @ans;
@@ -165,14 +165,14 @@ sub &infix:<*>($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] * $b[0];
+        @ans[$i] := pir::mul__NNN($a[$i], $b[0]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] * $b[0];
+        @ans[$i] := pir::mul__III($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
@@ -185,14 +185,14 @@ sub &infix:<*>($a, $b) {
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] * $b[$i];
+        @ans[$i] := pir::mul__NNN($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := $a[$i] * $b[$i];
+        @ans[$i] := pir::mul__III($a[$i], $b[$i]);
         $i--;
       }
       return @ans;
@@ -210,7 +210,7 @@ sub &infix:</>($a, $b) {
     $i := length($b) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
-      @ans[$i] := pir::div__NNN($a[0], $b[$i]); #$a[0] / $b[$i];
+      @ans[$i] := pir::div__NNN($a[0], $b[$i]);
       $i--;
     }
     return @ans;
@@ -219,7 +219,7 @@ sub &infix:</>($a, $b) {
     $i := length($a) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
-      @ans[$i] := pir::div__NNN($a[$i], $b[0]); #$a[$i] / $b[0];
+      @ans[$i] := pir::div__NNN($a[$i], $b[0]);
       $i--;
     }
     return @ans;
@@ -229,7 +229,7 @@ sub &infix:</>($a, $b) {
     $i := length($a) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
-      @ans[$i] := pir::div__NNN($a[$i], $b[$i]); #$a[$i] / $b[$i];
+      @ans[$i] := pir::div__NNN($a[$i], $b[$i]);
       $i--;
     }
     return @ans;
