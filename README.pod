@@ -18,7 +18,7 @@ feedback and hints that help us learn more about Parrot.
 Jay Emerson (john.emerson@yale.edu or jayemerson@gmail.com)
 Mike Kane (michael.kane@yale.edu)
 
-= head2 Building from source
+=head2 Building from source
 
 NQR requires Parrot (see http://www.parrot.org/).  If you can
 build Parrot, you should be fine building NQR (which used
