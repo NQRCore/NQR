@@ -205,24 +205,21 @@ rule named_field {
     <string_constant> '=>' <EXPR>
 }
 
+# Need to be vectorized, too:
 token prefix:sym<-> { <sym> <O('%unary-negate, :pirop<neg>')> }
 token prefix:sym<!> { <sym> <O('%unary-not, :pirop<isfalse>')> }
 
-# JAY: Added trying to do ':'
-token infix:sym<:>  { <sym> <O('%sequence')> }
 
-#token infix:sym<*>  { <sym> <O('%multiplicative, :pirop<mul>')> }
+# Vectorized:
+token infix:sym<:>  { <sym> <O('%sequence')> }
 token infix:sym<*>  { <sym> <O('%multiplicative')> }
 
+# Not vectorized:
 token infix:sym<%>  { <sym> <O('%multiplicative, :pirop<mod>')> }
 
-#token infix:sym</>  { <sym> <O('%multiplicative, :pirop<div>')> }
+# Vectorized:
 token infix:sym</>  { <sym> <O('%multiplicative')> }
-
-#token infix:sym<+>  { <sym> <O('%additive, :pirop<add>')> }
 token infix:sym<+>  { <sym> <O('%additive')> }
-
-#token infix:sym<->  { <sym> <O('%additive, :pirop<sub>')> }
 token infix:sym<->  { <sym> <O('%additive')> }
 
 token infix:sym<..> { <sym> <O('%additive, :pirop<concat>')> }
@@ -231,8 +228,14 @@ token infix:sym«<» { <sym> <O('%relational, :pirop<islt iPP>')> }
 token infix:sym«<=» { <sym> <O('%relational, :pirop<isle iPP>')> }
 token infix:sym«>» { <sym> <O('%relational, :pirop<isgt iPP>')> }
 token infix:sym«>=» { <sym> <O('%relational, :pirop<isge iPP>')> }
-token infix:sym«==» { <sym> <O('%relational, :pirop<iseq iPP>')> }
-token infix:sym«!=» { <sym> <O('%relational, :pirop<isne iPP>')> }
+
+#token infix:sym«==» { <sym> <O('%relational, :pirop<iseq iPP>')> }
+token infix:sym«==» { <sym> <O('%relational')> }
+
+#token infix:sym«!=» { <sym> <O('%relational, :pirop<isne iPP>')> }
+token infix:sym«!=» { <sym> <O('%relational')> }
 
 token infix:sym<&> { <sym> <O('%conjunction, :pasttype<if>')> }
 token infix:sym<|> { <sym> <O('%disjunction, :pasttype<unless>')> }
+
+

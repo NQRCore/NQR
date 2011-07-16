@@ -3,12 +3,15 @@
 
 # Vectorized operators
 
-# This while-looping avoids resizing after the first one...
+# This while()-looping avoids resizing after the first one...
 # Avoiding the swap of $a and $b would require extra versions
 # of the code... maybe worth it eventually for performance.
 
 # The use of the pir operators are important for performance
 # because NQP would put things in PMCs, operate, then unpack...
+
+########################
+# Basic operators first:
 
 sub &infix:<+>($a, $b) {
   my $i;
@@ -242,6 +245,9 @@ sub &infix:</>($a, $b) {
   }
 }
 
+####################
+# Sequence operator:
+
 sub &infix:<:>($a, $b) {
   if (length($a) != 1) {
     warning("(:) first numerical expression > 1 element, only the first used");
@@ -252,5 +258,84 @@ sub &infix:<:>($a, $b) {
   my $by := [1];      # This is a gotcha...
   return seq($a, $b, $by);
 }
+
+#######################
+# Relational operators:
+
+sub &infix:«==»($a, $b) {
+  my $i;
+  if (length($a) == 1) {
+    $i := length($b) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::iseq__iPP($a[0], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (length($b) == 1) {
+    $i := length($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::iseq__iPP($a[$i], $b[0]);
+      $i--;
+    }
+    return @ans;
+  }
+  # Below, equal sized, or else in trouble.
+  if (length($a) == length($b)) {
+    $i := length($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::iseq__iPP($a[$i], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  } else {
+    print("Vector recycling not allowed in infix:<==>");
+    return 0;
+  }
+}
+
+sub &infix:«!=»($a, $b) {
+  my $i;
+  if (length($a) == 1) {
+    $i := length($b) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isne__iPP($a[0], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (length($b) == 1) {
+    $i := length($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isne__iPP($a[$i], $b[0]);
+      $i--;
+    }
+    return @ans;
+  }
+  # Below, equal sized, or else in trouble.
+  if (length($a) == length($b)) {
+    $i := length($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isne__iPP($a[$i], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  } else {
+    print("Vector recycling not allowed in infix:<!=>");
+    return 0;
+  }
+}
+
+
+
+
+
+
 
 
