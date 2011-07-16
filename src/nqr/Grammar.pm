@@ -181,10 +181,9 @@ token quote:sym<"> { <?["]> <quote_EXPR: ':qq'> }
 
 ## JAY: Tried to add sequence for ':'
 INIT {
-    nqr::Grammar.O(':prec<w>, :assoc<unary>', '%unary-negate');
-    nqr::Grammar.O(':prec<v>, :assoc<unary>', '%unary-not');
-    # JAY added trying to do ':'
-    #nqr::Grammar.O(':prec<v>, :assoc<left>',  '%sequence');
+    nqr::Grammar.O(':prec<x>, :assoc<unary>', '%unary-negate');
+    nqr::Grammar.O(':prec<w>, :assoc<unary>', '%unary-not');
+    nqr::Grammar.O(':prec<v>, :assoc<left>',  '%sequence');
     nqr::Grammar.O(':prec<u>, :assoc<left>',  '%multiplicative');
     nqr::Grammar.O(':prec<t>, :assoc<left>',  '%additive');
     nqr::Grammar.O(':prec<s>, :assoc<left>',  '%relational');
@@ -210,7 +209,7 @@ token prefix:sym<-> { <sym> <O('%unary-negate, :pirop<neg>')> }
 token prefix:sym<!> { <sym> <O('%unary-not, :pirop<isfalse>')> }
 
 # JAY: Added trying to do ':'
-#token infix:sym<:>  { <sym> <O('%sequence')> }
+token infix:sym<:>  { <sym> <O('%sequence')> }
 
 #token infix:sym<*>  { <sym> <O('%multiplicative, :pirop<mul>')> }
 token infix:sym<*>  { <sym> <O('%multiplicative')> }

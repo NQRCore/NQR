@@ -7,6 +7,9 @@
 # Avoiding the swap of $a and $b would require extra versions
 # of the code... maybe worth it eventually for performance.
 
+# The use of the pir operators are important for performance
+# because NQP would put things in PMCs, operate, then unpack...
+
 sub &infix:<+>($a, $b) {
   my $i;
   if (length($a) == 1) {
@@ -235,6 +238,16 @@ sub &infix:</>($a, $b) {
     return @ans;
   } else {
     print("Vector recycling not allowed in infix:</>\n");
+    return 0;
+  }
+}
+
+sub &infix:<:>($a, $b) {
+  if ( (length($a) == 1) && (length($b) == 1) ) {
+    my $by := [1];      # This is a gotcha...
+    return seq($a, $b, $by);
+  } else {
+    print("Error in :\n");
     return 0;
   }
 }
