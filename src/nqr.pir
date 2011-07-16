@@ -25,6 +25,7 @@ object.
 =cut
 
 .HLL 'nqr'
+.loadlib 'io_ops'
 #.loadlib 'squaak_group'            # JAY: Unchanged at the moment
 
 .namespace []

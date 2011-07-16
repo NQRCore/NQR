@@ -211,17 +211,21 @@ token prefix:sym<!> { <sym> <O('%unary-not, :pirop<isfalse>')> }
 
 # JAY: Added trying to do ':'
 #token infix:sym<:>  { <sym> <O('%sequence')> }
-token infix:sym<*>  { <sym> <O('%multiplicative, :pirop<mul>')> }
-token infix:sym<%>  { <sym> <O('%multiplicative, :pirop<mod>')> }
-token infix:sym</>  { <sym> <O('%multiplicative, :pirop<div>')> }
 
-# Vectorizing addition?
+#token infix:sym<*>  { <sym> <O('%multiplicative, :pirop<mul>')> }
+token infix:sym<*>  { <sym> <O('%multiplicative')> }
+
+token infix:sym<%>  { <sym> <O('%multiplicative, :pirop<mod>')> }
+
+#token infix:sym</>  { <sym> <O('%multiplicative, :pirop<div>')> }
+token infix:sym</>  { <sym> <O('%multiplicative')> }
+
 #token infix:sym<+>  { <sym> <O('%additive, :pirop<add>')> }
-#https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Operators.pm#L22
-# https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Grammar.pm#L177
 token infix:sym<+>  { <sym> <O('%additive')> }
 
-token infix:sym<->  { <sym> <O('%additive, :pirop<sub>')> }
+#token infix:sym<->  { <sym> <O('%additive, :pirop<sub>')> }
+token infix:sym<->  { <sym> <O('%additive')> }
+
 token infix:sym<..> { <sym> <O('%additive, :pirop<concat>')> }
 
 token infix:sym«<» { <sym> <O('%relational, :pirop<islt iPP>')> }

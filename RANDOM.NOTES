@@ -297,7 +297,8 @@ Integer
 Float
 String
 
-
-
+# Customized operators:
+#https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Operators.pm#L22
+# https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Grammar.pm#L177
 
 

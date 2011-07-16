@@ -5,11 +5,21 @@
 class nqr::Compiler is HLL::Compiler;
 
 INIT {
+    my $version := Q:PIR { # Surely this could be done better in NQP
+        .local string filename
+        .local pmc data_file
+        .local string version
+        filename = 'VERSION'
+        data_file = open filename, 'r'
+        version = readline data_file
+        close data_file
+        %r = box version
+    };
 
     nqr::Compiler.language('nqr');
     nqr::Compiler.parsegrammar(nqr::Grammar);
     nqr::Compiler.parseactions(nqr::Actions);
-    nqr::Compiler.commandline_banner("\nNot Quite R for Parrot VM.\n\n");
+    nqr::Compiler.commandline_banner("\nNot Quite R for Parrot VM, Version $version\n");
     nqr::Compiler.commandline_prompt('> ');
 }
 

@@ -56,11 +56,14 @@ sub say(*@args) {
 # Accepts an array, hash, or literal (incomplete checking),
 # though checking a literal shouldn't be needed unless the
 # query is length(5), perhaps?  Not sure even then...
+
+# Simple if we always have a Resizable*Array, right?
 sub length($arg) {
-   if (pir::does($arg, "array") || pir::does($arg, "hash")) {
-       return pir::elements($arg);
-   }
-   return 1;
+   return pir::elements($arg);
+   #if (pir::does($arg, "array") || pir::does($arg, "hash")) {
+   #    return pir::elements($arg);
+   #}
+   #return 1;
 }
 
 #################################################################
