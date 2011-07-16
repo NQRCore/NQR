@@ -210,7 +210,7 @@ sub &infix:</>($a, $b) {
     $i := length($b) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
-      @ans[$i] := $a[0] / $b[$i];
+      @ans[$i] := pir::div__NNN($a[0], $b[$i]); #$a[0] / $b[$i];
       $i--;
     }
     return @ans;
@@ -219,7 +219,7 @@ sub &infix:</>($a, $b) {
     $i := length($a) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
-      @ans[$i] := $a[$i] / $b[0];
+      @ans[$i] := pir::div__NNN($a[$i], $b[0]); #$a[$i] / $b[0];
       $i--;
     }
     return @ans;
@@ -229,7 +229,7 @@ sub &infix:</>($a, $b) {
     $i := length($a) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
-      @ans[$i] := $a[$i] / $b[$i];
+      @ans[$i] := pir::div__NNN($a[$i], $b[$i]); #$a[$i] / $b[$i];
       $i--;
     }
     return @ans;
