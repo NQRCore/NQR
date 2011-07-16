@@ -222,19 +222,19 @@ token infix:sym</>  { <sym> <O('%multiplicative')> }
 token infix:sym<+>  { <sym> <O('%additive')> }
 token infix:sym<->  { <sym> <O('%additive')> }
 
-token infix:sym<..> { <sym> <O('%additive, :pirop<concat>')> }
+# Not valid R syntax, but perhaps needed for tests?
+#token infix:sym<..> { <sym> <O('%additive, :pirop<concat>')> }
 
 token infix:sym«<» { <sym> <O('%relational, :pirop<islt iPP>')> }
 token infix:sym«<=» { <sym> <O('%relational, :pirop<isle iPP>')> }
 token infix:sym«>» { <sym> <O('%relational, :pirop<isgt iPP>')> }
 token infix:sym«>=» { <sym> <O('%relational, :pirop<isge iPP>')> }
 
-#token infix:sym«==» { <sym> <O('%relational, :pirop<iseq iPP>')> }
+# Vectorized:
 token infix:sym«==» { <sym> <O('%relational')> }
-
-#token infix:sym«!=» { <sym> <O('%relational, :pirop<isne iPP>')> }
 token infix:sym«!=» { <sym> <O('%relational')> }
 
+# Probably won't need changing, but check with vectors:
 token infix:sym<&> { <sym> <O('%conjunction, :pasttype<if>')> }
 token infix:sym<|> { <sym> <O('%disjunction, :pasttype<unless>')> }
 
