@@ -8,5 +8,11 @@ that I could use help on.
   body of the loop isn't accessing the parameter.  If you are
   interested, I can provide a simple example.
 
+2. Even once this is solved, I think the loop behavior is not as
+desired.  I blogged about this, and it may not be the loop behavior,
+but an issue with handling of objects and assignments.
+
+  http://www.parrot.org/content/funny-behavior-squaak-loop
+
 
 

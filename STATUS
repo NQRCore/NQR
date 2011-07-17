@@ -1,4 +1,32 @@
 ----------
+2011-7-17:
+
+I really need to write a suite of tests that address the current
+features of NQR.  I'm sure some things are not working, now, and
+I won't know it without this.  It will only get harder if I plow
+ahead.
+
+----------
+2011-7-16:
+
+Huge progress, with two big assists from moritz++.  I
+vectorized the basic math operators and the comparison
+operators, R-style.  Then, I noticed that all my work
+on the Fixed*Array design broke a few things -- like the
+basic while loop.  The problem is that under the hood
+in the implementation of the language, literals were expected
+in places where Fixed*Arrays of length 1 were arriving.
+See the Actions.pm file while() loop method for the solution.
+
+I also noticed some real performance issues in basic benchmarking.
+May have to rethink this Fixed*Array design, though I worry
+that the additional checking to support literals and arrays in
+objects may be just as bad as the apparent overhead of using the
+arrays.  And of course we want arrays, anyway.  At this point,
+I'm not sure what is likely my fault, and what may be a parrot
+performance issue.  I'll assume it's my fault at this point.
+
+----------
 2011-7-15:
 
 Cleaned up some runtime functions for the Fixed*Array
