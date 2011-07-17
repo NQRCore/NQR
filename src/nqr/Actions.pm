@@ -71,7 +71,8 @@ method function_definition($/) {
          $past.push($_.ast);
      }
 
-     # and remove the block from the scope stack and restore the current block
+     # and remove the block from the scope stack and restore
+     # the current block
      @?BLOCK.shift();
      $?BLOCK := @?BLOCK[0];
 
@@ -181,6 +182,8 @@ method for_init($/) {
     make $iter;
 }
 
+# Hacked to force usage of literals for the start and end
+# values rather than letting them be trivial arrays.
 method statement:sym<for>($/) {
     our $?BLOCK;
     our @?BLOCK;
@@ -216,17 +219,18 @@ method statement:sym<for>($/) {
     make PAST::Stmts.new( $init, $loop, :node($/) );
 }
 
+# This was the additional rule/action to support that, above:
 method forint($/) {
     make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
 }
 
 ############ end working on 'for' actions...
 
-# NOTE: out action is R-consistent, but if the condition has
+# NOTE: our action is R-consistent, but if the condition has
 # length > 1 we would like to throw a warning.
 # moritz++ on this one, extracting the literal from the PMC:
 method statement:sym<if>($/) {
-    my $cond := PAST::Op.new( :pirop<set__iQi>,
+    my $cond := PAST::Op.new( :pirop<set__iQi>,      ## NEW
                               $<EXPR>.ast, 0 );
     #my $cond := $<EXPR>.ast;
     my $past := PAST::Op.new( $cond, $<then>.ast,
@@ -261,7 +265,7 @@ method arguments($/) {
 # NOTE: out action is R-consistent, but if the condition has
 # length > 1 we would like to throw a warning.
 method statement:sym<while>($/) {
-    my $cond := PAST::Op.new( :pirop<set__iQi>,
+    my $cond := PAST::Op.new( :pirop<set__iQi>,        ## NEW
                               $<EXPR>.ast, 0 );
     #my $cond := $<EXPR>.ast;
     my $body := $<block>.ast;
@@ -305,6 +309,12 @@ method primary($/) {
     make $past;
 }
 
+
+### !!! need to consider this, not exactly sure when/how it is
+### used, and might be related to the performance issue?  Also
+### consider whether we need to check to see if a variable already
+### exists as part of the assignment?  Think about copy generation,
+### and so on.
 method postfix_expression:sym<index>($/) {
     my $index := $<EXPR>.ast;
     my $past  := PAST::Var.new( $index,
@@ -374,6 +384,7 @@ method term:sym<forint>($/) {
     make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
 }
 
+# Need to figure out how to make this ResizableStringArray:
 method term:sym<string_constant>($/) { make $<string_constant>.ast; }
 method string_constant($/) {
     my $past := $<quote>.ast;
@@ -382,6 +393,7 @@ method string_constant($/) {
 }
 
 # Ditto on playing with arrays and no literals.
+# What is the role of the + sign below?
 method term:sym<float_constant_long>($/) { # name worksaround lack of LTM
     my $past := PAST::Op.new( :name('!floatarray'), #'!array'),
                               :pasttype('call'),
@@ -417,6 +429,7 @@ method named_field($/) {
     make $past;
 }
 
+### JAY: Figure this out.  Probably part of some issue:
 method circumfix:sym<[ ]>($/) {
     ## use the parrot calling conventions to
     ## create an array,

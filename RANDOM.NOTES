@@ -301,4 +301,43 @@ String
 #https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Operators.pm#L22
 # https://github.com/partcl/partcl-nqp/blob/master/src/Partcl/Grammar.pm#L177
 
+########################################
+
+<pmichaud_> jay/moritz:  The difference between uppercase and lowercase signature letters is whether the opcode can accept a constant or requires a register
+<pmichaud_> thus    opcode__vsii   would accept string and integer constant operands, while   opcode__vSII would first convert each operand into a register before invoking the opcode.
+<pmichaud_> (some Parrot opcodes will accept constant arguments, some will not)
+<whiteknight> I wasn't aware of any opcodes which will not accept a constant
+<moritz> anything that modifies stuff
+<moritz> upcase__ss wouldn't make sense
+<moritz> or setattribute with a constant object
+<pmichaud_> there are some opcodes that take in operands that don't accept a constant
+<pmichaud_> I just ran into one this last week.. just a sec
+<kid51> afk
+<dalek> rakudo/nom: cf0da7d | moritz++ | src/core/Str.pm:
+<dalek> rakudo/nom: make +Str die with an unhelpful error message, instead of segfaulting
+<dalek> rakudo/nom: review: https://github.com/rakudo/rakudo/commit/cf0da7d5fb
+<pmichaud_> "escape" is one   (but I don't think that's the one I ran into)
+<whiteknight> hmmm
+<pmichaud_> actually, that may be the one I ran into.
+<pmichaud_> some of the comparison opcodes require registers as well.
+pmichaud: to clarify your point above, writing a custom infix<+> in NQP, I have
+<jay> pir::add__III($a[0], $b[$i]);
+<jay> where a and b are ResizableIntegerArray objects.  Capital I or lower-case i: does it matter, and if so, how?
+* kid51 has quit ()
+* plobsing (~pitr@dsl-67-204-11-220.acanac.net) has joined #parrot
+* slavorg gives channel operator status to plobsing
+<pmichaud_> jay: in this case it won't matter, since neither $a[0] nor $b[$i] are constants.
+* mj41 (~mj41_nby@80.82.144.206) has joined #parrot
+* slavorg gives channel operator status to mj41
+<pmichaud_> where it might make a difference is if you write something like:
+<pmichaud_>     pir::add__III($a, 3)
+<pmichaud_> in this case, PAST will first store the 3 into an I register before invoking the add opcode
+<pmichaud_> whereas
+<pmichaud_>     pir::add__Iii($a, 3)
+<pmichaud_> would generate an add opcode that has a constant '3' directly in the opcode.
+<jay> pmichaud: ok.  Subtle.  Both would work?  The second would be faster I assume?
+<pmichaud_> in the case of add__Iii, the second would be faster, yes.
+<pmichaud_> Using constants in opcodes is not always faster.
+<pmichaud_> (it's often much slower)
+
 

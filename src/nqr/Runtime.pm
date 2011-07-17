@@ -119,10 +119,28 @@ sub seq($from, $to, $by) {
   }
 }
 
+sub paste(*@args) {
+  my @ans := pir::new("ResizableStringArray");
+  my @sargs := pir::new("ResizableStringArray");
+  my $arg;
+  for @args -> $arg {
+    if (pir::does($arg, "array")) { $arg := $arg[0]; }
+    @sargs[@sargs] := ~$arg;
+    #if (pir::typeof($arg) ne 'String') {
+    #  @sargs[@sargs] := pir::set__sN($arg);
+    #} else {
+    #  @sargs[@sargs] := $arg;
+    #}
+  }
+  @ans[0] := pir::join(' ', @sargs);
+  return @ans;
+}
+
 #######################################################
 # c():
 
-# Modified for Resizable(Float_or_Integer)Array
+# Modified for Resizable(Float_or_Integer)Array, but no
+# longer uses strings.
 sub c(*@args) {
     my @ans;
     my @arg;

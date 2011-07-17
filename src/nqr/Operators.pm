@@ -10,6 +10,9 @@
 # The use of the pir operators are important for performance
 # because NQP would put things in PMCs, operate, then unpack...
 
+# See RANDOM.NOTES for pmichaud's comments on i vs I in the ops,
+# this might be very important.
+
 ########################
 # Basic operators first:
 
@@ -472,6 +475,16 @@ sub &infix:«>=»($a, $b) {
   }
 }
 
+sub &prefix:<!>($a) {
+  my $i;
+  $i := pir::elements($a) - 1;
+  my @ans := pir::new("ResizableIntegerArray");
+  while ($i >= 0) {
+    @ans[$i] := pir::isfalse__iP($a[$i]);
+    $i--;
+  }
+  return @ans;
+}
 
 
 

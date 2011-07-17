@@ -209,8 +209,9 @@ rule named_field {
 
 # Need to be vectorized, too:
 token prefix:sym<-> { <sym> <O('%unary-negate, :pirop<neg>')> }
-token prefix:sym<!> { <sym> <O('%unary-not, :pirop<isfalse>')> }
 
+#token prefix:sym<!> { <sym> <O('%unary-not, :pirop<isfalse>')> }
+token prefix:sym<!> { <sym> <O('%unary-not')> }
 
 # Vectorized:
 token infix:sym<:>  { <sym> <O('%sequence')> }
