@@ -50,6 +50,7 @@ sub say(*@args) {
     pir::return();
 }
 
+
 ########################################
 # length()
 
@@ -152,16 +153,24 @@ sub c(*@args) {
     }
 }
 
-# This can be coded in NQR, no runtime technically needed?
+
+
 sub rep($arg, $times) {
-    my $i := $times[0];
-    my @ans;
-    while ($i>0) {
-        @ans := c(@ans, $arg);
-        $i--;
+    my $len := length($arg);           # Eventually might be a PMC
+    my $i := 0;
+    my $j;
+    my @ans := pir::new("ResizableFloatArray");
+    while ($i < $times[0]) {
+      $j := 0;
+      while ($j < $len) {
+        @ans[$i*$len+$j] := $arg[$j];
+        $j++;
+      }
+      $i++;
     }
     return @ans;
 }
+
 
 ############
 # is.array()

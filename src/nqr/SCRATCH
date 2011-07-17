@@ -7,6 +7,21 @@
 # necessarily mean we're happy with it!  But it probably
 # works at some level (even if imperfectly).
 
+# This is really, really slow!!!
+sub rep2($arg, $times) {
+    my $i := $times[0];
+    my @ans;
+    while ($i>0) {
+        @ans := c(@ans, $arg);
+        $i--;
+    }
+    return @ans;
+}
+
+<moritz> jay: one more vague direction: https://github.com/perl6/nqp-rx/blob/master/src/NQP/Actions.pm#L764 is how nqp-rx itself compiles $thing[index]
+
+
+
 
 sub myrexp($arg) {
   my $ans;

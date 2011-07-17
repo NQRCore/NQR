@@ -80,13 +80,15 @@ rule statement:sym<myfor2> {
 # JAY: minor modification of original syntax:
 
 rule statement:sym<for> {
-    <sym> <for_init> <EXPR> ')'
+    <sym> <for_init> <forint> ')'
     '{' <statement>* '}'
 }
 
 rule for_init {
-    '(' <identifier> 'from' <EXPR> 'to'
+    '(' <identifier> 'in' <forint> 'to'
 }
+
+rule forint { <integer> }
 
 ############################## end of 'for' attempts
 
@@ -225,10 +227,11 @@ token infix:sym<->  { <sym> <O('%additive')> }
 # Not valid R syntax, but perhaps needed for tests?
 #token infix:sym<..> { <sym> <O('%additive, :pirop<concat>')> }
 
-token infix:sym«<» { <sym> <O('%relational, :pirop<islt iPP>')> }
-token infix:sym«<=» { <sym> <O('%relational, :pirop<isle iPP>')> }
-token infix:sym«>» { <sym> <O('%relational, :pirop<isgt iPP>')> }
-token infix:sym«>=» { <sym> <O('%relational, :pirop<isge iPP>')> }
+# Vectorized:
+token infix:sym«<» { <sym> <O('%relational')> }
+token infix:sym«<=» { <sym> <O('%relational')> }
+token infix:sym«>» { <sym> <O('%relational')> }
+token infix:sym«>=» { <sym> <O('%relational')> }
 
 # Vectorized:
 token infix:sym«==» { <sym> <O('%relational')> }

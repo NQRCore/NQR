@@ -81,6 +81,7 @@ method function_definition($/) {
      make $past;
 }
 
+# This might need to be broken up for assignment to subsets.
 method statement:sym<assignment>($/) {
     my $lhs := $<primary>.ast;
     my $rhs := $<EXPR>.ast;
@@ -171,11 +172,8 @@ method for_init($/) {
     $iter.isdecl(1);
     $iter.scope('lexical');
     ## the identifier is initialized with this expression
-    $iter.viviself( $<EXPR>.ast );
-    ## JAY: initialize at 0.
-    #$iter.viviself(0);
 
-    #my $set := $<EXPR>.ast;
+    $iter.viviself( $<forint>.ast );   # was $<EXPR>.ast
     
     ## enter the loop variable into the symbol table.
     $?BLOCK.symbol($iter.name(), :scope('lexical'));
@@ -194,8 +192,8 @@ method statement:sym<for>($/) {
                                :scope('lexical'),   # Was lexical
                                :node($/) );
 
-    ## the body of the loop consists of the statements written by the user and
-    ## the increment instruction of the loop iterator.
+    ## the body of the loop consists of the statements written
+    ## by the user and the increment instruction of the loop iterator.
 
     my $body := @?BLOCK.shift();
     $?BLOCK  := @?BLOCK[0];
@@ -203,33 +201,34 @@ method statement:sym<for>($/) {
         $body.push($_.ast);
     }
 
-    #my $loop := PAST::Op.new( $iter, $body, :pasttype('for'), :node($/) );
+    # NOTE: simplified, got rid of the more general step
 
-    #my $step;
-    #if $<step> {
-    #    my $stepsize := $<step>[0].ast;
-    #    $step := PAST::Op.new( $iter, $stepsize,
-    #                           :pirop('add__0P+'), :node($/) );
-    #}
-    #else { ## default is increment by 1
-    #    $step := PAST::Op.new( $iter, :pirop('inc'), :node($/) );
-    #}
     my $step := PAST::Op.new( $iter, :pirop('inc'), :node($/) );
     $body.push($step);
 
     # while loop iterator <= end-expression
     my $cond := PAST::Op.new( :pirop<isle__IPP>,
                               $iter,
-                              $<EXPR>.ast );
-    my $loop := PAST::Op.new( $cond, $body, :pasttype('while'), :node($/) );
+                              $<forint>.ast );   # was $<EXPR>.ast
+    my $loop := PAST::Op.new( $cond, $body, :pasttype('while'),
+                              :node($/) );
 
     make PAST::Stmts.new( $init, $loop, :node($/) );
 }
 
+method forint($/) {
+    make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
+}
+
 ############ end working on 'for' actions...
 
+# NOTE: out action is R-consistent, but if the condition has
+# length > 1 we would like to throw a warning.
+# moritz++ on this one, extracting the literal from the PMC:
 method statement:sym<if>($/) {
-    my $cond := $<EXPR>.ast;
+    my $cond := PAST::Op.new( :pirop<set__iQi>,
+                              $<EXPR>.ast, 0 );
+    #my $cond := $<EXPR>.ast;
     my $past := PAST::Op.new( $cond, $<then>.ast,
                               :pasttype('if'),
                               :node($/) );
@@ -259,8 +258,12 @@ method arguments($/) {
     make $past;
 }
 
+# NOTE: out action is R-consistent, but if the condition has
+# length > 1 we would like to throw a warning.
 method statement:sym<while>($/) {
-    my $cond := $<EXPR>.ast;
+    my $cond := PAST::Op.new( :pirop<set__iQi>,
+                              $<EXPR>.ast, 0 );
+    #my $cond := $<EXPR>.ast;
     my $body := $<block>.ast;
     make PAST::Op.new( $cond, $body, :pasttype('while'), :node($/) );
 }
@@ -367,6 +370,10 @@ method term:sym<integer_constant>($/) {
     #make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
 }
 
+method term:sym<forint>($/) {
+    make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
+}
+
 method term:sym<string_constant>($/) { make $<string_constant>.ast; }
 method string_constant($/) {
     my $past := $<quote>.ast;
@@ -415,7 +422,7 @@ method circumfix:sym<[ ]>($/) {
     ## create an array,
     ## using the "anonymous" sub !array
     ## (which is not a valid nqr name)
-    my $past := PAST::Op.new( :name('!array'),
+    my $past := PAST::Op.new( :name('!array'),   # was !array
                               :pasttype('call'),
                               :node($/) );
     for $<EXPR> {

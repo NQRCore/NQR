@@ -15,8 +15,8 @@
 
 sub &infix:<+>($a, $b) {
   my $i;
-  if (length($a) == 1) {
-    $i := length($b) - 1;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -34,8 +34,8 @@ sub &infix:<+>($a, $b) {
       return @ans;
     }
   }
-  if (length($b) == 1) {
-    $i := length($a) - 1;
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -54,8 +54,8 @@ sub &infix:<+>($a, $b) {
     }
   }
   # Below, equal sized, or else in trouble.
-  if (length($a) == length($b)) {
-    $i := length($a) - 1;
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -73,15 +73,15 @@ sub &infix:<+>($a, $b) {
       return @ans;
     }
   } else {
-    print("Vector recycling not allowed in infix:<+>\n");
+    print("Vector recycling not allowed in infix: +\n");
     return 0;
   }
 }
 
 sub &infix:<->($a, $b) {
   my $i;
-  if (length($a) == 1) {
-    $i := length($b) - 1;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -99,8 +99,8 @@ sub &infix:<->($a, $b) {
       return @ans;
     }
   }
-  if (length($b) == 1) {
-    $i := length($a) - 1;
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -119,8 +119,8 @@ sub &infix:<->($a, $b) {
     }
   }
   # Below, equal sized, or else in trouble.
-  if (length($a) == length($b)) {
-    $i := length($a) - 1;
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -138,7 +138,7 @@ sub &infix:<->($a, $b) {
       return @ans;
     }
   } else {
-    print("Vector recycling not allowed in infix:<->\n");
+    print("Vector recycling not allowed in infix: -\n");
     return 0;
   }
 }
@@ -146,8 +146,8 @@ sub &infix:<->($a, $b) {
 
 sub &infix:<*>($a, $b) {
   my $i;
-  if (length($a) == 1) {
-    $i := length($b) - 1;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -165,8 +165,8 @@ sub &infix:<*>($a, $b) {
       return @ans;
     }
   }
-  if (length($b) == 1) {
-    $i := length($a) - 1;
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -185,8 +185,8 @@ sub &infix:<*>($a, $b) {
     }
   }
   # Below, equal sized, or else in trouble.
-  if (length($a) == length($b)) {
-    $i := length($a) - 1;
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
     if ( (pir::typeof($a[0]) eq 'Float') ||
          (pir::typeof($b[0]) eq 'Float') ) {
       my @ans := pir::new("ResizableFloatArray");
@@ -204,7 +204,7 @@ sub &infix:<*>($a, $b) {
       return @ans;
     }
   } else {
-    print("Vector recycling not allowed in infix:<*>\n");
+    print("Vector recycling not allowed in infix: *\n");
     return 0;
   }
 }
@@ -212,8 +212,8 @@ sub &infix:<*>($a, $b) {
 ## Result will always be Float, as with R.
 sub &infix:</>($a, $b) {
   my $i;
-  if (length($a) == 1) {
-    $i := length($b) - 1;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
       @ans[$i] := pir::div__NNN($a[0], $b[$i]);
@@ -221,8 +221,8 @@ sub &infix:</>($a, $b) {
     }
     return @ans;
   }
-  if (length($b) == 1) {
-    $i := length($a) - 1;
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
       @ans[$i] := pir::div__NNN($a[$i], $b[0]);
@@ -231,8 +231,8 @@ sub &infix:</>($a, $b) {
     return @ans;
   }
   # Below, equal sized, or else in trouble.
-  if (length($a) == length($b)) {
-    $i := length($a) - 1;
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
     my @ans := pir::new("ResizableFloatArray");
     while ($i >= 0) {
       @ans[$i] := pir::div__NNN($a[$i], $b[$i]);
@@ -240,7 +240,7 @@ sub &infix:</>($a, $b) {
     }
     return @ans;
   } else {
-    print("Vector recycling not allowed in infix:</>\n");
+    print("Vector recycling not allowed in infix: /\n");
     return 0;
   }
 }
@@ -249,10 +249,10 @@ sub &infix:</>($a, $b) {
 # Sequence operator:
 
 sub &infix:<:>($a, $b) {
-  if (length($a) != 1) {
+  if (pir::elements($a) != 1) {
     warning("(:) first numerical expression > 1 element, only the first used");
   }
-  if (length($b) != 1) {
+  if (pir::elements($b) != 1) {
     warning("(:) second numerical expression > 1 element, only the first used");
   }
   my $by := [1];      # This is a gotcha...
@@ -264,8 +264,8 @@ sub &infix:<:>($a, $b) {
 
 sub &infix:«==»($a, $b) {
   my $i;
-  if (length($a) == 1) {
-    $i := length($b) - 1;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
     my @ans := pir::new("ResizableIntegerArray");
     while ($i >= 0) {
       @ans[$i] := pir::iseq__iPP($a[0], $b[$i]);
@@ -273,8 +273,8 @@ sub &infix:«==»($a, $b) {
     }
     return @ans;
   }
-  if (length($b) == 1) {
-    $i := length($a) - 1;
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
     my @ans := pir::new("ResizableIntegerArray");
     while ($i >= 0) {
       @ans[$i] := pir::iseq__iPP($a[$i], $b[0]);
@@ -283,8 +283,8 @@ sub &infix:«==»($a, $b) {
     return @ans;
   }
   # Below, equal sized, or else in trouble.
-  if (length($a) == length($b)) {
-    $i := length($a) - 1;
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
     my @ans := pir::new("ResizableIntegerArray");
     while ($i >= 0) {
       @ans[$i] := pir::iseq__iPP($a[$i], $b[$i]);
@@ -292,15 +292,15 @@ sub &infix:«==»($a, $b) {
     }
     return @ans;
   } else {
-    print("Vector recycling not allowed in infix:<==>");
+    print("Vector recycling not allowed in infix: == ");
     return 0;
   }
 }
 
 sub &infix:«!=»($a, $b) {
   my $i;
-  if (length($a) == 1) {
-    $i := length($b) - 1;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
     my @ans := pir::new("ResizableIntegerArray");
     while ($i >= 0) {
       @ans[$i] := pir::isne__iPP($a[0], $b[$i]);
@@ -308,8 +308,8 @@ sub &infix:«!=»($a, $b) {
     }
     return @ans;
   }
-  if (length($b) == 1) {
-    $i := length($a) - 1;
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
     my @ans := pir::new("ResizableIntegerArray");
     while ($i >= 0) {
       @ans[$i] := pir::isne__iPP($a[$i], $b[0]);
@@ -318,8 +318,8 @@ sub &infix:«!=»($a, $b) {
     return @ans;
   }
   # Below, equal sized, or else in trouble.
-  if (length($a) == length($b)) {
-    $i := length($a) - 1;
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
     my @ans := pir::new("ResizableIntegerArray");
     while ($i >= 0) {
       @ans[$i] := pir::isne__iPP($a[$i], $b[$i]);
@@ -327,11 +327,150 @@ sub &infix:«!=»($a, $b) {
     }
     return @ans;
   } else {
-    print("Vector recycling not allowed in infix:<!=>");
+    print("Vector recycling not allowed in infix: !=");
     return 0;
   }
 }
 
+sub &infix:«<»($a, $b) {
+  my $i;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::islt__iPP($a[0], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::islt__iPP($a[$i], $b[0]);
+      $i--;
+    }
+    return @ans;
+  }
+  # Below, equal sized, or else in trouble.
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::islt__iPP($a[$i], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  } else {
+    print("Vector recycling not allowed in infix: <");
+    return 0;
+  }
+}
+
+sub &infix:«<=»($a, $b) {
+  my $i;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isle__iPP($a[0], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isle__iPP($a[$i], $b[0]);
+      $i--;
+    }
+    return @ans;
+  }
+  # Below, equal sized, or else in trouble.
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isle__iPP($a[$i], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  } else {
+    print("Vector recycling not allowed in infix: <=");
+    return 0;
+  }
+}
+
+sub &infix:«>»($a, $b) {
+  my $i;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isgt__iPP($a[0], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isgt__iPP($a[$i], $b[0]);
+      $i--;
+    }
+    return @ans;
+  }
+  # Below, equal sized, or else in trouble.
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isgt__iPP($a[$i], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  } else {
+    print("Vector recycling not allowed in infix: >");
+    return 0;
+  }
+}
+
+sub &infix:«>=»($a, $b) {
+  my $i;
+  if (pir::elements($a) == 1) {
+    $i := pir::elements($b) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isge__iPP($a[0], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (pir::elements($b) == 1) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isge__iPP($a[$i], $b[0]);
+      $i--;
+    }
+    return @ans;
+  }
+  # Below, equal sized, or else in trouble.
+  if (pir::elements($a) == pir::elements($b)) {
+    $i := pir::elements($a) - 1;
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::isge__iPP($a[$i], $b[$i]);
+      $i--;
+    }
+    return @ans;
+  } else {
+    print("Vector recycling not allowed in infix: >=");
+    return 0;
+  }
+}
 
 
 
