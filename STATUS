@@ -1,10 +1,10 @@
 ----------
 2011-7-17:
 
-I really need to write a suite of tests that address the current
-features of NQR.  I'm sure some things are not working, now, and
-I won't know it without this.  It will only get harder if I plow
-ahead.
+Started implementing a test script in t/ that is catching stuff,
+mostly related to my moving to vector objects and strings.
+Added the ! operator, vectorized.  Short and elegant, works on
+strings sensibly, too.
 
 ----------
 2011-7-16:
