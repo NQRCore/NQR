@@ -97,6 +97,8 @@ sub warning($msg) {
 # in SCRATCH.
 
 # Modified for Resizable(Float_or_Integer)Array
+# Looping starts at the end to avoid resizing, rathe
+# than starting at 0.
 sub seq($from, $to, $by) {
   my $f := $from[0];
   my $t := $to[0];
