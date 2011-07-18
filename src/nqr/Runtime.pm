@@ -26,7 +26,8 @@
 
 
     # Use of the ! in this way prevents NQR from being able
-    # to call these directly.
+    # to call these directly.  Probably get rid of array, and
+    # at least change hash.
     Q:PIR {
         $P0 = find_lex 'array'
         set_global '!array', $P0
@@ -43,7 +44,7 @@
 # say(): do not modify this!
 # The following was from Squaak, but I changed it to 'say' and
 # changed all the tests as a result; should only be used internally
-# if at all.
+# if at all, but let's leave it for now.
 
 sub say(*@args) {
     pir::say(pir::join('', @args));
@@ -54,17 +55,11 @@ sub say(*@args) {
 ########################################
 # length()
 
-# Accepts an array, hash, or literal (incomplete checking),
-# though checking a literal shouldn't be needed unless the
-# query is length(5), perhaps?  Not sure even then...
-
 # Simple if we always have a Resizable*Array, right?
+# Wouldn't work if we had literals, so be careful when you
+# use this internally.
 sub length($arg) {
    return pir::elements($arg);
-   #if (pir::does($arg, "array") || pir::does($arg, "hash")) {
-   #    return pir::elements($arg);
-   #}
-   #return 1;
 }
 
 #################################################################
@@ -73,11 +68,11 @@ sub length($arg) {
 
 # Accepts an array, hash, or literal (incomplete checking)
 # Could be simplified if all my NQR objects are some *Array
-# objects, anyway?
+# objects, anyway?  Except it's nice for internal usage.
 sub print(*@args) {
     my $len := length(@args);
     if ($len > 1) {
-        say("Warning: only first argument is printed.");
+        warning("only first argument is printed.");
     }
     my $arg := @args[0];
     if (pir::does($arg, "array") || pir::does($arg, "hash")) {
@@ -97,7 +92,7 @@ sub warning($msg) {
 # in SCRATCH.
 
 # Modified for Resizable(Float_or_Integer)Array
-# Looping starts at the end to avoid resizing, rathe
+# Looping starts at the end to avoid resizing, rather
 # than starting at 0.
 sub seq($from, $to, $by) {
   my $f := $from[0];
@@ -128,11 +123,8 @@ sub paste(*@args) {
   for @args -> $arg {
     if (pir::does($arg, "array")) { $arg := $arg[0]; }
     @sargs[@sargs] := ~$arg;
-    #if (pir::typeof($arg) ne 'String') {
+    # Could also have been used:
     #  @sargs[@sargs] := pir::set__sN($arg);
-    #} else {
-    #  @sargs[@sargs] := $arg;
-    #}
   }
   @ans[0] := pir::join(' ', @sargs);
   return @ans;
@@ -142,7 +134,9 @@ sub paste(*@args) {
 # c():
 
 # Modified for Resizable(Float_or_Integer)Array, but no
-# longer uses strings.
+# longer uses strings.  Benchmarks indicated this was
+# pretty slow.  It was one of my first, and could have
+# lots of resizing.
 sub c(*@args) {
     my @ans;
     my @arg;
@@ -174,21 +168,48 @@ sub c(*@args) {
 }
 
 
-
+# Was very inefficient using c(), rebuilt for Float only,
+# still could be better.
 sub rep($arg, $times) {
     my $len := length($arg);           # Eventually might be a PMC
     my $i := 0;
     my $j;
-    my @ans := pir::new("ResizableFloatArray");
-    while ($i < $times[0]) {
-      $j := 0;
-      while ($j < $len) {
-        @ans[$i*$len+$j] := $arg[$j];
-        $j++;
+    if (pir::typeof($arg[0]) eq 'Float') {
+      my @ans := pir::new("ResizableFloatArray");
+      while ($i < $times[0]) {
+        $j := 0;
+        while ($j < $len) {
+          @ans[$i*$len+$j] := $arg[$j];
+          $j++;
+        }
+        $i++;
       }
-      $i++;
+      return @ans;
     }
-    return @ans;
+    if (pir::typeof($arg[0]) eq 'Integer') {
+      my @ans := pir::new("ResizableIntegerArray");
+      while ($i < $times[0]) {
+        $j := 0;
+        while ($j < $len) {
+          @ans[$i*$len+$j] := $arg[$j];
+          $j++;
+        }
+        $i++;
+      }
+      return @ans;
+    }
+    if (pir::typeof($arg[0]) eq 'String') {
+      my @ans := pir::new("ResizableStringArray");
+      while ($i < $times[0]) {
+        $j := 0;
+        while ($j < $len) {
+          @ans[$i*$len+$j] := $arg[$j];
+          $j++;
+        }
+        $i++;
+      }
+      return @ans;
+    }
 }
 
 

@@ -1,13 +1,14 @@
 
-say("1..19")
+say("1..20")
 
 # Basic assignment
 a <- 1
 print(paste("ok", a))
 
+
 # Array indexing and length (note: indexing starts at 0)
-a <- rep(2,3)
-print(paste("ok", a[1]))
+a <- rep(100,100)
+print(paste("ok", a[0]-a[99]+a[50]-98))
 print(paste("ok", length(a)))
 
 # A function
@@ -53,7 +54,9 @@ while (j < 2) {
     j = j + 1
 }
 
-# for-statement
+# seq()
+a <- seq(1, 20, 2)
+print(paste("ok", a[length(a)-1]))
 
 
 

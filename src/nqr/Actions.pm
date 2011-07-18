@@ -297,6 +297,8 @@ method block($/) {
     make $past;
 }
 
+# Check when this is used.  Might need to wrap the returned
+# value if on the right side.  If on the left?  Hmm...
 method primary($/) {
     my $past := $<identifier>.ast;
 
@@ -310,13 +312,13 @@ method primary($/) {
 }
 
 
-### !!! need to consider this, not exactly sure when/how it is
-### used, and might be related to the performance issue?  Also
-### consider whether we need to check to see if a variable already
-### exists as part of the assignment?  Think about copy generation,
-### and so on.
+### Modifed by JWE to strip out the literal.  But we really 
+### want this to extract many values at a time, potentially.
 method postfix_expression:sym<index>($/) {
-    my $index := $<EXPR>.ast;
+    print("In postfix_expression:index");
+    my $index := PAST::Op.new( :pirop<set__iQi>,        ## NEW
+                               $<EXPR>.ast, 0 );
+    #my $index := $<EXPR>.ast;
     my $past  := PAST::Var.new( $index,
                                 :scope('keyed'),
                                 :viviself('Undef'),
@@ -429,7 +431,7 @@ method named_field($/) {
     make $past;
 }
 
-### JAY: Figure this out.  Probably part of some issue:
+### JAY: Probably not supported at all:
 method circumfix:sym<[ ]>($/) {
     ## use the parrot calling conventions to
     ## create an array,
