@@ -1,5 +1,5 @@
 
-say("1..20")
+say("1..22")
 
 # Basic assignment
 a <- 1
@@ -61,5 +61,12 @@ print(paste("ok", a[18]))
 x <- c("A", c(1,2,20))
 print(paste("ok", x[3]))
 
+# Vector operations
+a <- rep(3,10) * 1:10
+print(paste("ok", a[6]))
+
+a <- rep(c(0,1), 5)
+a <- (!a + 1:10) * 2 + 2
+print(paste("ok", a[9]))
 
 
