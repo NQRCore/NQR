@@ -1,12 +1,12 @@
 #! nqp
-# Copyright (C) 2010, Parrot Foundation.
-# Copyright (C) 2011, Michael Kane and John Emerson.
+# Copyright (C) 2011, John Emerson and Michael Kane.
 
 =begin overview
 
 This is the grammar for Not Quite R in Perl 6 rules.
-It is adapted from the squaak language tutorial of
-Parrot 3.3.0.
+It was originally adapted from the squaak language
+tutorial of Parrot 3.3.0, and also will draw increasingly
+from work previously done in whiteknight's matrixy grammar.
 
 =end overview
 
@@ -36,7 +36,8 @@ rule statementlist {
 }
 
 # JAY: I placed sub_definition first, because otherwise it might
-# be picked up as an assignment:
+# be picked up as an assignment.  However, matrixy has them in the
+# other order.
 rule stat_or_def {
     | <function_definition>
     | <statement>
@@ -55,10 +56,27 @@ rule parameters {
 
 proto rule statement { <...> }
 
+
+### MODIFICATION to separate lvalues I think.
 rule statement:sym<assignment> {
     | <primary> '=' <EXPR>
     | <primary> '<-' <EXPR>
 }
+
+#rule statement:sym<assignment> {
+#    | <lvalue> '=' <EXPR>
+#    | <lvalue> '<-' <EXPR>
+#}
+
+#rule lvalue {
+#    <identifier> <lvalue_postfix_index>*
+#}
+
+#proto rule lvalue_postfix_expression { <...> }
+
+#rule lvalue_postfix_expression:sym<index> { '[' <EXPR> ']' }
+#####rule lvalue_postfix_expression:sym<key> { '{' <EXPR> '}' }
+
 
 ############################## start of 'for' attempts
 
@@ -207,11 +225,8 @@ rule named_field {
     <string_constant> '=>' <EXPR>
 }
 
-# Need to be vectorized, too:
-#token prefix:sym<-> { <sym> <O('%unary-negate, :pirop<neg>')> }
+# Vectorized:
 token prefix:sym<-> { <sym> <O('%unary-negate')> }
-
-#token prefix:sym<!> { <sym> <O('%unary-not, :pirop<isfalse>')> }
 token prefix:sym<!> { <sym> <O('%unary-not')> }
 
 # Vectorized:
@@ -239,7 +254,7 @@ token infix:sym«>=» { <sym> <O('%relational')> }
 token infix:sym«==» { <sym> <O('%relational')> }
 token infix:sym«!=» { <sym> <O('%relational')> }
 
-# Probably won't need changing, but check with vectors:
+# Revisit, will need vector and scalar versions I realize
 token infix:sym<&> { <sym> <O('%conjunction, :pasttype<if>')> }
 token infix:sym<|> { <sym> <O('%disjunction, :pasttype<unless>')> }
 

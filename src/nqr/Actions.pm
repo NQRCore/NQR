@@ -95,6 +95,12 @@ method statement:sym<assignment>($/) {
     make PAST::Op.new($lhs, $rhs, :pasttype<bind>, :node($/));
 }
 
+## NEW assignment with lvalue stuff:
+### See :pasttype('inline')
+
+
+
+
 ############ begin working on 'for' actions...
 
 # A different attempt in one method, very close to matrixy:

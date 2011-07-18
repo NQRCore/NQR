@@ -1,5 +1,5 @@
 #! nqp
-# Copyright (C) 2011, Michael Kane and John Emerson.
+# Copyright (C) 2011, John Emerson and Michael Kane.
 
 # Vectorized operators
 
