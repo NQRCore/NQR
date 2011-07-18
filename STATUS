@@ -6,6 +6,11 @@ mostly related to my moving to vector objects and strings.
 Added the ! operator, vectorized.  Short and elegant, works on
 strings sensibly, too.
 
+Starting to feel like I'm understanding more.  I think studying
+whiteknight's matrixy grammer/action file would be wise, because
+I think some of my problems at this point are inherited from
+squaak.  A good learning tool, but...
+
 ----------
 2011-7-16:
 

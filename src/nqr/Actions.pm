@@ -83,6 +83,11 @@ method function_definition($/) {
 }
 
 # This might need to be broken up for assignment to subsets.
+# Doesn't work for assignment to arrays.  See:
+# a <- seq(1,10,1)
+# a[5] <- 99
+# RESULT: 1 2 3 4 5 1 7 8 9 10
+# Because 99 is length 1 I think, as a FixedIntegerArray.
 method statement:sym<assignment>($/) {
     my $lhs := $<primary>.ast;
     my $rhs := $<EXPR>.ast;
@@ -313,9 +318,16 @@ method primary($/) {
 
 
 ### Modifed by JWE to strip out the literal.  But we really 
-### want this to extract many values at a time, potentially.
+### want this to extract many values at a time, potentially,
+### and there are other issues.
+### (1) we want to search to see if something exists, and if
+### not, create it with the right type.  If it exists
+### (2) if it does exist and something is extracted, we want
+### it to be a Resizable*Array, not a literal.
+### (3) might need different ones for assignment from
+### extraction.
 method postfix_expression:sym<index>($/) {
-    print("In postfix_expression:index");
+    #print("In postfix_expression:index");
     my $index := PAST::Op.new( :pirop<set__iQi>,        ## NEW
                                $<EXPR>.ast, 0 );
     #my $index := $<EXPR>.ast;

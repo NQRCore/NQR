@@ -1,5 +1,7 @@
 I'll try to keep this file VERY up-to-date with "gotcha's"
-that I could use help on.
+that I could use help on.  I've put these on the back burner
+because I don't think I'll make much headway on them at the
+moment.
 
 1. In src/nqr/Actions.pm I'm having trouble with my for loop;
   see the Grammar.pm file for obvious definitions.  The
@@ -13,6 +15,5 @@ desired.  I blogged about this, and it may not be the loop behavior,
 but an issue with handling of objects and assignments.
 
   http://www.parrot.org/content/funny-behavior-squaak-loop
-
 
 

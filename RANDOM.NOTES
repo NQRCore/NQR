@@ -341,3 +341,24 @@ pmichaud: to clarify your point above, writing a custom infix<+> in NQP, I have
 <pmichaud_> (it's often much slower)
 
 
+PARSER: from matrixy:
+
+token terminator {
+    [ ';' \s* | \n \s* | $ ]
+    {*}
+}
+
+# Since the <ws> rule doesn't allow newlines, we have to have this rule for
+# places where a newline might need to be treated as simple whitespace
+token maybenewline {
+    \n*
+}
+
+token sys_bare_words {
+    \N+ \n?
+}
+
+
+
+
+
