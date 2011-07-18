@@ -181,7 +181,7 @@ sub &infix:<*>($a, $b) {
     } else {
       my @ans := pir::new("ResizableIntegerArray");
       while ($i >= 0) {
-        @ans[$i] := pir::mul__III($a[$i], $b[$i]);
+        @ans[$i] := pir::mul__III($a[$i], $b[0]);
         $i--;
       }
       return @ans;
