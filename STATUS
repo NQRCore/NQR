@@ -1,4 +1,16 @@
 ----------
+2011-7-18:
+
+See yesterday's comment.  I think many of the problems I'm now
+running into are a result of my trying to adapt squaak.  I need
+to move closer to the grammar design of whiteknight's matrixy,
+particular with regards to assignment and [ ] handling.
+
+It may also be that the whitespace handling and end-of-lines need
+to be handled in the grammar differently to support R-style
+interpretation interactively.  Not sure about that one.
+
+----------
 2011-7-17:
 
 Started implementing a test script in t/ that is catching stuff,
