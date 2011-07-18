@@ -1,5 +1,5 @@
 
-say("1..22")
+say("1..23")
 
 # Basic assignment
 a <- 1
@@ -68,5 +68,9 @@ print(paste("ok", a[6]))
 a <- rep(c(0,1), 5)
 a <- (!a + 1:10) * 2 + 2
 print(paste("ok", a[9]))
+
+a <- (-5:5) * -4 + 3
+print(paste("ok", a[0]))
+
 
 

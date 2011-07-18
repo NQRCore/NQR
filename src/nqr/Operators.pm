@@ -486,7 +486,28 @@ sub &prefix:<!>($a) {
   return @ans;
 }
 
-
+sub &prefix:<->($a) {
+  my $i;
+  $i := pir::elements($a) - 1;
+  if (pir::typeof($a[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::neg__NN($a[$i]);
+      $i--;
+    }
+    return @ans;
+  }
+  if (pir::typeof($a[0]) eq 'Integer') {
+    my @ans := pir::new("ResizableIntegerArray");
+    while ($i >= 0) {
+      @ans[$i] := pir::neg__II($a[$i]);
+        $i--;
+      }
+    return @ans;
+  }
+  print("invalid argument to unary operator: -\n");
+  return 0;
+}
 
 
 
