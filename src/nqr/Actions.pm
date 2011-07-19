@@ -96,7 +96,17 @@ method statement:sym<assignment>($/) {
 }
 
 ## NEW assignment with lvalue stuff:
-### See :pasttype('inline')
+### See :pasttype('inline')      ##### good stuff...
+
+# NEW: <lvalue> and <EXPR>
+#method statement:sym<assignment>($/) {
+#    my $lhs := $<primary>.ast;
+#    my $rhs := $<EXPR>.ast;
+#    $lhs.lvalue(1);
+#    make PAST::Op.new($lhs, $rhs, :pasttype<bind>, :node($/));
+#}
+
+
 
 
 
