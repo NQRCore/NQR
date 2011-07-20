@@ -62,7 +62,7 @@ src/gen_grammar.pir
 src/gen_classes.pir
 src/gen_operators.pir
 src/gen_runtime.pir
-src/gen_runtime2.pir
+src/gen_runtimewinxed.pir
 SOURCES
     $S0 = pop $P6
     $P5['nqr/nqr.pbc'] = $P6

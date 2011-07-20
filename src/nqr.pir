@@ -40,12 +40,15 @@ object.
     parrotns.'export_to'(hllns, imports)
 
     # Load a subset of GSL functions:
-    .local pmc lib, nci
+    .local pmc lib, nci, Rlib
     loadlib lib, 'libgsl'
     dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
     set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
     dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
     set_global ['GSL'], 'gsl_stats_mean', nci
+    loadlib Rlib, 'libRmath'
+    dlfunc nci, Rlib, 'R_rexp', 'dd'
+    set_global ['R'], 'R_rexp', nci
 
 .end
 

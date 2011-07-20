@@ -283,21 +283,41 @@ sub rexpworks($rate) {
 # Note, see below: can't assign rexp(arg) directly to
 # P1[0] because that seems to screw up the signature for
 # the function call.
-sub rexp($rate) {
+sub rexpsingle($rate) {
     return Q:PIR {
         .local num arg, ans
         $P0 = find_lex '$rate'
         arg = $P0[0]
         .local pmc libRmath, rexp
         libRmath = loadlib 'libRmath'
-        if libRmath goto HAVELIBRARY
-        say 'Could not load the libRmath library'
-      HAVELIBRARY:
         rexp = dlfunc libRmath, 'rexp', 'dd'
         ans = rexp(arg) # See note above
         $P1 = new ["ResizableFloatArray"]
         $P1[0] = ans
         %r = $P1
+    };
+}
+
+sub rexp($n, $rate) {
+    return Q:PIR {
+        .local num rate, ans
+        .local int i, N
+        $P0 = find_lex '$rate'
+        $P1 = find_lex '$n'
+        rate = $P0[0]
+        N = $P1[0]
+        i = N - 1
+        .local pmc libRmath, rexp
+        libRmath = loadlib 'libRmath'
+        rexp = dlfunc libRmath, 'rexp', 'dd'
+        #$P2 = new ["ResizableFloatArray"]
+        $P2 = new ["FixedFloatArray"], N
+  LOOP: if i < 0 goto DONE
+        ans = rexp(rate)
+        $P2[i] = ans
+        i = i - 1
+        goto LOOP
+  DONE: %r = $P2
     };
 }
 
@@ -314,7 +334,7 @@ sub dnorm(*@args) {
     };
 }
 
-sub mean(*@args) {
+sub meannqp(*@args) {
     my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
     $vec[0] := 1.234;
     $vec[1] := 5.678;

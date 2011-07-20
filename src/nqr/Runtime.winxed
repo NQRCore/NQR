@@ -14,16 +14,15 @@
 
 # NotFound: in winxed to inherit from a PMC you can do:
 
-class MyInteger : ['FixedFloatArray'] {  }
+#class MyInteger : ['FixedFloatArray'] {  }
 #class MyInteger2 : ['Boolean'] {  }
 
-function meanw () {
+function mean(var vec) {
     using GSL.gsl_stats_mean;
-    float foo[];               # Resizable
-                               # Fixed foo[10]
-    foo[0] = 1.234;
-    foo[1] = 5.678;
-    return gsl_stats_mean(foo, 1, 2);
+    int n = vec;                # Get the length
+    float ans[1];
+    ans[0] = gsl_stats_mean(vec, 1, n);
+    return ans;
 }
 
 
