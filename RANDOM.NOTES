@@ -358,6 +358,23 @@ token sys_bare_words {
     \N+ \n?
 }
 
+####################################
+
+
+If I have an NQR script, can I "compile" it, or compile the bytecode for faster performance?
+<jay> < I could be asking the same question about squaak, of course >
+<whiteknight> yes
+<whiteknight> I need to double-check, but I think you can do something like this: "parrot-nqp --target=pir --output=foo.pir nqr.pbc foo.r
+<whiteknight> "
+<moritz> or maybe just
+<moritz> ./nqp --target=pir foo.r > foo.pir
+<moritz> erm
+<moritz> ./nqr
+<moritz> if you have a newer version that builds a fakexecutable
+<whiteknight> yeah, that looks cleaner
+
+and then once you have the .pir, you can do "parrot -o foo.pbc foo.pir" to get bytecode
+
 
 
 
