@@ -1,0 +1,7 @@
+
+# Mean of a vector of random exponentials:
+N <- 200000
+setseed(1,2)
+foo = mean(rexp(N, 1.0))
+
+
