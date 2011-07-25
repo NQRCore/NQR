@@ -1,4 +1,15 @@
 ----------
+2011-7-25:
+
+Back from my conference, less than a week to go before JSM in
+Miami where this initial work will be discussed.
+
+Next steps: try to fix up the array set/get properly for the
+trivial case (atomic elements only).  And whiteknight is trying
+to offer advice on compiling a code example to improve the
+benchmarks.
+
+----------
 2011-7-20:
 
 Attending a conference and trying to study Whiteknight's
