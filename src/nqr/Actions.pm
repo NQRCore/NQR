@@ -9,11 +9,19 @@ method begin_TOP ($/) {
                                    :hll<nqr>);
     our @?BLOCK;
     @?BLOCK.unshift($?BLOCK);
+
 }
 
 method TOP($/) {
     our @?BLOCK;
     my $past := @?BLOCK.shift();
+    # JWE: Added to make scripts compilable!
+    $past.unshift(
+      PAST::Op.new(
+        :pasttype('inline'),
+        :inline("load_language 'nqr'\n")
+      )
+    );
     $past.push($<statementlist>.ast);
     make $past;
 }

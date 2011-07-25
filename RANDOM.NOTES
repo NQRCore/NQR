@@ -378,12 +378,16 @@ and then once you have the .pir, you can do "parrot -o foo.pbc foo.pir" to get b
 
 # ALMOST? :::::
 ./installable_squaak --target=pir 00-sanity.t > foo.pir
+# EDIT: foo.pir, add:
+#     load_language 'squaak'
+# to first line of first sub...
 parrot -o foo.pbc foo.pir
+parrot foo.pbc
 
-<whiteknight> the generated .pir file probably doesn't have all the necessary setup logic
-<whiteknight> in your compiler driver program, there is some setup logic that needs to be duplicated in the generated .pir files.
-<whiteknight> We need to figure out how to put that there
 
+
+./installable_nqr --target=pir benchmark3.nqr > foo.pir
+parrot -o foo.pbc foo.pir
 
 
 
