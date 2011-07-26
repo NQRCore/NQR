@@ -14,6 +14,9 @@ speed other than for things that are coded in C.  The question is
 whether the performance difference is small enough so that the
 advantages of the VM outweigh the costs.
 
+Implemented new actions for [], so that get and set operations
+work (for atomic get/set ... don't have vectorized get/set).
+
 ----------
 2011-7-25:
 

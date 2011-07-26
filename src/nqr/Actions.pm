@@ -96,12 +96,40 @@ method function_definition($/) {
 # a[5] <- 99
 # RESULT: 1 2 3 4 5 1 7 8 9 10
 # Because 99 is length 1 I think, as a FixedIntegerArray.
-method statement:sym<assignment>($/) {
-    my $lhs := $<primary>.ast;
+## WAS: assignment, with <primary>
+method statement:sym<bare_assignment>($/) {
+    print("bare_assignment");
+    my $lhs := $<identifier>.ast;
     my $rhs := $<EXPR>.ast;
     $lhs.lvalue(1);
     make PAST::Op.new($lhs, $rhs, :pasttype<bind>, :node($/));
 }
+
+method statement:sym<bracket_assignment>($/) {
+    print("bracket_assignment");
+    my $lhs := $<bracket_primary>.ast;
+    #my $rhs := $<EXPR>.ast;
+    $lhs.lvalue(1);
+
+    # Take the first element, which is all we do at this point, and
+    # coerce to numeric... the bind will get the ultimate type right,
+    # though based on the lhs rather than the rhs.
+    my $rhs := PAST::Op.new( :pirop<set__nQi>, 
+                              $<EXPR>.ast, 0 );
+
+    make PAST::Op.new($lhs, $rhs, :pasttype<bind>, :node($/));
+}
+
+method bracket_primary($/) {
+    my $past := $<identifier>.ast;
+    for $<postfix_expression> {
+        my $expr := $_.ast;
+        $expr.unshift( $past );
+        $past := $expr;
+    }
+    make $past;
+}
+
 
 ## NEW assignment with lvalue stuff:
 ### See :pasttype('inline')      ##### good stuff...

@@ -58,23 +58,32 @@ proto rule statement { <...> }
 
 
 ### MODIFICATION to separate lvalues I think.
-rule statement:sym<assignment> {
-    | <primary> '=' <EXPR>
-    | <primary> '<-' <EXPR>
+### ORIGINAL
+#rule statement:sym<assignment> {
+#    | <primary> '=' <EXPR>
+#    | <primary> '<-' <EXPR>
+#}
+
+## Playing around with new assignments:
+
+rule statement:sym<bare_assignment> {
+    | <identifier> '=' <EXPR>
+    | <identifier> '<-' <EXPR>
 }
 
-#rule statement:sym<assignment> {
-#    | <lvalue> '=' <EXPR>
-#    | <lvalue> '<-' <EXPR>
-#}
+rule statement:sym<bracket_assignment> {
+    | <bracket_primary> '=' <EXPR>
+    | <bracket_primary> '<-' <EXPR>
+}
+rule bracket_primary {
+    <identifier> <postfix_expression>+
+}
+#rule lvalue_postfix_expression { '[' <EXPR> ']' }
 
-#rule lvalue {
-#    <identifier> <lvalue_postfix_index>*
-#}
 
-#proto rule lvalue_postfix_expression { <...> }
-
-#rule lvalue_postfix_expression:sym<index> { '[' <EXPR> ']' }
+##proto rule lvalue_postfix_expression { <...> }
+##
+##rule lvalue_postfix_expression:sym<index> { '[' <EXPR> ']' }
 #####rule lvalue_postfix_expression:sym<key> { '{' <EXPR> '}' }
 
 
