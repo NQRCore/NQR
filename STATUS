@@ -1,4 +1,20 @@
 ----------
+2011-7-26:
+
+Did some more benchmarks, was advised to rebuild Parrot:
+  perl Configure.pl --optimize
+
+Reran some of my benchmarks, and reported back to whiteknight++,
+documented here:
+
+https://gist.github.com/1106928
+
+In the end, we seem to agree that NQR is unlikely to match R for
+speed other than for things that are coded in C.  The question is
+whether the performance difference is small enough so that the
+advantages of the VM outweigh the costs.
+
+----------
 2011-7-25:
 
 Back from my conference, less than a week to go before JSM in
