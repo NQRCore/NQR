@@ -4,6 +4,9 @@
 Added some tests of the []<- assignment, changed length() to
 return a ResizableIntegerArray.
 
+Really need to do testing of arrays of strings, because some
+of what I had probably just broke yesterday.
+
 ----------
 2011-7-26:
 

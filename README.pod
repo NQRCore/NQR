@@ -21,12 +21,11 @@ Mike Kane (michael.kane@yale.edu)
 =head2 Building from source
 
 NQR requires Parrot (see http://www.parrot.org/).  If you can
-build Parrot, you should be fine building NQR (which used
-Parrot 3.3.0 as of July 8, 2011, and apparently still passes
-tests on the almost-3.6.0 version).
+build Parrot, you should be fine building NQR (we recommend
+Parrot version 3.6.0 as of late July, 2011).
 
-There are additional requirements that are appearing: libRmath.so
-from the R project, at the moment, and libgsl.so from the GNU
+There are additional requirements that are appearing: F<libRmath.so>
+from the R project, at the moment, and F<libgsl.so> from the GNU
 Scientific Library.  See comment in F<STATUS>.
 
 To obtain NQR directly from its repository:
@@ -45,4 +44,12 @@ To run interactively,
 To run in batch mode (e.g. from a script):
 
     $ ./installable_nqr myscript.nqr
+
+=head3 Currently supported syntax
+
+Have a glance at F<t/00-sanity.t>, and realize that only vectors are
+supported (and imperfectly so) as of late July, 2011.  For example,
+indexing starts at 0, not 1.  And the bracket operator currently only
+has a chance of working for single-element get/set operations.
+
 
