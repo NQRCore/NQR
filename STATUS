@@ -14,8 +14,13 @@ speed other than for things that are coded in C.  The question is
 whether the performance difference is small enough so that the
 advantages of the VM outweigh the costs.
 
-Implemented new actions for [], so that get and set operations
-work (for atomic get/set ... don't have vectorized get/set).
+Implemented new actions for [], so that lvalue (set) operations
+work (for atomic set ... don't have vectorized version yet).  Need
+to fix up the get part... see matrixy, !dispatch and !index_variable
+functions in internal/dispatch.pir... will be simpler I think.
+
+Later tonight: expand the tests for the set operator?  And the get
+isn't that bad for testing purposes, really...
 
 ----------
 2011-7-25:

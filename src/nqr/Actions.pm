@@ -98,7 +98,7 @@ method function_definition($/) {
 # Because 99 is length 1 I think, as a FixedIntegerArray.
 ## WAS: assignment, with <primary>
 method statement:sym<bare_assignment>($/) {
-    print("bare_assignment");
+    #print("bare_assignment");
     my $lhs := $<identifier>.ast;
     my $rhs := $<EXPR>.ast;
     $lhs.lvalue(1);
@@ -106,7 +106,7 @@ method statement:sym<bare_assignment>($/) {
 }
 
 method statement:sym<bracket_assignment>($/) {
-    print("bracket_assignment");
+    #print("bracket_assignment");
     my $lhs := $<bracket_primary>.ast;
     #my $rhs := $<EXPR>.ast;
     $lhs.lvalue(1);
@@ -122,7 +122,7 @@ method statement:sym<bracket_assignment>($/) {
 
 method bracket_primary($/) {
     my $past := $<identifier>.ast;
-    for $<postfix_expression> {
+    for $<postfix_expression_left> {
         my $expr := $_.ast;
         $expr.unshift( $past );
         $past := $expr;
@@ -130,17 +130,23 @@ method bracket_primary($/) {
     make $past;
 }
 
+# Eventually could add the hash method:
+method postfix_expression_left:sym<index>($/) {
+    #print("In postfix_expression_left:index");
+    my $index := PAST::Op.new( :pirop<set__iQi>,        ## NEW
+                               $<EXPR>.ast, 0 );
+    #my $index := $<EXPR>.ast;
+    my $past  := PAST::Var.new( $index,
+                                :scope('keyed'),
+                                :viviself('Undef'),
+                                :vivibase('ResizablePMCArray'),
+                                :node($/) );
 
-## NEW assignment with lvalue stuff:
+    make $past;
+}
+
 ### See :pasttype('inline')      ##### good stuff...
 
-# NEW: <lvalue> and <EXPR>
-#method statement:sym<assignment>($/) {
-#    my $lhs := $<primary>.ast;
-#    my $rhs := $<EXPR>.ast;
-#    $lhs.lvalue(1);
-#    make PAST::Op.new($lhs, $rhs, :pasttype<bind>, :node($/));
-#}
 
 
 
@@ -299,8 +305,10 @@ method statement:sym<if>($/) {
     make $past;
 }
 
+# Was primary
 method statement:sym<function_call>($/) {
-    my $invocant := $<primary>.ast;
+    #print("Function call");
+    my $invocant := $<identifier>.ast;
     my $past     := $<arguments>.ast;
     $past.unshift($invocant);
     make $past;
@@ -357,6 +365,7 @@ method block($/) {
 # Check when this is used.  Might need to wrap the returned
 # value if on the right side.  If on the left?  Hmm...
 method primary($/) {
+    #print("In primary");
     my $past := $<identifier>.ast;
 
     for $<postfix_expression> {
@@ -368,27 +377,27 @@ method primary($/) {
     make $past;
 }
 
+method primary_bare($/) {
+    #print("In primary_bare");
+    my $past := $<identifier>.ast;
+    make $past;
+}
 
-### Modifed by JWE to strip out the literal.  But we really 
-### want this to extract many values at a time, potentially,
-### and there are other issues.
-### (1) we want to search to see if something exists, and if
-### not, create it with the right type.  If it exists
-### (2) if it does exist and something is extracted, we want
-### it to be a Resizable*Array, not a literal.
-### (3) might need different ones for assignment from
-### extraction.
+
+### Ok, this should only be used for extraction now, and
+### we want the answer to be a Resizable*Array:::
 method postfix_expression:sym<index>($/) {
     #print("In postfix_expression:index");
-    my $index := PAST::Op.new( :pirop<set__iQi>,        ## NEW
+    my $index := PAST::Op.new( :pirop<set__iQi>, ## NEW index fix.
                                $<EXPR>.ast, 0 );
-    #my $index := $<EXPR>.ast;
-    my $past  := PAST::Var.new( $index,
+    #my $past := PAST::Op.new( :name('!intarray'),
+    #                          :pasttype('call'),
+    #                          :node($/) );
+    my $past := PAST::Var.new( $index,
                                 :scope('keyed'),
                                 :viviself('Undef'),
                                 :vivibase('ResizablePMCArray'),
                                 :node($/) );
-
     make $past;
 }
 
@@ -475,7 +484,8 @@ method term:sym<primary>($/) {
 
 # JAY: to support the return (perhaps not ideal):
 method term:sym<termfunction_call>($/) {
-    my $invocant := $<primary>.ast;
+    #print("termfunction_call");
+    my $invocant := $<identifier>.ast;
     my $past     := $<arguments>.ast;
     $past.unshift($invocant);
     make $past;
@@ -497,6 +507,7 @@ method named_field($/) {
 
 ### JAY: Probably not supported at all:
 method circumfix:sym<[ ]>($/) {
+    print("circumfix should not be used or supported.");
     ## use the parrot calling conventions to
     ## create an array,
     ## using the "anonymous" sub !array

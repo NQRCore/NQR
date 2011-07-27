@@ -76,15 +76,14 @@ rule statement:sym<bracket_assignment> {
     | <bracket_primary> '<-' <EXPR>
 }
 rule bracket_primary {
-    <identifier> <postfix_expression>+
+    <identifier> <postfix_expression_left>+
 }
-#rule lvalue_postfix_expression { '[' <EXPR> ']' }
 
+proto rule postfix_expression_left { <...> }
+rule postfix_expression_left:sym<index> { '[' <EXPR> ']' }
+# Could add the hash method:
+#rule postfix_expression_left:sym<key> { '[' <EXPR> ']' }
 
-##proto rule lvalue_postfix_expression { <...> }
-##
-##rule lvalue_postfix_expression:sym<index> { '[' <EXPR> ']' }
-#####rule lvalue_postfix_expression:sym<key> { '{' <EXPR> '}' }
 
 
 ############################## start of 'for' attempts
@@ -128,8 +127,9 @@ rule statement:sym<return> {
     'return' '(' <EXPR> ')'
 }
 
+# Was primary instead of identifier
 rule statement:sym<function_call> {
-    <primary> <arguments>
+    <identifier> <arguments>
 }
 
 rule arguments {
@@ -161,9 +161,15 @@ rule block {
 
 ## Terms
 
+### This may now only be used for variable (bare and bracketed).
+### Probably continue working here::::
 rule primary {
     <identifier> <postfix_expression>*
 }
+
+#rule primary_bare {
+#    <identifier>
+#}
 
 proto rule postfix_expression { <...> }
 
@@ -189,7 +195,8 @@ token term:sym<integer_constant> { <integer> }
 token term:sym<string_constant> { <string_constant> }
 
 # JAY: fixed up so our returns work, but perhaps not ideal solution:
-token term:sym<termfunction_call> { <primary> <arguments> }
+# primary was identifier
+token term:sym<termfunction_call> { <identifier> <arguments> }
 
 token string_constant { <quote> }
 token term:sym<float_constant_long> { # longer to work-around lack of LTM
@@ -201,6 +208,9 @@ token term:sym<float_constant_long> { # longer to work-around lack of LTM
 token term:sym<primary> {
     <primary>
 }
+#token term:sym<primary_bare> {
+#    <primary_bare>
+#}
 
 proto token quote { <...> }
 token quote:sym<'> { <?[']> <quote_EXPR: ':q'> }
