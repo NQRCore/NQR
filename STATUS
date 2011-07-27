@@ -1,4 +1,10 @@
 ----------
+2011-7-27:
+
+Added some tests of the []<- assignment, changed length() to
+return a ResizableIntegerArray.
+
+----------
 2011-7-26:
 
 Did some more benchmarks, was advised to rebuild Parrot:

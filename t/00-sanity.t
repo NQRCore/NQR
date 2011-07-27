@@ -1,5 +1,5 @@
 
-say("1..23")
+say("1..26")
 
 # Basic assignment
 a <- 1
@@ -71,6 +71,23 @@ print(paste("ok", a[9]))
 
 a <- (-5:5) * -4 + 3
 print(paste("ok", a[0]))
+
+a <- seq(0,24,1)
+print(paste("ok", a[24]))
+
+a[10] <- 25
+print(paste("ok", a[10]))
+
+j <- 0
+a <- rep(0,27)
+while (j <= 26) {
+    a[j] <- j
+    j = j + 1
+}
+print(paste("ok", a[length(a)-1]))
+
+# Won't work until the [] get returns a Resizable*Array
+#print(paste("ok", a[13]+a[14]))
 
 
 

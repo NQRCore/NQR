@@ -59,7 +59,9 @@ sub say(*@args) {
 # Wouldn't work if we had literals, so be careful when you
 # use this internally.
 sub length($arg) {
-   return pir::elements($arg);
+   my @ans := pir::new("ResizableIntegerArray");
+   @ans[0] := pir::elements($arg);
+   return @ans;
 }
 
 #################################################################
@@ -70,7 +72,7 @@ sub length($arg) {
 # Could be simplified if all my NQR objects are some *Array
 # objects, anyway?  Except it's nice for internal usage.
 sub print(*@args) {
-    my $len := length(@args);
+    my $len := length(@args)[0];
     if ($len > 1) {
         warning("only first argument is printed.");
     }
@@ -171,7 +173,7 @@ sub c(*@args) {
 # Was very inefficient using c(), rebuilt for Float only,
 # still could be better.
 sub rep($arg, $times) {
-    my $len := length($arg);           # Eventually might be a PMC
+    my $len := length($arg)[0];
     my $i := 0;
     my $j;
     if (pir::typeof($arg[0]) eq 'Float') {
