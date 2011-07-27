@@ -19,7 +19,7 @@ INIT {
     nqr::Compiler.language('nqr');
     nqr::Compiler.parsegrammar(nqr::Grammar);
     nqr::Compiler.parseactions(nqr::Actions);
-    nqr::Compiler.commandline_banner("\nNot Quite R for Parrot VM, Version $version\n");
+    nqr::Compiler.commandline_banner("\nNot Quite R for Parrot VM, Version $version\nTo exit, use <ctrl>-D.\nPlease see t/00-sanity.t for currently-supported syntax.\n\n");
     nqr::Compiler.commandline_prompt('> ');
 }
 
