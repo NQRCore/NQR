@@ -10,7 +10,7 @@ If you aren't familiar with R, please see http://www.r-project.org.
 It has a wonderful community and a mature, stable language for
 statistical computing.  NQR is a sandbox for exploring the Parrot
 Virtual Machine as a platform for a high-level language (HLL) using
-the core R grammar.
+the core S grammar.
 
 To contribute, please drop us an email.  We particularly welcome
 feedback and hints that help us learn more about Parrot.
@@ -24,9 +24,10 @@ NQR requires Parrot (see http://www.parrot.org/).  If you can
 build Parrot, you should be fine building NQR (we recommend
 Parrot version 3.6.0 as of late July, 2011).
 
-There are additional requirements that are appearing: F<libRmath.so>
-from the R project, at the moment, and F<libgsl.so> from the GNU
-Scientific Library.  See comment in F<STATUS>.
+There are additional requirements that are appearing as we work: 
+F<libRmath.so>
+from the R project (at least for now), and F<libgsl.so> from the GNU
+Scientific Library.  You may also need F<libffi>.  See comment in F<STATUS>.
 
 To obtain NQR directly from its repository:
 
