@@ -24,6 +24,30 @@
       @ans;
     }
 
+    my sub whichmax ($arg) {
+      my @ans := pir::new("ResizableIntegerArray");
+      my $fun :=
+        Q:PIR { %r = get_global ['GSL'], 'gsl_stats_max_index' };
+      @ans[0] := $fun($arg, 1, length($arg)[0]);
+      return @ans;
+    }
+
+    sub setseed(*@args) {
+      return Q:PIR {
+        $P0 = find_lex '@args'
+        .local int arg1, arg2
+        arg1 = $P0[0]
+        arg1 = $P0[1]
+        .local pmc libRmath, setseed
+        libRmath = loadlib "libRmath"
+        if libRmath goto HAVELIBRARY
+          die "Could not load the library"
+        HAVELIBRARY:
+        setseed = dlfunc libRmath, "set_seed", "vii"
+        setseed(arg1, arg2)
+        %r = box 1
+      };
+    }
 
     # Use of the ! in this way prevents NQR from being able
     # to call these directly.  Probably get rid of array, and
@@ -37,6 +61,10 @@
         set_global '!intarray', $P0
         $P0 = find_lex 'floatarray'
         set_global '!floatarray', $P0
+        $P0 = find_lex 'whichmax'
+        set_global 'which.max', $P0
+        $P0 = find_lex 'setseed'
+        set_global 'set.seed', $P0
     }
 }
 
@@ -336,6 +364,20 @@ sub dnorm(*@args) {
     };
 }
 
+
+
+## Example function really used above because of the .
+    #my sub whichmax ($arg) {
+    #  my @ans := pir::new("ResizableIntegerArray");
+    #  my $fun :=
+    #    Q:PIR { %r = get_global ['GSL'], 'gsl_stats_max_index' };
+    #  @ans[0] := $fun($arg, 1, length($arg)[0]);
+    #  return @ans;
+    #}
+
+
+
+# No, need to wrap the answer properly if you do this.
 sub meannqp(*@args) {
     my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
     $vec[0] := 1.234;

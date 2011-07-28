@@ -33,12 +33,5 @@ function max(var vec) {
     return ans;
 }
 
-function which.max(var vec) {
-    using GSL.gsl_stats_max_index;
-    int n = vec;                # Get the length
-    int ans[1];
-    ans[0] = gsl_stats_max_index(vec, 1, n);
-    return ans;
-}
 
 
