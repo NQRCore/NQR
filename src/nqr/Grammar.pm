@@ -179,10 +179,14 @@ rule postfix_expression:sym<key> { '{' <EXPR> '}' }
 # JAY: probably want to get rid of this:
 rule postfix_expression:sym<member> { '.' <identifier> }
 
-# JAY: probably want to customize this to all '.' and perhaps '_'?
+# New identifier to allow . but not leading .
 token identifier {
-    <!keyword> <ident>
+    <!keyword> <myident>
 }
+token myident {
+    <[a..zA..Z]><[a..zA..Z_.]>*
+}
+
 
 # JAY: added function and return and removed sub,
 # added '&' and '|' and '!'

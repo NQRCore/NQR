@@ -42,10 +42,17 @@ object.
     # Load a subset of GSL functions:
     .local pmc lib, nci, Rlib
     loadlib lib, 'libgsl'
-    dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
-    set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
+    #dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
+    #set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
     dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
     set_global ['GSL'], 'gsl_stats_mean', nci
+
+  dlfunc nci, lib, 'gsl_stats_max', 'dpll'
+  set_global ['GSL'], 'gsl_stats_max', nci
+  dlfunc nci, lib, 'gsl_stats_max_index', 'lpll'
+  set_global ['GSL'], 'gsl_stats_max_index', nci
+
+
     loadlib Rlib, 'libRmath'
     dlfunc nci, Rlib, 'R_rexp', 'dd'
     set_global ['R'], 'R_rexp', nci

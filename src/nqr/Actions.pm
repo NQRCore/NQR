@@ -428,7 +428,7 @@ method postfix_expression:sym<member>($/) {
 
 method identifier($/) {
      our @?BLOCK;
-     my $name  := ~$<ident>;
+     my $name  := ~$<myident>;  # was ident
      my $scope := 'package'; # default value
      # go through all scopes and check if the symbol
      # is registered as a local. If so, set scope to
