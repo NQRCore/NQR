@@ -56,6 +56,8 @@ rule parameters {
 
 proto rule statement { <...> }
 
+# We made need to alter rules slightly to identify the
+# statements with value like matrixy, for printing.
 
 ## Playing around with new assignments:
 
