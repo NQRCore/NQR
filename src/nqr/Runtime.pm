@@ -71,6 +71,11 @@
       };
     }
 
+    # Should be true for everything I might give it, currently.
+    my sub isarray($arg) {
+        return pir::does($arg, "array");
+    }
+
     # Use of the ! in this way prevents NQR from being able
     # to call these directly.  Probably get rid of array, and
     # at least change hash.
@@ -89,6 +94,8 @@
         set_global 'which.min', $P0
         $P0 = find_lex 'setseed'
         set_global 'set.seed', $P0
+        $P0 = find_lex 'isarray'
+        set_global 'is.array', $P0
     }
 }
 
@@ -280,13 +287,7 @@ sub rep($arg, $times) {
 }
 
 
-############
-# is.array()
 
-# Should be true for everything I might give it, currently.
-sub isarray($arg) {
-    return pir::does($arg, "array");
-}
 
 #######
 # str()
@@ -313,38 +314,6 @@ sub str($arg) {
 #https://github.com/letolabs/parrot-libgit2/blob/master/src/git2.pir
 # set_global ['Git'], 'git_treebuilder_get', nci
 #jay: and then it can be accessed through that key in that namespace, here, #Git::git_treebuilder_get
-
-sub setseed(*@args) {
-  return Q:PIR {
-    $P0 = find_lex '@args'
-    .local int arg1, arg2
-    arg1 = $P0[0]
-    arg1 = $P0[1]
-    .local pmc libRmath, setseed
-    libRmath = loadlib "libRmath"
-    if libRmath goto HAVELIBRARY
-      die "Could not load the library"
-    HAVELIBRARY:
-    setseed = dlfunc libRmath, "set_seed", "vii"
-    setseed(arg1, arg2)
-    %r = box 1
-  };
-}
-
-
-sub rexpworks($rate) {
-  return Q:PIR {
-    $P0 = find_lex '$rate'
-    .local num arg1
-    arg1 = $P0[0]
-    .local pmc libRmath, rexp
-    .local num ans
-    libRmath = loadlib "libRmath"
-    rexp = dlfunc libRmath, "rexp", "dd"
-    ans = rexp(arg1)
-    %r = box ans
-  };
-}
 
 
 # Note, see below: can't assign rexp(arg) directly to
@@ -564,59 +533,6 @@ sub exp($arg) {
     print("Only exp(Float) is available at this time");
   }
 }
-
-
-
-# No, need to wrap the answer properly if you do this.
-sub meannqp(*@args) {
-    my $vec := Q:PIR { %r = new ["FixedIntegerArray"], 2 };
-    $vec[0] := 1;
-    $vec[1] := 5;
-    my $gsl_stats_mean :=
-      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_mean' };  ### int version?
-    return $gsl_stats_mean($vec, 1, 2);
-}
-
-sub meanPIR(*@args) {
-    return Q:PIR {
-        .local num ans
-        .local pmc gsl_stats_mean
-        $P0 = new ["FixedFloatArray"], 2
-        $P0[0] = 2.71828
-        $P0[1] = 3.14159
-        gsl_stats_mean = get_global ['GSL'], 'gsl_stats_mean'
-        ans = gsl_stats_mean($P0, 1, 2)
-        %r = box ans
-    };
-}
-
-# Don't understand this one;
-# my $x := 'foo'; pir::upcase($x)
-
-sub sillytest(*@args) {
-    # This works, but is Resizable:
-    #my $vec := pir::new("ResizableFloatArray");
-
-    # This works, but... argh.
-    my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
-
-    # Does not work:
-    #my $vec := pir::new__psi("FixedFloatArray", 2);
-
-    # Sees to work, but seems kind of mysterious:
-    #my $vec := pir::new("FixedFloatArray");
-    #$vec := pir::set__Pi(2);
-
-    #my $vec := pir::new("FixedFloatArray", 2);
-    # Using Fixed... rather than Resizable... generates:
-    #   "init_pmc() not implemented in class 'FixedFloatArray'
-
-    $vec[0] := 1.234;
-    $vec[1] := 5.678;
-    return $vec[0] + $vec[1];
-}
-
-
 
 
 
