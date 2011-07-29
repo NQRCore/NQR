@@ -460,6 +460,38 @@ sub sd($arg) {
   }
 }
 
+sub cov($a, $b) {
+  if (length($a)[0] != length($b)[0]) {
+    return "Error: lengths must be equal";
+  }
+  if ( (pir::typeof($a[0]) eq 'Float') &&
+       (pir::typeof($a[0]) eq 'Float') ) {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_covariance' };
+    @ans[0] := $fun($a, 1, $b, 1, length($a)[0]);
+    return @ans;
+  } else {
+    print("Only cov(float, float) is available at this time");
+  }
+}
+
+sub cor($a, $b) {
+  if (length($a)[0] != length($b)[0]) {
+    return "Error: lengths must be equal";
+  }
+  if ( (pir::typeof($a[0]) eq 'Float') &&
+       (pir::typeof($a[0]) eq 'Float') ) {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_correlation' };
+    @ans[0] := $fun($a, 1, $b, 1, length($a)[0]);
+    return @ans;
+  } else {
+    print("Only cor(float, float) is available at this time");
+  }
+}
+
 
 # No, need to wrap the answer properly if you do this.
 sub meannqp(*@args) {
