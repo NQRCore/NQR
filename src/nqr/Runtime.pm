@@ -492,6 +492,41 @@ sub cor($a, $b) {
   }
 }
 
+sub log($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_sf_log' };
+    my $i;
+    $i := length($arg)[0] - 1;
+    while ($i > 0) {
+      @ans[$i] := $fun($arg[$i]);
+      $i := $i - 1;
+    }
+    return @ans;
+  } else {
+    print("Only log(Float) is available at this time");
+  }
+}
+
+sub exp($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_sf_exp' };
+    my $i;
+    $i := length($arg)[0] - 1;
+    while ($i > 0) {
+      @ans[$i] := $fun($arg[$i]);
+      $i := $i - 1;
+    }
+    return @ans;
+  } else {
+    print("Only exp(Float) is available at this time");
+  }
+}
+
+
 
 # No, need to wrap the answer properly if you do this.
 sub meannqp(*@args) {

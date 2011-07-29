@@ -55,6 +55,10 @@ object.
   set_global ['GSL'], 'gsl_stats_covariance', nci
   dlfunc nci, lib, 'gsl_stats_correlation', 'dplpll'
   set_global ['GSL'], 'gsl_stats_correlation', nci
+  dlfunc nci, lib, 'gsl_sf_log', 'dd'
+  set_global ['GSL'], 'gsl_sf_log', nci
+  dlfunc nci, lib, 'gsl_sf_exp', 'dd'
+  set_global ['GSL'], 'gsl_sf_exp', nci
 
   dlfunc nci, lib, 'gsl_stats_min', 'dpll'
   set_global ['GSL'], 'gsl_stats_min', nci
