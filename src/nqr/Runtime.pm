@@ -73,7 +73,9 @@
 
     # Should be true for everything I might give it, currently.
     my sub isarray($arg) {
-        return pir::does($arg, "array");
+        my $ans := pir::new("ResizableIntegerArray");
+        $ans[0] := pir::does($arg, "array");
+        return $ans;
     }
 
     # Use of the ! in this way prevents NQR from being able

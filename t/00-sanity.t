@@ -1,5 +1,5 @@
 
-say("1..29")
+say("1..30")
 
 # Basic assignment
 a <- 1
@@ -99,5 +99,6 @@ set.seed(1,2)
 a <- rexp(30, 1.0)
 print(paste("ok", which.max(sort(a))))
 
+print(paste("ok", 29 + is.array(a)))
 
 
