@@ -41,16 +41,40 @@ object.
 
     # Load a subset of GSL functions:
     .local pmc lib, nci, Rlib
-    loadlib lib, 'libgsl'
+    loadlib lib, '/usr/local/lib/libgsl.so'
     dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
    #set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
     dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
     set_global ['GSL'], 'gsl_stats_mean', nci
 
+  dlfunc nci, lib, 'gsl_stats_min', 'dpll'
+  set_global ['GSL'], 'gsl_stats_min', nci
+  dlfunc nci, lib, 'gsl_stats_min_index', 'lpll'
+  set_global ['GSL'], 'gsl_stats_min_index', nci
+
   dlfunc nci, lib, 'gsl_stats_max', 'dpll'
   set_global ['GSL'], 'gsl_stats_max', nci
+
+  say "Example GLS loading diagnostics:"
   dlfunc nci, lib, 'gsl_stats_max_index', 'lpll'
+  if nci goto true1
+    say "  False gsl_stats_max_index"
+    goto done1
+  true1:
+    say "  Loaded gsl_stats_max_index"
+  done1:
   set_global ['GSL'], 'gsl_stats_max_index', nci
+
+  dlfunc nci, lib, 'gsl_stats_int_max', 'ipll'
+  if nci goto true2
+    say "  False gsl_stats_int_max"
+    goto done2
+  true2:
+    say "  Loaded gsl_stats_int_max"
+  done2:
+  set_global ['GSL'], 'gsl_stats_int_max', nci
+#  dlfunc nci, lib, 'gsl_stats_int_max_index', 'lpll'
+#  set_global ['GSL'], 'gsl_stats_int_max_index', nci
 
 
     loadlib Rlib, 'libRmath'

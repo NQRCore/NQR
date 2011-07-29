@@ -24,15 +24,37 @@
       @ans;
     }
 
+    ######################################################
+    ## GSL functions with . in the names in the R wrapper:
+
     my sub whichmax ($arg) {
       my @ans := pir::new("ResizableIntegerArray");
-      my $fun :=
-        Q:PIR { %r = get_global ['GSL'], 'gsl_stats_max_index' };
-      @ans[0] := $fun($arg, 1, length($arg)[0]);
-      return @ans;
+      if (pir::typeof($arg[0]) eq 'Float') {
+        my $fun :=
+          Q:PIR { %r = get_global ['GSL'], 'gsl_stats_max_index' };
+        @ans[0] := $fun($arg, 1, length($arg)[0]);
+        return @ans;
+      } else {
+        print("which.max() not implemented for Integer data yet");
+      }
     }
 
-    sub setseed(*@args) {
+    my sub whichmin ($arg) {
+      my @ans := pir::new("ResizableIntegerArray");
+      if (pir::typeof($arg[0]) eq 'Float') {
+        my $fun :=
+          Q:PIR { %r = get_global ['GSL'], 'gsl_stats_min_index' };
+        @ans[0] := $fun($arg, 1, length($arg)[0]);
+        return @ans;
+      } else {
+        print("which.min() not implemented for Integer data yet");
+      }
+    }
+
+    ####################################################
+    ## R functions with . in the names in the R wrapper:
+
+    my sub setseed(*@args) {
       return Q:PIR {
         $P0 = find_lex '@args'
         .local int arg1, arg2
@@ -63,6 +85,8 @@
         set_global '!floatarray', $P0
         $P0 = find_lex 'whichmax'
         set_global 'which.max', $P0
+        $P0 = find_lex 'whichmin'
+        set_global 'which.min', $P0
         $P0 = find_lex 'setseed'
         set_global 'set.seed', $P0
     }
@@ -79,13 +103,12 @@ sub say(*@args) {
     pir::return();
 }
 
-
 ########################################
 # length()
 
 # Simple if we always have a Resizable*Array, right?
-# Wouldn't work if we had literals, so be careful when you
-# use this internally.
+# Wouldn't work if we had literals, and be careful when you
+# use this internally, might need length($arg)[0].
 sub length($arg) {
    my @ans := pir::new("ResizableIntegerArray");
    @ans[0] := pir::elements($arg);
@@ -173,8 +196,12 @@ sub c(*@args) {
     my @this;
     my $type := 'Integer';
     for @args -> @arg {
-        if (pir::typeof(@arg[0]) eq 'Float') {
+        if ( ($type eq 'Integer') &&
+             (pir::typeof(@arg[0]) eq 'Float') ) {
             $type := 'Float';
+        }
+        if (pir::typeof(@arg[0]) eq 'String') {
+            $type := 'String';
             break;
         }
     }
@@ -186,8 +213,18 @@ sub c(*@args) {
             }
         }
         return @ans;
-    } else {
+    }
+    if ($type eq 'Float') {
         my @ans := pir::new("ResizableFloatArray");
+        for @args -> @this {
+            for (@this) {
+                @ans[@ans] := $_;
+            }
+        }
+        return @ans;
+    }
+    if ($type eq 'String') {
+        my @ans := pir::new("ResizableStringArray");
         for @args -> @this {
             for (@this) {
                 @ans[@ans] := $_;
@@ -365,25 +402,48 @@ sub dnorm(*@args) {
 }
 
 
+# $arg will be a Resizable*Array, but we don't seem to get
+# a real gsl_stats_int_max function, for some reason.
+sub max($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_max' };
+    @ans[0] := $fun($arg, 1, length($arg)[0]);
+    return @ans;
+  } else {
+    print("Only min(Float) is available at this time");
+  }
+  if (pir::typeof($arg[0]) eq 'Integer') {
+    print("max(Integer) is buggy, sorry: testing:");
+    my @ans := pir::new("ResizableIntegerArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_int_max' };
+    @ans[0] := $fun($arg, 1, length($arg)[0]);
+    return @ans;
+  }
+}
 
-## Example function really used above because of the .
-    #my sub whichmax ($arg) {
-    #  my @ans := pir::new("ResizableIntegerArray");
-    #  my $fun :=
-    #    Q:PIR { %r = get_global ['GSL'], 'gsl_stats_max_index' };
-    #  @ans[0] := $fun($arg, 1, length($arg)[0]);
-    #  return @ans;
-    #}
-
+sub min($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_min' };
+    @ans[0] := $fun($arg, 1, length($arg)[0]);
+    return @ans;
+  } else {
+    print("Only min(Float) is available at this time");
+  }
+}
 
 
 # No, need to wrap the answer properly if you do this.
 sub meannqp(*@args) {
-    my $vec := Q:PIR { %r = new ["FixedFloatArray"], 2 };
-    $vec[0] := 1.234;
-    $vec[1] := 5.678;
+    my $vec := Q:PIR { %r = new ["FixedIntegerArray"], 2 };
+    $vec[0] := 1;
+    $vec[1] := 5;
     my $gsl_stats_mean :=
-      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_mean' };
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_mean' };  ### int version?
     return $gsl_stats_mean($vec, 1, 2);
 }
 
