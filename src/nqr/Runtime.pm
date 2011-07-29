@@ -22,6 +22,11 @@
       for (@args) { @ans[@ans] := $_; }
       @ans;
     }
+    my sub stringarray (*@args) {
+      my @ans := pir::new("ResizableStringArray");
+      for (@args) { @ans[@ans] := ~$_; }
+      @ans;
+    }
 
     ######################################################
     ## GSL functions with . in the names in the R wrapper:
@@ -89,6 +94,8 @@
         set_global '!intarray', $P0
         $P0 = find_lex 'floatarray'
         set_global '!floatarray', $P0
+        $P0 = find_lex 'stringarray'
+        set_global '!stringarray', $P0
         $P0 = find_lex 'whichmax'
         set_global 'which.max', $P0
         $P0 = find_lex 'whichmin'

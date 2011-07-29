@@ -453,8 +453,12 @@ method term:sym<forint>($/) {
 # Need to figure out how to make this ResizableStringArray:
 method term:sym<string_constant>($/) { make $<string_constant>.ast; }
 method string_constant($/) {
-    my $past := $<quote>.ast;
-    $past.returns('String');
+    #my $past := $<quote>.ast;
+    my $past := PAST::Op.new( :name('!stringarray'),
+                              :pasttype('call'),
+                              :node($/) );
+    $past.push($<quote>.ast);
+    #$past.returns('String');
     make $past;
 }
 

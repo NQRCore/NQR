@@ -1,5 +1,5 @@
 
-say("1..33")
+print("1..33")
 
 # Basic assignment
 a <- 1
