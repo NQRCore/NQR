@@ -460,6 +460,25 @@ sub sd($arg) {
   }
 }
 
+# deep copy: pir assign
+sub sort($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($arg)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $arg[$i];
+      $i := $i - 1;
+    }
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_sort' };
+    $fun(@ans, 1, length($arg)[0]);
+    return @ans;
+  } else {
+    print("Only sort of floats is available at this time");
+  }
+}
+
 sub cov($a, $b) {
   if (length($a)[0] != length($b)[0]) {
     return "Error: lengths must be equal";
@@ -499,7 +518,7 @@ sub log($arg) {
       Q:PIR { %r = get_global ['GSL'], 'gsl_sf_log' };
     my $i;
     $i := length($arg)[0] - 1;
-    while ($i > 0) {
+    while ($i >= 0) {
       @ans[$i] := $fun($arg[$i]);
       $i := $i - 1;
     }
@@ -516,7 +535,7 @@ sub exp($arg) {
       Q:PIR { %r = get_global ['GSL'], 'gsl_sf_exp' };
     my $i;
     $i := length($arg)[0] - 1;
-    while ($i > 0) {
+    while ($i >= 0) {
       @ans[$i] := $fun($arg[$i]);
       $i := $i - 1;
     }
