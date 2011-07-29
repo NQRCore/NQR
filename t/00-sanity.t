@@ -1,5 +1,5 @@
 
-say("1..30")
+say("1..33")
 
 # Basic assignment
 a <- 1
@@ -100,5 +100,7 @@ a <- rexp(30, 1.0)
 print(paste("ok", which.max(sort(a))))
 
 print(paste("ok", 29 + is.array(a)))
-
+print(paste("ok", 30 + var(c(0.0, 1, 2))))
+print(paste("ok", exp(log(32.0))))
+print(paste("ok", 32 + cor(seq(0.5,10,1), seq(5.5,15,1))))
 
