@@ -57,13 +57,6 @@ rule parameters {
 proto rule statement { <...> }
 
 
-### MODIFICATION to separate lvalues I think.
-### ORIGINAL
-#rule statement:sym<assignment> {
-#    | <primary> '=' <EXPR>
-#    | <primary> '<-' <EXPR>
-#}
-
 ## Playing around with new assignments:
 
 rule statement:sym<bare_assignment> {
@@ -78,7 +71,6 @@ rule statement:sym<bracket_assignment> {
 rule bracket_primary {
     <identifier> <postfix_expression_left>+
 }
-
 proto rule postfix_expression_left { <...> }
 rule postfix_expression_left:sym<index> { '[' <EXPR> ']' }
 # Could add the hash method:
@@ -102,7 +94,7 @@ rule statement:sym<myfor2> {
     '}'
 }
 
-###################################################################
+#############################################
 # JAY: minor modification of original syntax:
 
 rule statement:sym<for> {
@@ -145,7 +137,8 @@ rule statement:sym<while> {
     <sym> '(' <EXPR> ')' '{' <block> '}'
 }
 
-# Possible start to getting a terminal expression to print.
+# Possible start to getting a terminal expression to print,
+# though I should really adopt what whiteknight did in matrixy
 #rule statement:sym<terminus> {
 #    <term>
 #}
@@ -167,10 +160,6 @@ rule primary {
     <identifier> <postfix_expression>*
 }
 
-#rule primary_bare {
-#    <identifier>
-#}
-
 proto rule postfix_expression { <...> }
 
 rule postfix_expression:sym<index> { '[' <EXPR> ']' }
@@ -183,6 +172,7 @@ rule postfix_expression:sym<member> { '.' <identifier> }
 token identifier {
     <!keyword> <myident>
 }
+# Ok, have the hang of it, could be fully refined now:
 token myident {
     <[a..zA..Z]><[a..zA..Z0..9_.]>*
 }
@@ -212,9 +202,6 @@ token term:sym<float_constant_long> { # longer to work-around lack of LTM
 token term:sym<primary> {
     <primary>
 }
-#token term:sym<primary_bare> {
-#    <primary_bare>
-#}
 
 proto token quote { <...> }
 token quote:sym<'> { <?[']> <quote_EXPR: ':q'> }
@@ -251,8 +238,6 @@ rule named_field {
 # Vectorized:
 token prefix:sym<-> { <sym> <O('%unary-negate')> }
 token prefix:sym<!> { <sym> <O('%unary-not')> }
-
-# Vectorized:
 token infix:sym<:>  { <sym> <O('%sequence')> }
 token infix:sym<*>  { <sym> <O('%multiplicative')> }
 
@@ -273,7 +258,6 @@ token infix:sym«<=» { <sym> <O('%relational')> }
 token infix:sym«>» { <sym> <O('%relational')> }
 token infix:sym«>=» { <sym> <O('%relational')> }
 
-# Vectorized:
 token infix:sym«==» { <sym> <O('%relational')> }
 token infix:sym«!=» { <sym> <O('%relational')> }
 

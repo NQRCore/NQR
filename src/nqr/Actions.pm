@@ -108,7 +108,6 @@ method statement:sym<bare_assignment>($/) {
 method statement:sym<bracket_assignment>($/) {
     #print("bracket_assignment");
     my $lhs := $<bracket_primary>.ast;
-    #my $rhs := $<EXPR>.ast;
     $lhs.lvalue(1);
 
     # Take the first element, which is all we do at this point, and
@@ -135,7 +134,6 @@ method postfix_expression_left:sym<index>($/) {
     #print("In postfix_expression_left:index");
     my $index := PAST::Op.new( :pirop<set__iQi>,        ## NEW
                                $<EXPR>.ast, 0 );
-    #my $index := $<EXPR>.ast;
     my $past  := PAST::Var.new( $index,
                                 :scope('keyed'),
                                 :viviself('Undef'),
@@ -146,11 +144,6 @@ method postfix_expression_left:sym<index>($/) {
 }
 
 ### See :pasttype('inline')      ##### good stuff...
-
-
-
-
-
 
 
 ############ begin working on 'for' actions...
@@ -305,7 +298,7 @@ method statement:sym<if>($/) {
     make $past;
 }
 
-# Was primary
+# Used to use rule primary here, changed it.
 method statement:sym<function_call>($/) {
     #print("Function call");
     my $invocant := $<identifier>.ast;
@@ -327,7 +320,7 @@ method arguments($/) {
     make $past;
 }
 
-# NOTE: out action is R-consistent, but if the condition has
+# NOTE: our action is R-consistent, but if the condition has
 # length > 1 we would like to throw a warning.
 method statement:sym<while>($/) {
     my $cond := PAST::Op.new( :pirop<set__iQi>,        ## NEW
@@ -445,14 +438,12 @@ method identifier($/) {
                          :node($/) );
 }
 
-# I was playing around with only using arrays, but stopped.
 method term:sym<integer_constant>($/) {
     my $past := PAST::Op.new( :name('!intarray'), #'!array'),
                               :pasttype('call'),
                               :node($/) );
     $past.push($<integer>.ast);
     make $past;
-    #make PAST::Val.new(:value($<integer>.ast), :returns<Integer>);
 }
 
 method term:sym<forint>($/) {
@@ -467,10 +458,9 @@ method string_constant($/) {
     make $past;
 }
 
-# Ditto on playing with arrays and no literals.
 # What is the role of the + sign below?
 method term:sym<float_constant_long>($/) { # name worksaround lack of LTM
-    my $past := PAST::Op.new( :name('!floatarray'), #'!array'),
+    my $past := PAST::Op.new( :name('!floatarray'),
                               :pasttype('call'),
                               :node($/) );
     $past.push(+$/);
