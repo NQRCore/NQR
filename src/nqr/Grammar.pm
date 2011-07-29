@@ -192,7 +192,7 @@ token myident {
 # added '&' and '|' and '!'
 token keyword {
     [ '&' |'else' |'for' |'if' | 'function' | 'return'
-    | '!' |  '|'  |'var' |'while']>>
+    | '!' |  '|'  |'while']>>
 }
 
 token term:sym<integer_constant> { <integer> }

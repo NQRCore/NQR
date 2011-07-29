@@ -436,6 +436,30 @@ sub min($arg) {
   }
 }
 
+sub var($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_variance' };
+    @ans[0] := $fun($arg, 1, length($arg)[0]);
+    return @ans;
+  } else {
+    print("Only var(Float) is available at this time");
+  }
+}
+
+sub sd($arg) {
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableFloatArray");
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_stats_sd' };
+    @ans[0] := $fun($arg, 1, length($arg)[0]);
+    return @ans;
+  } else {
+    print("Only sd(Float) is available at this time");
+  }
+}
+
 
 # No, need to wrap the answer properly if you do this.
 sub meannqp(*@args) {

@@ -47,6 +47,11 @@ object.
     dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
     set_global ['GSL'], 'gsl_stats_mean', nci
 
+  dlfunc nci, lib, 'gsl_stats_variance', 'dpll'
+  set_global ['GSL'], 'gsl_stats_variance', nci
+  dlfunc nci, lib, 'gsl_stats_sd', 'dpll'
+  set_global ['GSL'], 'gsl_stats_sd', nci
+
   dlfunc nci, lib, 'gsl_stats_min', 'dpll'
   set_global ['GSL'], 'gsl_stats_min', nci
   dlfunc nci, lib, 'gsl_stats_min_index', 'lpll'
