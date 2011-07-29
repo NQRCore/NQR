@@ -239,7 +239,6 @@ sub c(*@args) {
         return @ans;
     }
     if ($type eq 'String') {
-        #warning("buggy string operations, sorry");
         my @ans := pir::new("ResizableStringArray");
         for @args -> @this {
             for (@this) {
@@ -282,7 +281,6 @@ sub rep($arg, $times) {
       return @ans;
     }
     if (pir::typeof($arg[0]) eq 'String') {
-      #warning("buggy string operations, sorry");
       my @ans := pir::new("ResizableStringArray");
       while ($i < $times[0]) {
         $j := 0;

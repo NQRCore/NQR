@@ -1,5 +1,5 @@
 
-print("1..33")
+print("1..34")
 
 # Basic assignment
 a <- 1
@@ -103,4 +103,7 @@ print(paste("ok", 29 + is.array(a)))
 print(paste("ok", 30 + var(c(0.0, 1, 2))))
 print(paste("ok", exp(log(32.0))))
 print(paste("ok", 32 + cor(seq(0.5,10,1), seq(5.5,15,1))))
+
+print(c("ok", 34))
+
 
