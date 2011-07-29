@@ -4,9 +4,12 @@
 Added additional functions (like min, max, log, exp...) and
 tests; implemented ResizableStringArray and did minor testing.
 
-Have some GSL problems for anything with integer arrays for some
-reasons.  Need to test with standalone C code sooner rather than
+I have some GSL problems for anything with integer arrays for some
+reasons; I need to test with standalone C code sooner rather than
 later.
+
+See 7/26 comment on properly dispatching forget [] operations -- a
+fairly high priority at this point.
 
 ----------
 2011-7-27:

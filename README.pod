@@ -51,6 +51,6 @@ To run in batch mode (e.g. from a script):
 Have a glance at F<t/00-sanity.t>, and realize that only vectors are
 supported (and imperfectly so) as of late July, 2011.  For example,
 indexing starts at 0, not 1.  And the bracket operator currently only
-has a chance of working for single-element get/set operations.
+has a chance of working properly for single-element get/set operations.
 
 

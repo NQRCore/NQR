@@ -8,12 +8,17 @@ moment.
   attempt called 'myfor' is almost identical to what Whiteknight
   used in his matrixy project.  I just can't figure it out; the
   body of the loop isn't accessing the parameter.  If you are
-  interested, I can provide a simple example.
+  interested, I can provide a simple example.  There may be
+  a recent hint attached to my blog entry (see below)
 
 2. Even once this is solved, I think the loop behavior is not as
-desired.  I blogged about this, and it may not be the loop behavior,
-but an issue with handling of objects and assignments.
+  desired.  I blogged about this, and it may not be the loop behavior,
+  but an issue with handling of objects and assignments.
 
   http://www.parrot.org/content/funny-behavior-squaak-loop
 
-
+3. I expect some subtle grammar issues... print(sort(a)[0]) does
+  not seem to work as desired, for example, and this is almost
+  definitely a parser issue.  More testing is needed, and I may
+  have made some changes to <primary>, etc... that are getting in
+  the way, here.
