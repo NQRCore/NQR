@@ -1,5 +1,5 @@
 
-say("1..26")
+say("1..29")
 
 # Basic assignment
 a <- 1
@@ -88,6 +88,16 @@ print(paste("ok", a[length(a)-1]))
 
 # Won't work until the [] get returns a Resizable*Array
 #print(paste("ok", a[13]+a[14]))
+
+a <- seq(1.0, 27, 1)
+print(paste("ok", max(a)))
+
+a <- c(0, a, 1234.567)
+print(paste("ok", which.max(a)))
+
+set.seed(1,2)
+a <- rexp(30, 1.0)
+print(paste("ok", which.max(sort(a))))
 
 
 
