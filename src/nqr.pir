@@ -59,8 +59,10 @@ object.
   set_global ['GSL'], 'gsl_sf_log', nci
   dlfunc nci, lib, 'gsl_sf_exp', 'dd'
   set_global ['GSL'], 'gsl_sf_exp', nci
-  dlfunc nci, lib, 'gsl_sort', 'dpll'
+  dlfunc nci, lib, 'gsl_sort', 'vpll'
   set_global ['GSL'], 'gsl_sort', nci
+  dlfunc nci, lib, 'gsl_sort_index', 'vppll'
+  set_global ['GSL'], 'gsl_sort_index', nci
 
   dlfunc nci, lib, 'gsl_stats_min', 'dpll'
   set_global ['GSL'], 'gsl_stats_min', nci

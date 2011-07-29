@@ -460,7 +460,27 @@ sub sd($arg) {
   }
 }
 
+sub order($arg) {
+  warning("order() is not working; expect integer passing problem.");
+  if (pir::typeof($arg[0]) eq 'Float') {
+    my @ans := pir::new("ResizableIntegerArray");
+    my $i;
+    $i := length($arg)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $i;
+      $i := $i - 1;
+    }
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_sort_index' };
+    #$fun(@ans, $arg, 1, length($arg)[0]);
+    return @ans;
+  } else {
+    print("Only order(Float) is available at this time");
+  }
+}
+
 # deep copy: pir assign
+# Need decreasing option, too.
 sub sort($arg) {
   if (pir::typeof($arg[0]) eq 'Float') {
     my @ans := pir::new("ResizableFloatArray");
