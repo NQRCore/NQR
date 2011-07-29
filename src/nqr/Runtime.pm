@@ -1,7 +1,6 @@
 #! nqp
 # Copyright (C) 2010, Parrot Foundation.
 # Copyright (C) 2011, Michael Kane and John Emerson.
-
 # Note: I'm doing essentially no friendly error-checking
 # at this point.  Bigger fish to fry...
 
@@ -145,7 +144,7 @@ sub print(*@args) {
 }
 
 sub warning($msg) {
-    my $m := ["Warning:", $msg];
+    my $m := paste("Warning:", $msg);
     print($m);
 }
 
@@ -233,6 +232,7 @@ sub c(*@args) {
         return @ans;
     }
     if ($type eq 'String') {
+        warning("buggy string operations, sorry")
         my @ans := pir::new("ResizableStringArray");
         for @args -> @this {
             for (@this) {
@@ -275,6 +275,7 @@ sub rep($arg, $times) {
       return @ans;
     }
     if (pir::typeof($arg[0]) eq 'String') {
+      warning("buggy string operations, sorry")
       my @ans := pir::new("ResizableStringArray");
       while ($i < $times[0]) {
         $j := 0;

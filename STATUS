@@ -1,4 +1,14 @@
 ----------
+2011-7-29:
+
+Added additional functions (like min, max, log, exp...) and
+tests; noticed some issues with String-related things, sadly.
+
+Have some GSL problems for anything with integer arrays for some
+reasons.  Need to test with standalone C code sooner rather than
+later.
+
+----------
 2011-7-27:
 
 Added some tests of the []<- assignment, changed length() to
