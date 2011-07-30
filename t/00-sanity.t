@@ -106,4 +106,8 @@ print(paste("ok", 32 + cor(seq(0.5,10,1), seq(5.5,15,1))))
 
 print(c("ok", 34))
 
+#a <- seq(0.5,13,1)
+#b <- seq(0.5,14,1)
+#print(c("ok", a[length(a)] + b[length(b)]))
+
 

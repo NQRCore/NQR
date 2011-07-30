@@ -472,7 +472,15 @@ method term:sym<float_constant_long>($/) { # name worksaround lack of LTM
     #make PAST::Val.new(:value(+$/), :returns<Float>);
 }
 
+## Ok, but how to we handle this based on the type of primary?
+## And also, some term primary are identifier only, no postfix,
+## and these would need to be handled differently.  Hmm...
 method term:sym<primary>($/) {
+    #my $past := PAST::Op.new( :name('!floatarray'),
+    #                          :pasttype('call'),
+    #                          :node($/) );
+    #$past.push($<primary>.ast);
+    #make $past;
     make $<primary>.ast;
 }
 

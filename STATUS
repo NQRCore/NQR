@@ -1,4 +1,12 @@
 ----------
+2011-7-30:
+
+Incremental improvement towards get [] action, but we need to
+separate the term:primary method for bare terminal identifiers
+separately from those with [], and also switch on the Integer,
+Float, or String I think...
+
+----------
 2011-7-29:
 
 Added additional functions (like min, max, log, exp...) and
