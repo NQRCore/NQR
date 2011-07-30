@@ -24,9 +24,9 @@ NQR requires Parrot (see http://www.parrot.org/).  If you can
 build Parrot, you should be fine building NQR (we recommend
 Parrot version 3.6.0 as of late July, 2011).
 
-There are additional requirements that are appearing as we work: 
-F<libRmath.so>
-from the R project (at least for now), and F<libgsl.so> from the GNU
+There are additional requirements: 
+F<libRmath>
+from the R project (at least for now), and F<libgsl> from the GNU
 Scientific Library.  You may also need F<libffi>.  See comment in F<STATUS>.
 
 To obtain NQR directly from its repository:
@@ -52,5 +52,11 @@ Have a glance at F<t/00-sanity.t>, and realize that only vectors are
 supported (and imperfectly so) as of late July, 2011.  For example,
 indexing starts at 0, not 1.  And the bracket operator currently only
 has a chance of working properly for single-element get/set operations.
+
+=head3 Bug reports
+
+It isn't hard to break NQR, or to discover inconsistencies with R or
+the S syntax.  Feel free to email us as you discover things, and we'll
+make sure it is on some list.
 
 
