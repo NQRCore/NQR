@@ -39,6 +39,7 @@ is.array
 =head2 With internals from libRmath
 
 set.seed
+
 rexp
 
 =head2 With internals from GNU Scientific Library (GSL)
@@ -47,6 +48,8 @@ NOTE: I can't yet pass integers into GSL, so operations on ResizableIntegerArray
 objects will not work yet.
 
 dnorm, pnorm, qnorm
+
+dunif, punif, qunif
 
 max, min
 

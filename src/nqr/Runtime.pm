@@ -407,6 +407,45 @@ sub qnorm($x, $mean, $sd) {
     return @ans;
 }
 
+sub dunif($x, $a, $b) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_ran_flat_pdf' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $a[0], $b[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub punif($x, $a, $b) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_flat_P' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $a[0], $b[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub qunif($x, $a, $b) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_flat_Pinv' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $a[0], $b[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
 
 # $arg will be a Resizable*Array, but we don't seem to get
 # a real gsl_stats_int_max function, for some reason.

@@ -42,6 +42,8 @@ object.
     # Load a subset of GSL functions:
     .local pmc lib, nci, Rlib
     loadlib lib, '/usr/local/lib/libgsl.so'
+
+    # dnorm, qnorm, pnorm support
     dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
     set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
     dlfunc nci, lib, 'gsl_cdf_gaussian_P', 'ddd'
@@ -49,6 +51,15 @@ object.
     dlfunc nci, lib, 'gsl_cdf_gaussian_Pinv', 'ddd'
     set_global ['GSL'], 'gsl_cdf_gaussian_Pinv', nci
 
+    # dunif, qunif, punif support
+    dlfunc nci, lib, 'gsl_ran_flat_pdf', 'dddd'
+    set_global ['GSL'], 'gsl_ran_flat_pdf', nci
+    dlfunc nci, lib, 'gsl_cdf_flat_P', 'dddd'
+    set_global ['GSL'], 'gsl_cdf_flat_P', nci
+    dlfunc nci, lib, 'gsl_cdf_flat_Pinv', 'dddd'
+    set_global ['GSL'], 'gsl_cdf_flat_Pinv', nci
+
+  # mean, var, sd, cov, cor
   dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
   set_global ['GSL'], 'gsl_stats_mean', nci
   dlfunc nci, lib, 'gsl_stats_variance', 'dpll'
@@ -70,11 +81,13 @@ object.
   dlfunc nci, lib, 'gsl_sort_index', 'vppll'
   set_global ['GSL'], 'gsl_sort_index', nci
 
+  # min, which.min
   dlfunc nci, lib, 'gsl_stats_min', 'dpll'
   set_global ['GSL'], 'gsl_stats_min', nci
   dlfunc nci, lib, 'gsl_stats_min_index', 'lpll'
   set_global ['GSL'], 'gsl_stats_min_index', nci
 
+  # max, which.max
   dlfunc nci, lib, 'gsl_stats_max', 'dpll'
   set_global ['GSL'], 'gsl_stats_max', nci
 
