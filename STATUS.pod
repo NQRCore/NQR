@@ -1,5 +1,9 @@
-----------
-2011-7-31:
+=head1 NQR - Not Quite R - Current Status
+
+NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
+See F<LICENSE> for licensing details, Artistic License 2.0.
+
+=head2 2011-7-31
 
 Hello from Miami Beach!  Too hot to do anything but stay inside and
 work.
@@ -8,6 +12,9 @@ Fixed (I think) the get [] action... progress!  Still only handling
 the atomic get/set actions, but at least we have Resizable*Array
 consistently.  Still need to switch on the type properly for the
 get action, though.
+
+
+=head2 Older status reports in plain text
 
 ----------
 2011-7-30:
