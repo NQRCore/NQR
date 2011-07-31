@@ -1,9 +1,21 @@
-=head1 NQR - Not Quite R - Currently Implemented Functions
+=head1 NQR - Not Quite R - Currently Implemented Functionality
 
 NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
 See F<LICENSE> for licensing details, Artistic License 2.0.
 
-=head3 Core functions
+=head3 Core functionality
+
+<- or = for assignment
+
+vectors of integer, float, string
+
+'[' and '[<-' (bracket operator for get/set, atomic only)
+
+function (definition and calling)
+
+while (for not yet available)
+
+if... then... else
 
 seq, rep, c, paste
 
@@ -15,6 +27,11 @@ which.max, which.min
 
 is.array
 
+% mod is not yet vectorized
+
+# for comments
+
+& | not yet vectorized (and no && or || yet)
 
 =head2 With internals from libRmath
 
