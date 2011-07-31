@@ -368,14 +368,43 @@ sub rexp($n, $rate) {
 #######################################
 # GSL... and learning about the loading
 
-sub dnorm(*@args) {
-    return Q:PIR {
-        .local num ans
-        .local pmc gsl_ran_gaussian_pdf
-        gsl_ran_gaussian_pdf = get_global ['GSL'], 'gsl_ran_gaussian_pdf'
-        ans = gsl_ran_gaussian_pdf(0.5, 1.0)
-        %r = box ans
-    };
+sub dnorm($x, $mean, $sd) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_ran_gaussian_pdf' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i]-$mean[0], $sd[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub pnorm($x, $mean, $sd) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_gaussian_P' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i]-$mean[0], $sd[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub qnorm($x, $mean, $sd) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_gaussian_Pinv' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i]-$mean[0], $sd[0]);
+      $i := $i - 1;
+    }
+    return @ans;
 }
 
 

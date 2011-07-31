@@ -16,6 +16,10 @@ ResizableIntegerArray/ResizableFloatArray.
 
 Indexing currently starts at 0, not 1.
 
+=head2 Default argument values
+
+For example, dnorm(x) would assume mean=0 and sd=1...
+
 =head2 Other issues
 
 I know there are many other issues (some bugs, some just not completed

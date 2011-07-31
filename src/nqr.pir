@@ -44,9 +44,13 @@ object.
     loadlib lib, '/usr/local/lib/libgsl.so'
     dlfunc nci, lib, 'gsl_ran_gaussian_pdf', 'ddd'
     set_global ['GSL'], 'gsl_ran_gaussian_pdf', nci
-    dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
-    set_global ['GSL'], 'gsl_stats_mean', nci
+    dlfunc nci, lib, 'gsl_cdf_gaussian_P', 'ddd'
+    set_global ['GSL'], 'gsl_cdf_gaussian_P', nci
+    dlfunc nci, lib, 'gsl_cdf_gaussian_Pinv', 'ddd'
+    set_global ['GSL'], 'gsl_cdf_gaussian_Pinv', nci
 
+  dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
+  set_global ['GSL'], 'gsl_stats_mean', nci
   dlfunc nci, lib, 'gsl_stats_variance', 'dpll'
   set_global ['GSL'], 'gsl_stats_variance', nci
   dlfunc nci, lib, 'gsl_stats_sd', 'dpll'

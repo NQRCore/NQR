@@ -13,6 +13,9 @@ the atomic get/set actions, but at least we have Resizable*Array
 consistently.  Still need to switch on the type properly for the
 get action, though.
 
+Implemented dnorm(), pnorm(), and qnorm().  Need to consider behavior
+for default arguments when not provided by the user.
+
 
 =head2 Older status reports in plain text
 
