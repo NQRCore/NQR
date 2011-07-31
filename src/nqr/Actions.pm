@@ -370,7 +370,7 @@ method primary($/) {
     make $past;
 }
 
-method primary_bare($/) {
+method bare_primary($/) {
     #print("In primary_bare");
     my $past := $<identifier>.ast;
     make $past;
@@ -476,13 +476,20 @@ method term:sym<float_constant_long>($/) { # name worksaround lack of LTM
 ## And also, some term primary are identifier only, no postfix,
 ## and these would need to be handled differently.  Hmm...
 method term:sym<primary>($/) {
-    #my $past := PAST::Op.new( :name('!floatarray'),
-    #                          :pasttype('call'),
-    #                          :node($/) );
-    #$past.push($<primary>.ast);
-    #make $past;
-    make $<primary>.ast;
+    #print("Term primary");
+    my $past := PAST::Op.new( :name('!floatarray'),
+                              :pasttype('call'),
+                              :node($/) );
+    $past.push($<primary>.ast);
+    make $past;
+    #make $<primary>.ast;
 }
+
+method term:sym<bare_primary>($/) {
+    #print("Term bare_primary");
+    make $<bare_primary>.ast;
+}
+
 
 # JAY: to support the return (perhaps not ideal):
 method term:sym<termfunction_call>($/) {

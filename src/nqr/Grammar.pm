@@ -158,9 +158,15 @@ rule block {
 
 ### This may now only be used for variable (bare and bracketed).
 ### Probably continue working here::::
+rule bare_primary {
+    <identifier><!openbracket>
+}
 rule primary {
     <identifier> <postfix_expression>*
 }
+
+
+
 
 proto rule postfix_expression { <...> }
 
@@ -173,6 +179,9 @@ rule postfix_expression:sym<member> { '.' <identifier> }
 # New identifier to allow . but not leading .
 token identifier {
     <!keyword> <myident>
+}
+token openbracket {
+    ['[']
 }
 # Ok, have the hang of it, could be fully refined now:
 token myident {
@@ -200,6 +209,10 @@ token term:sym<float_constant_long> { # longer to work-around lack of LTM
     | \d+ '.' \d*
     | \d* '.' \d+
     ]
+}
+
+token term:sym<bare_primary> {
+    <bare_primary>
 }
 token term:sym<primary> {
     <primary>

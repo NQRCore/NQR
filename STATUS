@@ -1,4 +1,15 @@
 ----------
+2011-7-31:
+
+Hello from Miami Beach!  Too hot to do anything but stay inside and
+work.
+
+Fixed (I think) the get [] action... progress!  Still only handling
+the atomic get/set actions, but at least we have Resizable*Array
+consistently.  Still need to switch on the type properly for the
+get action, though.
+
+----------
 2011-7-30:
 
 Incremental improvement towards get [] action, but we need to
