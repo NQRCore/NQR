@@ -1,0 +1,38 @@
+=head1 NQR - Not Quite R - Currently Implemented Functions
+
+NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
+See F<LICENSE> for licensing details, Artistic License 2.0.
+
+=head3 Core functions
+
+seq, rep, c, paste
+
+str, length
+
+print
+
+which.max, which.min
+
+is.array
+
+
+=head2 With internals from libRmath
+
+set.seed
+rexp
+
+=head2 With internals from GNU Scientific Library (GSL)
+
+dnorm, pnorm, qnorm
+
+max, min
+
+mean, var, sd, cov, cor
+
+order, sort
+
+log, exp
+
+Vectorized operators:
++, -, *, /, :, ==, !=, <, <=, >, >=, !
+
