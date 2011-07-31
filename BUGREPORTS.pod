@@ -14,10 +14,7 @@ ResizableIntegerArray/ResizableFloatArray.
 
 =head2 Indexing
 
-Indexing currently starts at 0, not 1.  There are actually some subtle
-things about fixing this, because I make use of some functions both
-internally and exposing them to the user (length(), for example).  Be
-careful, maybe don't allow this dual-purpose usage.
+Indexing currently starts at 0, not 1.
 
 =head2 Other issues
 
