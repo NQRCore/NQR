@@ -1,5 +1,5 @@
 
-print("1..34")
+print("1..35")
 
 # Basic assignment
 a <- 1
@@ -86,9 +86,6 @@ while (j <= 26) {
 }
 print(paste("ok", a[length(a)-1]))
 
-# Won't work until the [] get returns a Resizable*Array
-#print(paste("ok", a[13]+a[14]))
-
 a <- seq(1.0, 27, 1)
 print(paste("ok", max(a)))
 
@@ -106,8 +103,8 @@ print(paste("ok", 32 + cor(seq(0.5,10,1), seq(5.5,15,1))))
 
 print(c("ok", 34))
 
-#a <- seq(0.5,13,1)
-#b <- seq(0.5,14,1)
-#print(c("ok", a[length(a)] + b[length(b)]))
+a <- seq(0.5,22,1)
+b <- seq(0.5,14,1)
+print(c("ok", a[length(a)-1] + b[length(b)-1]))
 
 
