@@ -59,6 +59,22 @@ object.
     dlfunc nci, lib, 'gsl_cdf_flat_Pinv', 'dddd'
     set_global ['GSL'], 'gsl_cdf_flat_Pinv', nci
 
+    # dt, qt, pt support
+    dlfunc nci, lib, 'gsl_ran_tdist_pdf', 'ddd'
+    set_global ['GSL'], 'gsl_ran_tdist_pdf', nci
+    dlfunc nci, lib, 'gsl_cdf_tdist_P', 'ddd'
+    set_global ['GSL'], 'gsl_cdf_tdist_P', nci
+    dlfunc nci, lib, 'gsl_cdf_tdist_Pinv', 'ddd'
+    set_global ['GSL'], 'gsl_cdf_tdist_Pinv', nci
+
+    # df, qf, pf support
+    dlfunc nci, lib, 'gsl_ran_fdist_pdf', 'dddd'
+    set_global ['GSL'], 'gsl_ran_fdist_pdf', nci
+    dlfunc nci, lib, 'gsl_cdf_fdist_P', 'dddd'
+    set_global ['GSL'], 'gsl_cdf_fdist_P', nci
+    dlfunc nci, lib, 'gsl_cdf_fdist_Pinv', 'dddd'
+    set_global ['GSL'], 'gsl_cdf_fdist_Pinv', nci
+
   # mean, var, sd, cov, cor
   dlfunc nci, lib, 'gsl_stats_mean', 'dpll'
   set_global ['GSL'], 'gsl_stats_mean', nci

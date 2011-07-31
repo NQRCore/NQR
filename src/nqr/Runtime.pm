@@ -446,6 +446,84 @@ sub qunif($x, $a, $b) {
     return @ans;
 }
 
+sub dt($x, $df) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_ran_tdist_pdf' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $df[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub pt($x, $df) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_tdist_P' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $df[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub qt($x, $df) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_tdist_Pinv' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $df[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub df($x, $df1, $df2) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_ran_fdist_pdf' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $df1[0], $df2[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub pf($x, $df1, $df2) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_fdist_P' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $df1[0], $df2[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
+sub qf($x, $df1, $df2) {
+    my $fun :=
+      Q:PIR { %r = get_global ['GSL'], 'gsl_cdf_fdist_Pinv' };
+    my @ans := pir::new("ResizableFloatArray");
+    my $i;
+    $i := length($x)[0] - 1;
+    while ($i >= 0) {
+      @ans[$i] := $fun($x[$i], $df1[0], $df2[0]);
+      $i := $i - 1;
+    }
+    return @ans;
+}
+
 
 # $arg will be a Resizable*Array, but we don't seem to get
 # a real gsl_stats_int_max function, for some reason.

@@ -51,6 +51,10 @@ dnorm, pnorm, qnorm
 
 dunif, punif, qunif
 
+dt, pt, qt
+
+df, pf, qf (though no non-centrality parameter)
+
 max, min
 
 mean, var, sd, cov, cor
