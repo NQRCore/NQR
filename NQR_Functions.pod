@@ -11,6 +11,9 @@ vectors of integer, float, string
 
 '[' and '[<-' (bracket operator for get/set, atomic only)
 
+Vectorized operators:
++, -, *, /, :, ==, !=, <, <=, >, >=, !
+
 function (definition and calling)
 
 while (for not yet available)
@@ -40,6 +43,9 @@ rexp
 
 =head2 With internals from GNU Scientific Library (GSL)
 
+NOTE: I can't yet pass integers into GSL, so operations on ResizableIntegerArray
+objects will not work yet.
+
 dnorm, pnorm, qnorm
 
 max, min
@@ -50,6 +56,5 @@ order, sort
 
 log, exp
 
-Vectorized operators:
-+, -, *, /, :, ==, !=, <, <=, >, >=, !
+
 

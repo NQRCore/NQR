@@ -23,4 +23,5 @@ For example, dnorm(x) would assume mean=0 and sd=1...
 =head2 Other issues
 
 I know there are many other issues (some bugs, some just not completed
-work, some simply not attempted work).  Feedback is welcome.
+work, some simply not attempted work).  There is essentially no sanity
+checking, no infinities or missing value support.  Feedback is welcome.
