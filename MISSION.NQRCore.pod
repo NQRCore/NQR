@@ -1,3 +1,10 @@
+=head1 NQR - Not Quite R - Mission Statement
+
+NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
+See F<LICENSE> for licensing details, Artistic License 2.0.
+
+=head2 The Mission Statement
+
 NQRCore is a github organization created to house two project
 for the Parrot Virtual Machine: NQR and GSL.
 
