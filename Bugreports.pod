@@ -1,0 +1,24 @@
+=head1 NQR - Not Quite R - Bug Reports
+
+NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
+See F<LICENSE> for licensing details, Artistic License 2.0.
+
+=head2 '[' and '[<-' operators
+
+The bracket operator currently only supports atomic get/set operations,
+rather than allowing things like a[c(1,3)].
+
+The get currently returns only FixedFloatArray, because I haven't figured
+out the switching to support both that and FixedIntegerArray.
+
+=head2 Indexing
+
+Indexing currently starts at 0, not 1.  There are actually some subtle
+things about fixing this, because I make use of some functions both
+internally and exposing them to the user (length(), for example).  Be
+careful, maybe don't allow this dual-purpose usage.
+
+=head2 Other issues
+
+I know there are many other issues (some bugs, some just not completed
+work, some simply not attempted work).  Feedback is welcome.
