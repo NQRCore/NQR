@@ -3,6 +3,11 @@
 NQR is Copyright (C) 2011 by John W. Emerson and Michael J. Kane.
 See F<LICENSE> for licensing details, Artistic License 2.0.
 
+=head2 2011-8-5
+
+I posted our talk slides from the Joint Statistical Meetings
+in Miami: JSM2011.pdf.
+
 =head2 2011-7-31
 
 Hello from Miami Beach!  Too hot to do anything but stay inside and
